@@ -13,7 +13,7 @@ type TypeWriterProps = {
 }
 
 const TypeWriter: React.FC<TypeWriterProps> = ({ fontSize, speed, textSequence, repeat, cursor, preRenderFirstString, randColor }) => {
-  const [textColor, setTextColor] = useState('red');
+  const [textColor, setTextColor] = useState('white');
   const context = useThemeUI();
   const defaultTextColor = context.theme.colors.text;
   const [dynamicFontSize, setDynamicFontSize] = useState(fontSize);
@@ -26,7 +26,7 @@ const TypeWriter: React.FC<TypeWriterProps> = ({ fontSize, speed, textSequence, 
         for (let entry of entries) {
           const { width } = entry.contentRect;
           if (width < 400) { // Imposta il punto di rottura in base alle tue esigenze
-            setDynamicFontSize('1em');
+            setDynamicFontSize('2em');
           } else {
             setDynamicFontSize(fontSize);
           }
