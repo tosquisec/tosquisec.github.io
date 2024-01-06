@@ -1,5 +1,6 @@
 /** @jsx jsx */
 import { jsx, useColorMode } from "theme-ui";
+import ThemeToggle from "./light_dark_toggle";
 
 type WindowProps = {
   link?: string;

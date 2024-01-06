@@ -1,9 +1,8 @@
 /** @jsx jsx */
-import { Box, Flex, Link, useColorMode, jsx, useThemeUI } from "theme-ui";
+import { jsx, useColorMode, useThemeUI } from "theme-ui";
 
-// CSS Styles adapted from: https://codepen.io/aaroniker/pen/KGpXZo
 const iconBaseStyles = {
-  position: `absolute`,
+  position: `relative`,
   width: `24px`,
   height: `24px`,
   borderRadius: `50%`,
@@ -35,9 +34,11 @@ const iconBaseStyles = {
 
 const buttonBaseStyles = {
   opacity: 0.65,
-  position: `relative`,
+  position: `absolute`,
   borderRadius: `4px`,
   width: `40px`,
+  top: `4%`,
+  right: `2%`,
   height: `25px`,
   display: `flex`,
   alignItems: `center`,
@@ -52,26 +53,44 @@ const buttonBaseStyles = {
   "&:hover, &:focus": { opacity: 1 },
 } as const;
 
-const Footer = () => {
+const ThemeToggle = () => {
   const [colorMode, setColorMode] = useColorMode<"light" | "dark">();
   const isDark = colorMode === `dark`;
   const { theme } = useThemeUI();
 
   return (
-    <Box as="footer" variant="footer">
-      <Flex
+    <button
+      onClick={() => {
+        const next = isDark ? `light` : `dark`;
+        setColorMode(next);
+        document.documentElement.classList.value = `theme-ui-${next}`;
+      }}
+      type="button"
+      aria-label={isDark ? `Activate Light Mode` : `Activate Dark Mode`}
+      sx={buttonBaseStyles}
+    >
+      <div
         sx={{
-          justifyContent: `center`,
-          alignItems: `center`,
-          color: `text`,
-          fontWeight: `semibold`,
-          a: { color: `text` },
+          ...iconBaseStyles,
+          border: isDark ? `4px solid ${theme.colors.toggleIcon}` : `none`,
+          backgroundColor: isDark ? `toggleIcon` : `transparent`,
+          transform: isDark ? `scale(0.55)` : `scale(1)`,
+          overflow: isDark ? `visible` : `hidden`,
+          boxShadow: isDark ? `none` : `inset 8px -8px 0px 0px ${theme.colors.toggleIcon}`,
+          "&:before": {
+            ...iconBaseStyles[`&:before`],
+            border: isDark ? `2px solid ${theme.colors.toggleIcon}` : `none`,
+            transform: isDark ? `translate(14px, -14px)` : `translate(0, 0)`,
+            opacity: isDark ? 0 : 1,
+          },
+          "&:after": {
+            ...iconBaseStyles[`&:after`],
+            transform: isDark ? `scale(1)` : `scale(0)`,
+          },
         }}
-      >
-        Copyright &copy; {new Date().getFullYear()}. All rights reserved.
-      </Flex>
-    </Box>
+      />
+    </button>
   );
 };
 
-export default Footer;
+export default ThemeToggle;

@@ -26,8 +26,8 @@ const Divider = ({
   <ParallaxLayer
     sx={{
       position: `absolute`,
-      width: `full`,
-      height: `full`,
+      width: `auto`,
+      height: `auto`,
       background: bg,
       backgroundColor: bg,
       "#contact-wave": {

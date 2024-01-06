@@ -7,7 +7,7 @@ import Svg from "./svg";
 import { UpDown, UpDownWide, Rain } from "../styles/animations";
 import Intro from "../sections/intro.mdx";
 import Window from "./project-window";
-
+import ThemeToggle from "./light_dark_toggle";
 // Array of available icons
 const icons = [
   "python",
