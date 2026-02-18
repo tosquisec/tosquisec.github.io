@@ -156,13 +156,13 @@ a:hover {
   opacity: 0.8;
 }
 
-/* Visibility Helpers */
-.desktop-only { display: none; }
-.mobile-only { display: flex; }
+/* Visibility Helpers - Moved to end for higher specificity */
+.desktop-only { display: none !important; }
+.mobile-only { display: flex !important; }
 
 @media (min-width: 992px) {
-  .desktop-only { display: flex; }
-  .mobile-only { display: none; }
+  .desktop-only { display: flex !important; }
+  .mobile-only { display: none !important; }
 }
 
 /* Desktop Navbar */
