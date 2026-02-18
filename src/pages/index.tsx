@@ -1,4 +1,5 @@
 import * as React from "react"
+import { useState } from "react"
 import type { HeadFC, PageProps } from "gatsby"
 import Layout from "../components/Layout"
 import Hero from "../components/Hero"
@@ -9,38 +10,68 @@ import Education from "../components/Education"
 import BugBounty from "../components/BugBounty"
 import Contact from "../components/Contact"
 import { LanguageProvider, useLanguage } from "../context/LanguageContext"
-import { Languages } from "lucide-react"
+import { Languages, Menu, X } from "lucide-react"
 
 const Navbar: React.FC = () => {
   const { t, language, setLanguage } = useLanguage()
-  
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
+  const closeMenu = () => setIsMenuOpen(false)
+
+  const navLinks = [
+    { href: "#about", label: t.nav.about },
+    { href: "#experience", label: t.nav.experience },
+    { href: "#skills", label: t.nav.skills },
+    { href: "#bugbounty", label: t.nav.bugbounty },
+    { href: "#education", label: t.nav.education },
+    { href: "#contact", label: t.nav.contact },
+  ]
+
   return (
-    <div className="nav-container">
-      <div className="glass-card nav-glass">
-        <a href="#about" style={{ color: "inherit", fontWeight: 500, whiteSpace: "nowrap" }}>{t.nav.about}</a>
-        <a href="#experience" style={{ color: "inherit", fontWeight: 500, whiteSpace: "nowrap" }}>{t.nav.experience}</a>
-        <a href="#skills" style={{ color: "inherit", fontWeight: 500, whiteSpace: "nowrap" }}>{t.nav.skills}</a>
-        <a href="#bugbounty" style={{ color: "inherit", fontWeight: 500, whiteSpace: "nowrap" }}>{t.nav.bugbounty}</a>
-        <a href="#education" style={{ color: "inherit", fontWeight: 500, whiteSpace: "nowrap" }}>{t.nav.education}</a>
-        <a href="#contact" style={{ color: "inherit", fontWeight: 500, whiteSpace: "nowrap" }}>{t.nav.contact}</a>
+    <>
+      {/* Desktop Navbar */}
+      <div className="nav-container desktop-only">
+        <div className="glass-card nav-glass">
+          {navLinks.map(link => (
+            <a key={link.href} href={link.href} style={{ color: "inherit", fontWeight: 500 }}>{link.label}</a>
+          ))}
+        </div>
+        
+        <button 
+          onClick={() => setLanguage(language === "it" ? "en" : "it")}
+          className="glass-card lang-btn-desktop"
+          title="Switch Language"
+        >
+          <Languages size={18} />
+          <span style={{ marginLeft: "5px", fontSize: "0.75rem", fontWeight: "bold" }}>{language.toUpperCase()}</span>
+        </button>
       </div>
-      
-      <button 
-        onClick={() => setLanguage(language === "it" ? "en" : "it")}
-        className="glass-card"
-        style={{ 
-          marginLeft: "10px",
-          padding: "0.6rem", borderRadius: "50%", cursor: "pointer", 
-          display: "flex", alignItems: "center", justifyContent: "center",
-          color: "var(--text-primary)", border: "1px solid var(--glass-border)",
-          flexShrink: 0
-        }}
-        title="Switch Language"
-      >
-        <Languages size={18} />
-        <span style={{ marginLeft: "5px", fontSize: "0.75rem", fontWeight: "bold" }}>{language.toUpperCase()}</span>
+
+      {/* Mobile Floating Button */}
+      <button className="mobile-menu-toggle mobile-only glass-card" onClick={toggleMenu}>
+        {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
       </button>
-    </div>
+
+      {/* Mobile Menu Overlay */}
+      <div className={`mobile-menu-overlay ${isMenuOpen ? 'open' : ''}`}>
+        <div className="mobile-menu-content glass-card">
+          {navLinks.map(link => (
+            <a key={link.href} href={link.href} onClick={closeMenu}>{link.label}</a>
+          ))}
+          <div style={{ marginTop: "2rem", paddingTop: "2rem", borderTop: "1px solid var(--glass-border)" }}>
+            <button 
+              onClick={() => { setLanguage(language === "it" ? "en" : "it"); closeMenu(); }}
+              className="glass-card"
+              style={{ display: "flex", alignItems: "center", gap: "10px", padding: "0.8rem 1.5rem", width: "100%", justifyContent: "center", color: "white" }}
+            >
+              <Languages size={20} />
+              <span>{language === "it" ? "English" : "Italiano"}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
   )
 }
 
@@ -73,7 +104,7 @@ export default IndexPage
 export const Head: HeadFC = () => (
   <>
     <title>Antonio Squillace | Cybersecurity & Backend Developer</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
     <meta name="description" content="Portfolio of Antonio Squillace, Cybersecurity Professional and Backend Developer." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
