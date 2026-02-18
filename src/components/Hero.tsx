@@ -9,56 +9,53 @@ const Hero: React.FC = () => {
   
   return (
     <section className="hero">
-      <div className="glass-card" style={{ display: "flex", alignItems: "center", gap: "3rem", padding: "3rem" }}>
+      <div className="glass-card hero-content">
         <motion.div 
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8 }}
-          style={{ flexShrink: 0 }}
+          className="hero-image-wrapper"
         >
-          <div style={{ borderRadius: "50%", overflow: "hidden", width: "250px", height: "250px", border: "4px solid var(--glass-border)" }}>
-            <StaticImage 
-              src="../images/c.png" 
-              alt="Antonio Squillace"
-              placeholder="blurred"
-              layout="constrained"
-              width={250}
-              height={250}
-              style={{ height: '100%' }}
-            />
-          </div>
+          <StaticImage 
+            src="../images/c.png" 
+            alt="Antonio Squillace"
+            placeholder="blurred"
+            layout="constrained"
+            width={250}
+            height={250}
+            style={{ height: '100%' }}
+          />
         </motion.div>
         
         <div style={{ flex: 1 }}>
           <motion.h1 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.8 }}
-            style={{ fontSize: "3.5rem", marginBottom: "0.5rem" }}
           >
             {t.hero.title}
           </motion.h1>
           <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.8 }}
-            style={{ display: "flex", gap: "1rem", flexWrap: "wrap", marginBottom: "1.5rem" }}
+            className="hero-roles"
           >
-            <span style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--accent-primary)" }}>
-              <Shield size={20} /> {t.hero.roles.security}
+            <span className="role-tag" style={{ color: "var(--accent-primary)" }}>
+              <Shield size={18} /> {t.hero.roles.security}
             </span>
-            <span style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--accent-secondary)" }}>
-              <Terminal size={20} /> {t.hero.roles.pentester}
+            <span className="role-tag" style={{ color: "var(--accent-secondary)" }}>
+              <Terminal size={18} /> {t.hero.roles.pentester}
             </span>
-            <span style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "#a855f7" }}>
-              <Code size={20} /> {t.hero.roles.developer}
+            <span className="role-tag" style={{ color: "#a855f7" }}>
+              <Code size={18} /> {t.hero.roles.developer}
             </span>
           </motion.div>
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6, duration: 0.8 }}
-            style={{ fontSize: "1.1rem", color: "var(--text-secondary)", maxWidth: "600px", marginBottom: "2rem" }}
+            style={{ fontSize: "1.05rem", color: "var(--text-secondary)", marginBottom: "2rem" }}
           >
             {t.hero.description}
           </motion.p>

@@ -4,11 +4,11 @@ import { useLanguage } from "../context/LanguageContext"
 
 const SkillBadge: React.FC<{ label: string }> = ({ label }) => (
   <span className="glass-card" style={{ 
-    padding: "0.5rem 1rem", 
-    fontSize: "0.9rem", 
+    padding: "0.4rem 0.8rem", 
+    fontSize: "0.85rem", 
     borderRadius: "100px",
     display: "inline-block",
-    margin: "0.3rem",
+    margin: "0.25rem",
     background: "rgba(255, 255, 255, 0.08)"
   }}>
     {label}
@@ -22,9 +22,8 @@ const SkillCategory: React.FC<{ title: string, skills: string[], delay: number }
     viewport={{ once: true }}
     transition={{ delay, duration: 0.8 }}
     className="glass-card"
-    style={{ flex: "1 1 300px", minHeight: "200px" }}
   >
-    <h3 style={{ marginBottom: "1.5rem", borderBottom: "1px solid var(--glass-border)", paddingBottom: "0.5rem" }}>{title}</h3>
+    <h3 style={{ fontSize: "1.2rem", marginBottom: "1.2rem", borderBottom: "1px solid var(--glass-border)", paddingBottom: "0.5rem" }}>{title}</h3>
     <div style={{ display: "flex", flexWrap: "wrap" }}>
       {skills.map(skill => <SkillBadge key={skill} label={skill} />)}
     </div>
@@ -44,7 +43,7 @@ const Skills: React.FC = () => {
       >
         {t.skills.title}
       </motion.h2>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "2rem", maxWidth: "1100px", margin: "0 auto" }}>
+      <div className="grid-responsive">
         <SkillCategory 
           title={t.skills.categories.programming}
           skills={["Java", "Python", "C", "Javascript", "Typescript", "Assembly", "Bash/Shell"]}
