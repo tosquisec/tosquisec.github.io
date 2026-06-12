@@ -1,34 +1,68 @@
 import React from "react"
 import { motion } from "framer-motion"
+import { Code, Shield, Server, FileCheck } from "lucide-react"
 import { useLanguage } from "../context/LanguageContext"
 
-const SkillBadge: React.FC<{ label: string }> = ({ label }) => (
-  <span className="glass-card" style={{ 
-    padding: "0.4rem 0.8rem", 
-    fontSize: "0.85rem", 
-    borderRadius: "100px",
-    display: "inline-block",
-    margin: "0.25rem",
-    background: "rgba(255, 255, 255, 0.08)"
-  }}>
-    {label}
-  </span>
-)
+const categoryMeta: Record<string, { icon: React.ReactNode; badgeClass: string }> = {
+  programming: { icon: <Code size={18} />, badgeClass: "skill-badge--programming" },
+  tools: { icon: <Shield size={18} />, badgeClass: "skill-badge--tools" },
+  infra: { icon: <Server size={18} />, badgeClass: "skill-badge--infra" },
+  compliance: { icon: <FileCheck size={18} />, badgeClass: "skill-badge--compliance" },
+}
 
-const SkillCategory: React.FC<{ title: string, skills: string[], delay: number }> = ({ title, skills, delay }) => (
-  <motion.div 
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ delay, duration: 0.8 }}
-    className="glass-card"
-  >
-    <h3 style={{ fontSize: "1.2rem", marginBottom: "1.2rem", borderBottom: "1px solid var(--glass-border)", paddingBottom: "0.5rem" }}>{title}</h3>
-    <div style={{ display: "flex", flexWrap: "wrap" }}>
-      {skills.map(skill => <SkillBadge key={skill} label={skill} />)}
-    </div>
-  </motion.div>
-)
+const skillsData: Record<string, string[]> = {
+  programming: ["Java", "Python", "C", "Javascript", "Typescript", "Assembly", "Bash/Shell"],
+  tools: ["Nmap", "BurpSuite", "Metasploit", "Wireshark", "Ghidra", "IDA Pro", "SQLmap", "Nikto"],
+  infra: ["Docker", "Terraform", "Ansible", "Packer", "Vault", "Linux/Unix", "MacOS"],
+  compliance: ["ISO 27001", "OWASP", "NIST", "GDPR", "CVSS v3.1"],
+}
+
+const badgeVariants = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: (i: number) => ({
+    opacity: 1,
+    scale: 1,
+    transition: { delay: i * 0.04, duration: 0.3, ease: [0.34, 1.56, 0.64, 1] as [number, number, number, number] }
+  })
+}
+
+const SkillCategory: React.FC<{ categoryKey: string; title: string; delay: number }> = ({ categoryKey, title, delay }) => {
+  const meta = categoryMeta[categoryKey]
+  const skills = skillsData[categoryKey]
+  
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 25 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      className="glass-card"
+    >
+      <div className="skill-category-header">
+        <div className="skill-category-title">
+          <span style={{ color: "var(--accent-primary)" }}>{meta.icon}</span>
+          <span>{title}</span>
+        </div>
+        <span className="skill-category-count">{skills.length}</span>
+      </div>
+      <div className="skill-badges">
+        {skills.map((skill, i) => (
+          <motion.span
+            key={skill}
+            className={`skill-badge ${meta.badgeClass}`}
+            custom={i}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={badgeVariants}
+          >
+            {skill}
+          </motion.span>
+        ))}
+      </div>
+    </motion.div>
+  )
+}
 
 const Skills: React.FC = () => {
   const { t } = useLanguage()
@@ -43,27 +77,20 @@ const Skills: React.FC = () => {
       >
         {t.skills.title}
       </motion.h2>
-      <div className="grid-responsive">
-        <SkillCategory 
-          title={t.skills.categories.programming}
-          skills={["Java", "Python", "C", "Javascript", "Typescript", "Assembly", "Bash/Shell"]}
-          delay={0.1}
-        />
-        <SkillCategory 
-          title={t.skills.categories.tools}
-          skills={["Nmap", "BurpSuite", "Metasploit", "Wireshark", "Ghidra", "IDA Pro", "SQLmap", "Nikto"]}
-          delay={0.2}
-        />
-        <SkillCategory 
-          title={t.skills.categories.infra}
-          skills={["Docker", "Terraform", "Ansible", "Packer", "Vault", "Linux/Unix", "MacOS"]}
-          delay={0.3}
-        />
-        <SkillCategory 
-          title={t.skills.categories.compliance}
-          skills={["ISO 27001", "OWASP", "NIST", "GDPR", "CVSS v3.1"]}
-          delay={0.4}
-        />
+      <motion.p
+        className="section-subtitle"
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ delay: 0.1, duration: 0.7 }}
+      >
+        {t.skills.subtitle}
+      </motion.p>
+      <div className="skills-grid">
+        <SkillCategory categoryKey="programming" title={t.skills.categories.programming} delay={0.1} />
+        <SkillCategory categoryKey="tools" title={t.skills.categories.tools} delay={0.15} />
+        <SkillCategory categoryKey="infra" title={t.skills.categories.infra} delay={0.2} />
+        <SkillCategory categoryKey="compliance" title={t.skills.categories.compliance} delay={0.25} />
       </div>
     </section>
   )

@@ -8,32 +8,35 @@ const ExperienceItem: React.FC<{
   company: string
   period: string
   points: string[]
+  isCurrent: boolean
   delay: number
-}> = ({ title, company, period, points, delay }) => (
+}> = ({ title, company, period, points, isCurrent, delay }) => (
   <motion.div 
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
+    initial={{ opacity: 0, x: -30 }}
+    whileInView={{ opacity: 1, x: 0 }}
     viewport={{ once: true }}
-    transition={{ delay, duration: 0.8 }}
-    className="glass-card"
-    style={{ marginBottom: "2rem", padding: "2rem" }}
+    transition={{ delay, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+    className={`timeline-item${isCurrent ? ' timeline-item--current' : ''}`}
   >
-    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "1rem" }}>
-      <div>
-        <h3 style={{ fontSize: "1.4rem", marginBottom: "0.2rem" }}>{title}</h3>
-        <span style={{ color: "var(--accent-primary)", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-          <Briefcase size={16} /> {company}
+    <div className="glass-card timeline-card">
+      <div className="timeline-header">
+        <div>
+          <h3 style={{ fontSize: "1.25rem", marginBottom: "0.3rem" }}>{title}</h3>
+          <span className="timeline-company">
+            <Briefcase size={15} /> {company}
+            {isCurrent && <span className="current-badge">Active</span>}
+          </span>
+        </div>
+        <span className="timeline-period">
+          <Calendar size={14} /> {period}
         </span>
       </div>
-      <span style={{ color: "var(--text-secondary)", display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.9rem" }}>
-        <Calendar size={16} /> {period}
-      </span>
+      <ul className="timeline-points">
+        {points.map((point, i) => (
+          <li key={i}>{point}</li>
+        ))}
+      </ul>
     </div>
-    <ul style={{ paddingLeft: "1.5rem", color: "var(--text-secondary)" }}>
-      {points.map((point, i) => (
-        <li key={i} style={{ marginBottom: "0.5rem" }}>{point}</li>
-      ))}
-    </ul>
   </motion.div>
 )
 
@@ -50,7 +53,16 @@ const Experience: React.FC = () => {
       >
         {t.experience.title}
       </motion.h2>
-      <div style={{ maxWidth: "900px", margin: "0 auto" }}>
+      <motion.p
+        className="section-subtitle"
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ delay: 0.1, duration: 0.7 }}
+      >
+        {t.experience.subtitle}
+      </motion.p>
+      <div className="timeline">
         {t.experience.items.map((item: any, index: number) => (
           <ExperienceItem 
             key={index}
@@ -58,6 +70,7 @@ const Experience: React.FC = () => {
             company={item.company}
             period={item.period}
             points={item.points}
+            isCurrent={item.isCurrent}
             delay={0.1 * (index + 1)}
           />
         ))}

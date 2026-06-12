@@ -1,5 +1,5 @@
 import * as React from "react"
-import { useState } from "react"
+import { useState, useEffect, useCallback } from "react"
 import type { HeadFC, PageProps } from "gatsby"
 import Layout from "../components/Layout"
 import Hero from "../components/Hero"
@@ -12,45 +12,78 @@ import Contact from "../components/Contact"
 import { LanguageProvider, useLanguage } from "../context/LanguageContext"
 import { Languages, Menu, X } from "lucide-react"
 
+const sectionIds = ["about", "experience", "skills", "bugbounty", "education", "contact"]
+
 const Navbar: React.FC = () => {
   const { t, language, setLanguage } = useLanguage()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState("")
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
   const closeMenu = () => setIsMenuOpen(false)
 
+  // IntersectionObserver for active nav link
+  useEffect(() => {
+    if (typeof window === "undefined") return
+
+    const observers: IntersectionObserver[] = []
+    
+    sectionIds.forEach(id => {
+      const el = document.getElementById(id)
+      if (!el) return
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setActiveSection(id)
+          }
+        },
+        { threshold: 0.3, rootMargin: "-80px 0px -50% 0px" }
+      )
+      observer.observe(el)
+      observers.push(observer)
+    })
+
+    return () => observers.forEach(o => o.disconnect())
+  }, [])
+
   const navLinks = [
-    { href: "#about", label: t.nav.about },
-    { href: "#experience", label: t.nav.experience },
-    { href: "#skills", label: t.nav.skills },
-    { href: "#bugbounty", label: t.nav.bugbounty },
-    { href: "#education", label: t.nav.education },
-    { href: "#contact", label: t.nav.contact },
+    { href: "#about", id: "about", label: t.nav.about },
+    { href: "#experience", id: "experience", label: t.nav.experience },
+    { href: "#skills", id: "skills", label: t.nav.skills },
+    { href: "#bugbounty", id: "bugbounty", label: t.nav.bugbounty },
+    { href: "#education", id: "education", label: t.nav.education },
+    { href: "#contact", id: "contact", label: t.nav.contact },
   ]
 
   return (
     <>
       {/* Desktop Navbar */}
       <div className="nav-container desktop-only">
-        <div className="glass-card nav-glass">
+        <div className="nav-glass">
           {navLinks.map(link => (
-            <a key={link.href} href={link.href} style={{ color: "inherit", fontWeight: 500 }}>{link.label}</a>
+            <a
+              key={link.href}
+              href={link.href}
+              className={`nav-link${activeSection === link.id ? ' active' : ''}`}
+            >
+              {link.label}
+            </a>
           ))}
         </div>
         
         <button 
           onClick={() => setLanguage(language === "it" ? "en" : "it")}
-          className="glass-card lang-btn-desktop"
+          className="lang-btn-desktop"
           title="Switch Language"
         >
-          <Languages size={18} />
-          <span style={{ marginLeft: "5px", fontSize: "0.75rem", fontWeight: "bold" }}>{language.toUpperCase()}</span>
+          <Languages size={16} />
+          <span>{language.toUpperCase()}</span>
         </button>
       </div>
 
       {/* Mobile Floating Button */}
-      <button className="mobile-menu-toggle mobile-only glass-card" onClick={toggleMenu}>
-        {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+      <button className="mobile-menu-toggle mobile-only" onClick={toggleMenu}>
+        {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
       </button>
 
       {/* Mobile Menu Overlay */}
@@ -59,13 +92,13 @@ const Navbar: React.FC = () => {
           {navLinks.map(link => (
             <a key={link.href} href={link.href} onClick={closeMenu}>{link.label}</a>
           ))}
-          <div style={{ marginTop: "2rem", paddingTop: "2rem", borderTop: "1px solid var(--glass-border)" }}>
+          <div style={{ marginTop: "1.5rem", paddingTop: "1.5rem", borderTop: "1px solid var(--glass-border)" }}>
             <button 
               onClick={() => { setLanguage(language === "it" ? "en" : "it"); closeMenu(); }}
-              className="glass-card"
-              style={{ display: "flex", alignItems: "center", gap: "10px", padding: "0.8rem 1.5rem", width: "100%", justifyContent: "center", color: "white" }}
+              className="btn-outline"
+              style={{ width: "100%", justifyContent: "center" }}
             >
-              <Languages size={20} />
+              <Languages size={18} />
               <span>{language === "it" ? "English" : "Italiano"}</span>
             </button>
           </div>
@@ -103,11 +136,15 @@ export default IndexPage
 
 export const Head: HeadFC = () => (
   <>
-    <title>Antonio Squillace | Cybersecurity & Backend Developer</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-    <meta name="description" content="Portfolio of Antonio Squillace, Cybersecurity Professional and Backend Developer." />
+    <title>Antonio Squillace | Cybersecurity Professional & Backend Developer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Portfolio di Antonio Squillace — Application Security Analyst, Penetration Tester e Backend Developer con 4+ anni di esperienza professionale. CEH Certified, 3 LVE pubblicate." />
+    <meta name="author" content="Antonio Squillace" />
+    <meta property="og:title" content="Antonio Squillace | Cybersecurity & Backend Developer" />
+    <meta property="og:description" content="Application Security Analyst & Penetration Tester con 4+ anni di esperienza. CEH Certified." />
+    <meta property="og:type" content="website" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
   </>
 )
