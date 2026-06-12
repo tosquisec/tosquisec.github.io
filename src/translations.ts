@@ -128,14 +128,14 @@ export const translations = {
           school: "Università della Calabria",
           date: "2022",
           grade: "110/110",
-          details: "Tesi: Un sistema cyber range basato su digital twin per l'analisi di attacchi informatici a sistemi di controllo industriale."
+          details: "Tesi: Un sistema cyber range basato su digital twin per l'analisi di attacchi informatici a sistemi di controllo industriale.\n\nIl lavoro di tesi mira a utilizzare l'analisi dei processi per scoprire modelli comportamentali che consentiranno il rilevamento di attacchi informatici che modificano il flusso di controllo normale di un sistema cyber-fisico. Per fare ciò, si utilizza il Process Mining, un insieme di tecniche tradizionalmente utilizzate per il miglioramento dei processi aziendali ma che possono essere usate per il rilevamento di anomalie nei sistemi di controllo industriale. Un'ulteriore attività condotta in questo lavoro di tesi, ha riguardato la realizzazione di uno scenario operativo immersivo che consiste di componenti emulative e simulative di sistemi cyber-fisici per il testing e la verifica di eventuali vulnerabilità (applicando le suddette tecniche) in ambienti completamente isolati e controllati. Più precisamente, ci si è occupati della progettazione e implementazione di un sistema cyber range in grado di ospitare scenari che integrano digital twin (DT) sia per i sistemi IT ma anche per i sistemi ICS. Il DT utilizzato in questo studio è basato su un impianto di simulazione di un sistema di palletizzazione, i cui elementi principali sono: un braccio meccanico, una rulliera, un sensore e i pacchi. L'approccio di analisi utilizza questo gemello digitale per modellare ed eseguire diversi scenari realistici di attacco consapevole del processo e generare un set di dati che riflettono le misurazioni del processo, in condizioni di normale operatività e in scenari di attacco."
         },
         {
           degree: "Laurea Triennale in Ingegneria Informatica",
           school: "Università della Calabria",
           date: "2019",
           grade: "96/110",
-          details: "Tesi: Attacchi informatici basati su tecniche basate su Return Oriented Programming (ROP)."
+          details: "Tesi: Attacchi informatici basati su tecniche basate su Return Oriented Programming (ROP).\n\nIl lavoro di tesi si propone di esplorare e analizzare in dettaglio la Return Oriented Programming (ROP), una tecnica avanzata di sfruttamento della memoria che consente agli aggressori di eseguire codice arbitrario nei sistemi vulnerabili. Attraverso un'indagine approfondita delle varie sfaccettature della ROP, il testo si addentra nelle metodologie con cui gli attaccanti possono eludere le moderne misure di sicurezza, quali la non esecuzione di codice (NX) e la randomizzazione dello spazio degli indirizzi (ASLR), dimostrando l'importanza di sviluppare e implementare strategie di difesa sempre più robuste e sofisticate."
         }
       ],
       certifications: [
@@ -309,14 +309,14 @@ export const translations = {
           school: "University of Calabria",
           date: "2022",
           grade: "110/110",
-          details: "Thesis: A cyber range system based on digital twins for the analysis of cyber attacks on industrial control systems."
+          details: "Thesis: A cyber range system based on digital twins for the analysis of cyber attacks on industrial control systems.\n\nThe thesis aims to use process analysis to discover behavioral patterns that will enable the detection of cyber attacks that modify the normal control flow of a cyber-physical system. To achieve this, Process Mining is used, a set of techniques traditionally used for business process improvement but which can be applied to anomaly detection in industrial control systems. An additional activity conducted in this thesis involved the creation of an immersive operational scenario consisting of emulative and simulative components of cyber-physical systems for testing and verifying potential vulnerabilities (applying the aforementioned techniques) in completely isolated and controlled environments. More precisely, it involved the design and implementation of a cyber range system capable of hosting scenarios that integrate digital twins (DT) for both IT and ICS systems. The DT used in this study is based on a simulation plant of a palletizing system, whose main elements are: a mechanical arm, a roller conveyor, a sensor, and packages. The analysis approach uses this digital twin to model and execute several realistic process-aware attack scenarios and generate datasets reflecting process measurements under normal operating conditions and under attack scenarios."
         },
         {
           degree: "Bachelor's Degree in Computer Engineering",
           school: "University of Calabria",
           date: "2019",
           grade: "96/110",
-          details: "Thesis: Cyber attacks based on Return Oriented Programming (ROP) techniques."
+          details: "Thesis: Cyber attacks based on Return Oriented Programming (ROP) techniques.\n\nThe thesis aims to explore and analyze in detail Return Oriented Programming (ROP), an advanced memory exploitation technique that allows attackers to execute arbitrary code on vulnerable systems. Through an in-depth investigation of the various facets of ROP, the text delves into the methodologies by which attackers can bypass modern security measures, such as non-executable memory (NX) and address space layout randomization (ASLR), demonstrating the importance of developing and implementing increasingly robust and sophisticated defense strategies."
         }
       ],
       certifications: [

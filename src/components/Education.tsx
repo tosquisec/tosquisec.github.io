@@ -32,7 +32,7 @@ const DegreeCard: React.FC<{
           </span>
         )}
       </p>
-      {details && <p style={{ color: "var(--text-muted)", fontSize: "0.88rem", marginTop: "0.4rem", lineHeight: 1.6 }}>{details}</p>}
+      {details && <p style={{ color: "var(--text-muted)", fontSize: "0.88rem", marginTop: "0.4rem", lineHeight: 1.6, whiteSpace: "pre-line" }}>{details}</p>}
     </div>
   </motion.div>
 )
