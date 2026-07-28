@@ -15,11 +15,11 @@ export const translations = {
         pentester: "Penetration Tester",
         developer: "Sviluppatore Backend",
       },
-      description: "Professionista nel campo della sicurezza informatica con esperienza quadriennale nel mondo del lavoro, ma appassionato da una vita. Specializzato nella valutazione di vulnerabilità e nello sviluppo backend sicuro.",
+      description: "Professionista della cybersecurity con oltre 4 anni di esperienza sul campo e una passione coltivata da sempre. Specializzato in Application Security, Penetration Testing e sviluppo backend sicuro, unisco una solida base ingegneristica alla ricerca attiva di vulnerabilità per proteggere sistemi complessi.",
       downloadCV: "Scarica CV",
       stats: {
         experience: { value: "4+", label: "Anni Esperienza" },
-        cves: { value: "3", label: "LVE Pubblicate" },
+        cves: { value: "3", label: "Responsible Disclosure Publicate" },
         cert: { value: "CEH", label: "Certificato" },
       },
     },
@@ -46,37 +46,25 @@ export const translations = {
       subtitle: "Il mio percorso professionale nella cybersecurity",
       items: [
         {
-          title: "Analista di Sicurezza Applicativa",
-          company: "Attuale",
+          title: "Analista Sicurezza Applicativa & Sviluppatore Backend",
+          company: "Libero Professionista",
           period: "2024 – Attuale",
           isCurrent: true,
           points: [
-            "Analisi statica e dinamica di file eseguibili, librerie software e applicazioni mobili per identificare comportamenti sospetti o malevoli.",
-            "Attività di reverse engineering su software e componenti per comprendere logiche di funzionamento interne e individuare vulnerabilità non documentate.",
-            "Utilizzo di debugger, disassemblatori (come IDA Pro, Ghidra) e sandbox per l'analisi approfondita del codice e del suo comportamento a runtime.",
-            "Documentazione tecnica delle vulnerabilità scoperte (es. buffer overflow, race condition) e stesura di report dettagliati con relative prove."
-          ]
-        },
-        {
-          title: "Sviluppatore Backend",
-          company: "Attuale",
-          period: "2024 – Attuale",
-          isCurrent: true,
-          points: [
-            "Sviluppo e manutenzione di applicazioni backend robuste, scalabili e performanti.",
-            "Progettazione e implementazione di API RESTful sicure per l'integrazione tra servizi.",
-            "Containerizzazione di applicazioni tramite Docker.",
-            "Conduzione di attività di code review per identificare e mitigare vulnerabilità di sicurezza, secondo le pratiche di sviluppo sicuro (Secure SDLC).",
-            "Integrazione di controlli di sicurezza nel ciclo di vita dello sviluppo per la prevenzione di attacchi comuni (es. OWASP Top 10)."
+            "Analisi statica/dinamica e reverse engineering di file eseguibili, librerie e app mobili (IDA Pro, Ghidra, debugger) per identificare vulnerabilità.",
+            "Sviluppo e manutenzione di applicazioni backend robuste, scalabili e con architettura security-first.",
+            "Progettazione e implementazione di API RESTful sicure e containerizzazione con Docker.",
+            "Conduzione di code review e integrazione di controlli di sicurezza nel ciclo di vita dello sviluppo (Secure SDLC, OWASP Top 10).",
+            "Stesura di report tecnici dettagliati sulle vulnerabilità scoperte (es. buffer overflow, race condition)."
           ]
         },
         {
           title: "Penetration Tester",
           company: "Poste Italiane",
-          period: "05/2022 – 12/2023",
+          period: "05/2022 – 12/2024",
           isCurrent: false,
           points: [
-            "Scansioni di Vulnerability Assessment mediante tool automatici.",
+            "Scansioni di Vulnerability Assessment.",
             "Attività di Penetration Test infrastrutturali/applicativi.",
             "Verifiche dello stato di sicurezza dei sistemi in ambiente di produzione e certificazione.",
             "Attività di reportistica."
@@ -114,7 +102,9 @@ export const translations = {
         programming: "Programmazione",
         tools: "Strumenti Cybersecurity",
         infra: "Infrastruttura & Cloud",
-        compliance: "Compliance & Standard"
+        compliance: "Compliance & Standard",
+        softskills: "Soft Skills",
+        methodologies: "Metodologie"
       }
     },
     education: {
@@ -142,7 +132,6 @@ export const translations = {
         { degree: "Certified Ethical Hacker (CEH)", school: "EC-Council", date: "2024" },
         { degree: "Splunk Enterprise", school: "5 Emme Informatica", date: "2024" },
         { degree: "Lead Auditor ISO/IEC 27001:2022", school: "DIMITTO", date: "2023" },
-        { degree: "Lead Auditor ISO 27001:2017", school: "DIMITTO", date: "2023" },
         { degree: "Audit ISO 17021-1 / ISO 19011", school: "DIMITTO", date: "2023" },
         { degree: "Mastering CVSS v3.1", school: "FIRST Learning", date: "2023" },
         { degree: "Autopsy Forensic", school: "Basis Tech", date: "2020" },
@@ -151,7 +140,7 @@ export const translations = {
     },
     bugbounty: {
       title: "Bug Bounty",
-      description: "Vulnerabilità identificate e segnalate responsabilmente a vendor internazionali.",
+      description: "Vulnerabilità critiche e ad alto impatto scoperte in LG SuperSign CMS, segnalate responsabilmente a LG Electronics. Tutte le vulnerabilità sono state verificate, corrette dal vendor e pubblicate nel bollettino ufficiale di sicurezza LG con identificativi LVE (LG Vulnerability Entry).",
       counter: "Vulnerabilità Segnalate",
       items: [
         {
@@ -178,6 +167,7 @@ export const translations = {
     contact: {
       title: "Contatti",
       description: "Interessato a collaborare o hai una domanda? Non esitare a contattarmi!",
+      pgpKey: "Chiave Pubblica PGP",
     }
   },
   en: {
@@ -196,11 +186,11 @@ export const translations = {
         pentester: "Penetration Tester",
         developer: "Backend Developer",
       },
-      description: "Cybersecurity professional with four years of experience in the professional world, but a lifelong enthusiast. Specialized in vulnerability assessment and secure backend development.",
+      description: "Cybersecurity professional with over 4 years of hands-on experience and a lifelong passion for security. Specialized in Application Security, Penetration Testing, and secure backend development, combining a strong engineering background with active vulnerability research to protect complex systems.",
       downloadCV: "Download CV",
       stats: {
         experience: { value: "4+", label: "Years Experience" },
-        cves: { value: "3", label: "LVEs Published" },
+        cves: { value: "3", label: "Public Responsible Disclosures" },
         cert: { value: "CEH", label: "Certified" },
       },
     },
@@ -227,28 +217,16 @@ export const translations = {
       subtitle: "My professional journey in cybersecurity",
       items: [
         {
-          title: "Application Security Analyst",
-          company: "Current",
+          title: "Application Security Analyst & Backend Developer",
+          company: "Freelance",
           period: "2024 – Present",
           isCurrent: true,
           points: [
-            "Static and dynamic analysis of executables, software libraries, and mobile apps to identify suspicious behavior.",
-            "Reverse engineering on software and components to understand internal logic and identify undocumented vulnerabilities.",
-            "Use of debuggers, disassemblers (such as IDA Pro, Ghidra), and sandboxes for deep analysis of code and its runtime behavior.",
-            "Technical documentation of discovered vulnerabilities (e.g., buffer overflow, race condition) and drafting detailed reports with relevant evidence."
-          ]
-        },
-        {
-          title: "Backend Developer",
-          company: "Current",
-          period: "2024 – Present",
-          isCurrent: true,
-          points: [
-            "Development and maintenance of robust, scalable, and high-performance backend applications.",
-            "Design and implementation of secure RESTful APIs for integration between services.",
-            "Containerization of applications using Docker.",
-            "Conducting code review activities to identify and mitigate security vulnerabilities, according to secure development practices (Secure SDLC).",
-            "Integration of security controls in the software development lifecycle for the prevention of common attacks (e.g., OWASP Top 10)."
+            "Static/dynamic analysis and reverse engineering of executables, libraries, and mobile apps (IDA Pro, Ghidra, debuggers) to identify vulnerabilities.",
+            "Development and maintenance of robust, scalable backend applications with security-first architecture.",
+            "Design and implementation of secure RESTful APIs and containerization with Docker.",
+            "Conducting code reviews and integrating security controls in the development lifecycle (Secure SDLC, OWASP Top 10).",
+            "Drafting detailed technical reports on discovered vulnerabilities (e.g. buffer overflow, race condition) with relevant evidence."
           ]
         },
         {
@@ -257,7 +235,7 @@ export const translations = {
           period: "05/2022 – 12/2023",
           isCurrent: false,
           points: [
-            "Vulnerability Assessment scans using automated tools.",
+            "Vulnerability Assessment scans.",
             "Infrastructural and application Penetration Testing.",
             "Security state verification in production and certification environments.",
             "Reporting activities."
@@ -295,7 +273,9 @@ export const translations = {
         programming: "Programming",
         tools: "Cybersecurity Tools",
         infra: "Infrastructure & Cloud",
-        compliance: "Compliance & Standards"
+        compliance: "Compliance & Standards",
+        softskills: "Soft Skills",
+        methodologies: "Methodologies"
       }
     },
     education: {
@@ -323,7 +303,6 @@ export const translations = {
         { degree: "Certified Ethical Hacker (CEH)", school: "EC-Council", date: "2024" },
         { degree: "Splunk Enterprise", school: "5 Emme Informatica", date: "2024" },
         { degree: "Lead Auditor ISO/IEC 27001:2022", school: "DIMITTO", date: "2023" },
-        { degree: "Lead Auditor ISO 27001:2017", school: "DIMITTO", date: "2023" },
         { degree: "Audit ISO 17021-1 / ISO 19011", school: "DIMITTO", date: "2023" },
         { degree: "Mastering CVSS v3.1", school: "FIRST Learning", date: "2023" },
         { degree: "Autopsy Forensic", school: "Basis Tech", date: "2020" },
@@ -332,7 +311,7 @@ export const translations = {
     },
     bugbounty: {
       title: "Bug Bounty",
-      description: "Responsibly disclosed vulnerabilities to international vendors.",
+      description: "Critical and high-severity vulnerabilities discovered in LG SuperSign CMS and responsibly disclosed to LG Electronics. All issues were validated, patched by the vendor, and published in the official LG Security Bulletin with LVE (LG Vulnerability Entry) identifiers.",
       counter: "Vulnerabilities Reported",
       items: [
         {
@@ -359,6 +338,7 @@ export const translations = {
     contact: {
       title: "Contact",
       description: "Interested in working together or have a question? Feel free to reach out!",
+      pgpKey: "PGP Public Key",
     }
   }
 }

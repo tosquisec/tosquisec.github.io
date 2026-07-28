@@ -1,6 +1,6 @@
 import React from "react"
 import { motion } from "framer-motion"
-import { Code, Shield, Server, FileCheck } from "lucide-react"
+import { Code, Shield, Server, FileCheck, Brain, Layers } from "lucide-react"
 import { useLanguage } from "../context/LanguageContext"
 
 const categoryMeta: Record<string, { icon: React.ReactNode; badgeClass: string }> = {
@@ -8,13 +8,8 @@ const categoryMeta: Record<string, { icon: React.ReactNode; badgeClass: string }
   tools: { icon: <Shield size={18} />, badgeClass: "skill-badge--tools" },
   infra: { icon: <Server size={18} />, badgeClass: "skill-badge--infra" },
   compliance: { icon: <FileCheck size={18} />, badgeClass: "skill-badge--compliance" },
-}
-
-const skillsData: Record<string, string[]> = {
-  programming: ["Java", "Python", "C", "Javascript", "Typescript", "Assembly", "Bash/Shell"],
-  tools: ["Nmap", "BurpSuite", "Metasploit", "Wireshark", "Ghidra", "IDA Pro", "SQLmap", "Nikto"],
-  infra: ["Docker", "Terraform", "Ansible", "Packer", "Vault", "Linux/Unix", "MacOS"],
-  compliance: ["ISO 27001", "OWASP", "NIST", "GDPR", "CVSS v3.1"],
+  softskills: { icon: <Brain size={18} />, badgeClass: "skill-badge--softskills" },
+  methodologies: { icon: <Layers size={18} />, badgeClass: "skill-badge--methodologies" },
 }
 
 const badgeVariants = {
@@ -26,9 +21,8 @@ const badgeVariants = {
   })
 }
 
-const SkillCategory: React.FC<{ categoryKey: string; title: string; delay: number }> = ({ categoryKey, title, delay }) => {
+const SkillCategory: React.FC<{ categoryKey: string; title: string; skills: string[]; delay: number }> = ({ categoryKey, title, skills, delay }) => {
   const meta = categoryMeta[categoryKey]
-  const skills = skillsData[categoryKey]
   
   return (
     <motion.div 
@@ -65,7 +59,20 @@ const SkillCategory: React.FC<{ categoryKey: string; title: string; delay: numbe
 }
 
 const Skills: React.FC = () => {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
+
+  const skillsData: Record<string, string[]> = {
+    programming: ["Java", "Python", "C", "Javascript", "Typescript", "Assembly", "Bash/Shell"],
+    tools: ["Nmap", "BurpSuite", "Metasploit", "Wireshark", "Ghidra", "IDA Pro", "SQLmap", "Nikto"],
+    infra: ["Docker", "Terraform", "Ansible", "Packer", "Vault", "Linux/Unix", "MacOS"],
+    compliance: ["ISO 27001", "OWASP", "NIST", "GDPR", "CVSS v3.1"],
+    softskills: language === "it"
+      ? ["Pensiero Critico", "Comunicazione Tecnica", "Collaborazione DevSecOps", "Problem Solving", "Attenzione al Dettaglio"]
+      : ["Critical Thinking", "Technical Communication", "DevSecOps Collaboration", "Problem Solving", "Attention to Detail"],
+    methodologies: language === "it"
+      ? ["Threat Modeling", "Secure SDLC", "Security by Design", "Code Review", "Vulnerability Management"]
+      : ["Threat Modeling", "Secure SDLC", "Security by Design", "Code Review", "Vulnerability Management"]
+  }
   
   return (
     <section id="skills" className="section">
@@ -87,10 +94,12 @@ const Skills: React.FC = () => {
         {t.skills.subtitle}
       </motion.p>
       <div className="skills-grid">
-        <SkillCategory categoryKey="programming" title={t.skills.categories.programming} delay={0.1} />
-        <SkillCategory categoryKey="tools" title={t.skills.categories.tools} delay={0.15} />
-        <SkillCategory categoryKey="infra" title={t.skills.categories.infra} delay={0.2} />
-        <SkillCategory categoryKey="compliance" title={t.skills.categories.compliance} delay={0.25} />
+        <SkillCategory categoryKey="programming" title={t.skills.categories.programming} skills={skillsData.programming} delay={0.1} />
+        <SkillCategory categoryKey="tools" title={t.skills.categories.tools} skills={skillsData.tools} delay={0.15} />
+        <SkillCategory categoryKey="infra" title={t.skills.categories.infra} skills={skillsData.infra} delay={0.2} />
+        <SkillCategory categoryKey="compliance" title={t.skills.categories.compliance} skills={skillsData.compliance} delay={0.25} />
+        <SkillCategory categoryKey="softskills" title={t.skills.categories.softskills} skills={skillsData.softskills} delay={0.3} />
+        <SkillCategory categoryKey="methodologies" title={t.skills.categories.methodologies} skills={skillsData.methodologies} delay={0.35} />
       </div>
     </section>
   )

@@ -1,0 +1,599 @@
+/* ═══════════════════════════════════════════════════════════════════
+   GYPSO APP PRESENTATION — GLASSMORPHISM & NEON DESIGN SYSTEM
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root {
+  --gypso-bg-dark: #0c0e14;
+  --gypso-bg-card: rgba(18, 22, 33, 0.7);
+  --gypso-glass-border: rgba(0, 229, 255, 0.15);
+  --gypso-glass-border-hover: rgba(0, 229, 255, 0.4);
+  
+  --gypso-cyan: #00e5ff;
+  --gypso-blue: #00b0ff;
+  --gypso-purple: #9c27b0;
+  --gypso-pink: #e91e63;
+  --gypso-green: #00e676;
+  --gypso-orange: #ff9800;
+
+  --gypso-text-primary: #ffffff;
+  --gypso-text-secondary: rgba(255, 255, 255, 0.75);
+  --gypso-text-muted: rgba(255, 255, 255, 0.5);
+}
+
+/* Base Page Wrapper */
+.gypso-page {
+  min-height: 100vh;
+  color: var(--gypso-text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  position: relative;
+  overflow-x: hidden;
+  padding-bottom: 60px;
+}
+
+/* Background Cyber Mesh */
+.gypso-bg-mesh {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -2;
+  background-color: var(--gypso-bg-dark);
+  background-image: 
+    radial-gradient(circle at 15% 20%, rgba(0, 176, 255, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 85% 65%, rgba(156, 39, 176, 0.08) 0%, transparent 45%),
+    radial-gradient(circle at 50% 90%, rgba(0, 229, 255, 0.06) 0%, transparent 50%),
+    linear-gradient(rgba(0, 229, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 229, 255, 0.025) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+}
+
+/* Floating Ambient Orbs */
+.gypso-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.15;
+  pointer-events: none;
+}
+.gypso-orb-1 {
+  width: 400px;
+  height: 400px;
+  background: var(--gypso-cyan);
+  top: -100px;
+  right: -50px;
+}
+.gypso-orb-2 {
+  width: 450px;
+  height: 450px;
+  background: var(--gypso-purple);
+  top: 40%;
+  left: -150px;
+}
+
+/* Navigation Header */
+.gypso-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 2rem;
+  background: rgba(12, 14, 20, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--gypso-glass-border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.gypso-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: white;
+}
+
+.gypso-logo-img {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+}
+
+.gypso-brand-text {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, #ffffff 0%, var(--gypso-cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gypso-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.gypso-nav-link {
+  color: var(--gypso-text-secondary);
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 500;
+  transition: all 0.25s ease;
+}
+
+.gypso-nav-link:hover {
+  color: var(--gypso-cyan);
+  text-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
+}
+
+.gypso-btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: white;
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.gypso-btn-back:hover {
+  background: rgba(0, 229, 255, 0.15);
+  border-color: var(--gypso-cyan);
+  transform: translateX(-2px);
+}
+
+/* Glass Card */
+.gypso-card {
+  background: var(--gypso-bg-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--gypso-glass-border);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transition: all 0.35s ease;
+}
+
+.gypso-card:hover {
+  border-color: var(--gypso-glass-border-hover);
+  box-shadow: 0 14px 40px rgba(0, 229, 255, 0.12);
+  transform: translateY(-4px);
+}
+
+/* Hero Section */
+.gypso-hero {
+  padding: 4.5rem 1.5rem 3rem 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+}
+
+.gypso-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 30px;
+  background: rgba(0, 229, 255, 0.08);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  color: var(--gypso-cyan);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+}
+
+.gypso-hero-logo {
+  width: 96px;
+  height: 96px;
+  border-radius: 24px;
+  margin: 0 auto 1.5rem auto;
+  box-shadow: 0 0 35px rgba(0, 229, 255, 0.45);
+  border: 2px solid rgba(0, 229, 255, 0.3);
+  display: block;
+}
+
+.gypso-hero-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #ffffff 0%, #a5f3fc 50%, var(--gypso-cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gypso-hero-subtitle {
+  font-size: 1.25rem;
+  color: var(--gypso-text-secondary);
+  max-width: 780px;
+  margin: 0 auto 2.5rem auto;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.gypso-hero-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+
+.gypso-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--gypso-blue), var(--gypso-cyan));
+  color: #0c0e14;
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  box-shadow: 0 6px 20px rgba(0, 229, 255, 0.35);
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.gypso-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(0, 229, 255, 0.5);
+  background: linear-gradient(135deg, var(--gypso-cyan), #ffffff);
+}
+
+.gypso-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.gypso-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--gypso-cyan);
+  transform: translateY(-2px);
+}
+
+/* Feature Pill Stats */
+.gypso-stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.25rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.gypso-stat-card {
+  background: rgba(18, 22, 33, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 1.25rem 1rem;
+  text-align: center;
+}
+
+.gypso-stat-val {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--gypso-cyan);
+  margin-bottom: 4px;
+}
+
+.gypso-stat-lbl {
+  font-size: 0.85rem;
+  color: var(--gypso-text-secondary);
+}
+
+/* Section Common */
+.gypso-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem;
+}
+
+.gypso-section-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 0.75rem;
+}
+
+.gypso-section-desc {
+  text-align: center;
+  color: var(--gypso-text-secondary);
+  max-width: 680px;
+  margin: 0 auto 3rem auto;
+  font-size: 1.05rem;
+}
+
+/* Features Grid */
+.gypso-features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.75rem;
+}
+
+.gypso-feature-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.gypso-feature-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+  background: rgba(0, 229, 255, 0.1);
+  color: var(--gypso-cyan);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+}
+
+.gypso-feature-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: white;
+}
+
+.gypso-feature-text {
+  font-size: 0.95rem;
+  color: var(--gypso-text-secondary);
+  line-height: 1.6;
+}
+
+/* CAD Interactive Preview Canvas Mockup */
+.gypso-cad-mockup {
+  background: #090b10;
+  border: 1px solid var(--gypso-glass-border);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+  margin: 2rem 0;
+}
+
+.gypso-cad-header {
+  background: #121621;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.gypso-cad-dots {
+  display: flex;
+  gap: 8px;
+}
+.gypso-dot { width: 12px; height: 12px; border-radius: 50%; }
+.gypso-dot-red { background: #ff5f56; }
+.gypso-dot-yellow { background: #ffbd2e; }
+.gypso-dot-green { background: #27c93f; }
+
+.gypso-cad-body {
+  position: relative;
+  height: 380px;
+  background-image: 
+    linear-gradient(rgba(0, 229, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 229, 255, 0.06) 1px, transparent 1px);
+  background-size: 30px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.gypso-cad-room {
+  width: 320px;
+  height: 240px;
+  border: 3px dashed var(--gypso-cyan);
+  background: rgba(0, 229, 255, 0.05);
+  position: relative;
+  border-radius: 8px;
+  box-shadow: 0 0 30px rgba(0, 229, 255, 0.15);
+}
+
+.gypso-cad-label-w {
+  position: absolute;
+  top: -26px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--gypso-cyan);
+  color: #0c0e14;
+  font-weight: 700;
+  font-size: 0.8rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.gypso-cad-label-h {
+  position: absolute;
+  right: -55px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--gypso-purple);
+  color: white;
+  font-weight: 700;
+  font-size: 0.8rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.gypso-cad-obstacle {
+  position: absolute;
+  background: rgba(255, 152, 0, 0.25);
+  border: 1.5px solid var(--gypso-orange);
+  color: var(--gypso-orange);
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+/* Calculator Section */
+.gypso-calc-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  background: rgba(18, 22, 33, 0.8);
+  border: 1px solid var(--gypso-glass-border);
+  border-radius: 24px;
+  padding: 2.5rem;
+  backdrop-filter: blur(20px);
+}
+
+@media (max-width: 868px) {
+  .gypso-calc-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.gypso-calc-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.gypso-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.gypso-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--gypso-text-secondary);
+}
+
+.gypso-input, .gypso-select {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 12px 16px;
+  color: white;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.gypso-input:focus, .gypso-select:focus {
+  border-color: var(--gypso-cyan);
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.3);
+  background: rgba(0, 229, 255, 0.05);
+}
+
+.gypso-select option {
+  background: #141824;
+  color: white;
+}
+
+.gypso-calc-results {
+  background: rgba(9, 11, 16, 0.7);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  border-radius: 18px;
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.gypso-result-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+}
+
+.gypso-result-row:last-child {
+  border-bottom: none;
+}
+
+.gypso-result-key {
+  font-size: 0.92rem;
+  color: var(--gypso-text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.gypso-result-val {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--gypso-cyan);
+}
+
+/* Privacy & Footer Links */
+.gypso-privacy-banner {
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.08), rgba(156, 39, 176, 0.08));
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  border-radius: 20px;
+  padding: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-top: 3rem;
+}
+
+.gypso-privacy-text h3 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.gypso-privacy-text p {
+  color: var(--gypso-text-secondary);
+  font-size: 0.95rem;
+  max-width: 600px;
+}
+
+/* Footer */
+.gypso-footer {
+  text-align: center;
+  padding: 3rem 1.5rem 1.5rem 1.5rem;
+  color: var(--gypso-text-muted);
+  font-size: 0.88rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  margin-top: 4rem;
+}
+
+@media (max-width: 768px) {
+  .gypso-hero-title { font-size: 2.5rem; }
+  .gypso-nav { padding: 1rem; }
+  .gypso-nav-links { display: none; }
+}
