@@ -72,6 +72,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const gypsoNavLinks = [
     { href: "#features", label: "Funzionalità", isExternal: false },
     { href: "#cad-preview", label: "Editor CAD", isExternal: false },
+    { href: "#plans", label: "Piani & Prezzi", isExternal: false },
     { href: "#specs", label: "Specifiche", isExternal: false },
     { href: "/gypso/privacy", label: "Privacy Policy", isExternal: true },
     { href: "/gypso/terms", label: "Termini di Servizio", isExternal: true },
