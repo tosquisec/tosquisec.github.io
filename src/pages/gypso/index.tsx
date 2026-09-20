@@ -1,4 +1,5 @@
 import * as React from "react"
+import { useState } from "react"
 import type { HeadFC, PageProps } from "gatsby"
 import { Link } from "gatsby"
 import Navbar from "../../components/Navbar"
@@ -25,12 +26,21 @@ import {
   PackageCheck,
   Lock,
   ArrowRight,
-  Sparkle,
+  Sun,
+  Moon,
+  Eye,
+  Flame,
+  Volume2,
+  MessageSquare,
+  Triangle,
+  Compass,
 } from "lucide-react"
 
 import "../../styles/gypso.css"
 
 const GypsoIndexPage: React.FC<PageProps> = () => {
+  const [visualMode, setVisualMode] = useState<"standard" | "cantiere" | "sole">("standard")
+
   return (
     <div className="gypso-page">
       <div className="gypso-bg-mesh" />
@@ -50,7 +60,7 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
 
         <h1 className="gypso-hero-title">GYPSO</h1>
         <p className="gypso-hero-subtitle">
-          Calcolo Professionale Cartongesso, Editor CAD Nativo 2D, Esportazione AutoCAD DXF, Ottimizzazione Sfrido e Computo Metrico Preventivabile in PDF con Firma Cliente.
+          Lo Studio Tecnico Tascabile per il Cartongessista Moderno: Rilievo CAD 2D anche Fuori Squadra, Distinta Base Materiali, Posa a Norma UNI 11424, Stima Peso Furgone Patente B, Ordine WhatsApp e Preventivi PDF con Firma su Schermo.
         </p>
 
         <div className="gypso-hero-actions">
@@ -68,42 +78,101 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
           </Link>
         </div>
 
-        {/* Highlight Stats Row */}
-        <div className="gypso-stats-row">
+        {/* Highlight Stats Row (6 metriche chiave) */}
+        <div className="gypso-stats-row" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))" }}>
           <div className="gypso-stat-card">
             <div className="gypso-stat-val">100% Offline</div>
-            <div className="gypso-stat-lbl">Database Locale Hive AES-256</div>
+            <div className="gypso-stat-lbl">Zero Cloud · Storage Locale Cifrato</div>
+          </div>
+          <div className="gypso-stat-card">
+            <div className="gypso-stat-val">11 Lingue</div>
+            <div className="gypso-stat-lbl">IT, EN, ES, FR, DE, PT, RO, PL, NL, UK, AR</div>
           </div>
           <div className="gypso-stat-card">
             <div className="gypso-stat-val">AutoCAD DXF</div>
-            <div className="gypso-stat-lbl">Export Planimetrie Vettoriali</div>
+            <div className="gypso-stat-lbl">Export Planimetrie Vettoriali a Livelli</div>
           </div>
           <div className="gypso-stat-card">
-            <div className="gypso-stat-val">Sfrido 1D</div>
-            <div className="gypso-stat-lbl">Algoritmo Bin-Packing Tagli</div>
-          </div>
-          <div className="gypso-stat-card">
-            <div className="gypso-stat-val">Firma PDF</div>
-            <div className="gypso-stat-lbl">Preventivo con Firma su Touch</div>
+            <div className="gypso-stat-val">Sfrido &lt; 4%</div>
+            <div className="gypso-stat-lbl">Algoritmo 1D Bin-Packing Taglio Barre</div>
           </div>
           <div className="gypso-stat-card">
             <div className="gypso-stat-val">Portata Furgone</div>
-            <div className="gypso-stat-lbl">Stima Peso Carico CdS 1.200 kg</div>
+            <div className="gypso-stat-lbl">Stima Peso Carico CdS (Patente B 1.200 kg)</div>
           </div>
           <div className="gypso-stat-card">
-            <div className="gypso-stat-val">5 Lingue</div>
-            <div className="gypso-stat-lbl">IT, EN, ES, DE, FR con Guida</div>
+            <div className="gypso-stat-val">Preventivo PDF</div>
+            <div className="gypso-stat-lbl">Firma su Touchscreen & Ordine WhatsApp</div>
           </div>
         </div>
       </section>
 
-      {/* CAD Preview & Demonstration Section */}
+      {/* CAD Preview & 3 Modalità Visive di Cantiere */}
       <section id="cad-preview" className="gypso-section">
-        <h2 className="gypso-section-title">Editor CAD Nativo per Planimetrie 2D</h2>
+        <h2 className="gypso-section-title">Editor CAD 2D & Geometrie Fuori Squadra</h2>
         <p className="gypso-section-desc">
-          Disegna pareti, contropareti e controsoffitti direttamente su smartphone o tablet con coordinate cartesiane, snapping magnetico, visualizzazione dell'orditura metallica e inserimento rapido degli ostacoli di cantiere.
+          Disegna pareti, contropareti e controsoffitti su touch screen con coordinate cartesiane, snapping magnetico, visualizzazione dell'orditura metallica a norma UNI 11424 e funzione esclusiva <strong>Fuori Squadra</strong> con triangolazione di Erone.
         </p>
 
+        {/* Visual Mode Selector Buttons */}
+        <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginBottom: "20px", flexWrap: "wrap" }}>
+          <button
+            onClick={() => setVisualMode("standard")}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "8px",
+              padding: "8px 16px",
+              borderRadius: "10px",
+              border: visualMode === "standard" ? "1px solid var(--gypso-cyan)" : "1px solid rgba(255, 255, 255, 0.1)",
+              background: visualMode === "standard" ? "rgba(0, 229, 255, 0.15)" : "rgba(255, 255, 255, 0.04)",
+              color: visualMode === "standard" ? "var(--gypso-cyan)" : "var(--gypso-text-secondary)",
+              cursor: "pointer",
+              fontSize: "13px",
+              fontWeight: 600,
+            }}
+          >
+            <Moon size={14} /> Modalità Standard (Glass Scuro)
+          </button>
+          <button
+            onClick={() => setVisualMode("cantiere")}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "8px",
+              padding: "8px 16px",
+              borderRadius: "10px",
+              border: visualMode === "cantiere" ? "1px solid #f59e0b" : "1px solid rgba(255, 255, 255, 0.1)",
+              background: visualMode === "cantiere" ? "rgba(245, 158, 11, 0.2)" : "rgba(255, 255, 255, 0.04)",
+              color: visualMode === "cantiere" ? "#fbbf24" : "var(--gypso-text-secondary)",
+              cursor: "pointer",
+              fontSize: "13px",
+              fontWeight: 600,
+            }}
+          >
+            <Eye size={14} /> Modalità Cantiere (Alto Contrasto)
+          </button>
+          <button
+            onClick={() => setVisualMode("sole")}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "8px",
+              padding: "8px 16px",
+              borderRadius: "10px",
+              border: visualMode === "sole" ? "1px solid #38bdf8" : "1px solid rgba(255, 255, 255, 0.1)",
+              background: visualMode === "sole" ? "rgba(56, 189, 248, 0.2)" : "rgba(255, 255, 255, 0.04)",
+              color: visualMode === "sole" ? "#38bdf8" : "var(--gypso-text-secondary)",
+              cursor: "pointer",
+              fontSize: "13px",
+              fontWeight: 600,
+            }}
+          >
+            <Sun size={14} /> Modalità Sole (Antiriflesso)
+          </button>
+        </div>
+
+        {/* CAD Canvas Mockup */}
         <div className="gypso-cad-mockup">
           <div className="gypso-cad-header">
             <div className="gypso-cad-dots">
@@ -112,22 +181,57 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
               <span className="gypso-dot gypso-dot-green" />
             </div>
             <div style={{ fontSize: "0.85rem", color: "var(--gypso-text-secondary)", fontFamily: "monospace" }}>
-              GYPSO CAD Canvas 2D — Cantiere: Soggiorno_Residenziale.cart
+              GYPSO CAD Canvas 2D — Progetto: Soggiorno_Residenziale.cart (Modo: {visualMode.toUpperCase()})
             </div>
             <div style={{ display: "flex", gap: "12px", color: "var(--gypso-cyan)", fontSize: "0.8rem" }}>
               <span>SNAP: ON</span>
-              <span>GRID: 10cm</span>
               <span>ORDITURA: 60cm</span>
+              <span>UNI 11424: OK</span>
             </div>
           </div>
 
-          <div className="gypso-cad-body">
-            <div className="gypso-cad-room">
-              <div className="gypso-cad-label-w">LARGHEZZA: 5.00 m</div>
-              <div className="gypso-cad-label-h">ALTEZZA: 4.00 m</div>
+          <div
+            className="gypso-cad-body"
+            style={{
+              background:
+                visualMode === "sole"
+                  ? "#f1f5f9"
+                  : visualMode === "cantiere"
+                  ? "#050508"
+                  : "radial-gradient(circle at center, #0f172a 0%, #090d16 100%)",
+            }}
+          >
+            <div
+              className="gypso-cad-room"
+              style={{
+                borderColor: visualMode === "sole" ? "#0284c7" : visualMode === "cantiere" ? "#f59e0b" : "var(--gypso-cyan)",
+              }}
+            >
+              <div
+                className="gypso-cad-label-w"
+                style={{ color: visualMode === "sole" ? "#0f172a" : "var(--gypso-cyan)" }}
+              >
+                LARGHEZZA: 5.00 m (+10 / +50 / +100 cm)
+              </div>
+              <div
+                className="gypso-cad-label-h"
+                style={{ color: visualMode === "sole" ? "#0f172a" : "var(--gypso-cyan)" }}
+              >
+                ALTEZZA: 4.00 m
+              </div>
 
-              {/* Ostacoli interattivi e aperture */}
-              <div className="gypso-cad-obstacle" style={{ top: "24px", left: "24px", width: "64px", height: "42px" }}>
+              {/* Ostacoli e aperture realistiche del motore GYPSO */}
+              <div
+                className="gypso-cad-obstacle"
+                style={{
+                  top: "24px",
+                  left: "24px",
+                  width: "64px",
+                  height: "42px",
+                  borderColor: visualMode === "sole" ? "#0284c7" : "var(--gypso-cyan)",
+                  color: visualMode === "sole" ? "#0f172a" : "white",
+                }}
+              >
                 Finestra 120x140
               </div>
               <div
@@ -139,6 +243,7 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
                   height: "18px",
                   background: "rgba(0, 229, 255, 0.25)",
                   borderColor: "var(--gypso-cyan)",
+                  color: visualMode === "sole" ? "#0f172a" : "white",
                 }}
               >
                 Porta 80x210
@@ -146,13 +251,14 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
               <div
                 className="gypso-cad-obstacle"
                 style={{
-                  top: "90px",
-                  right: "70px",
-                  width: "52px",
-                  height: "52px",
+                  top: "80px",
+                  right: "60px",
+                  width: "50px",
+                  height: "50px",
                   borderRadius: "50%",
                   background: "rgba(156, 39, 176, 0.35)",
                   borderColor: "var(--gypso-purple)",
+                  color: visualMode === "sole" ? "#0f172a" : "white",
                 }}
               >
                 Pilastro Ø40
@@ -167,53 +273,54 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
                   background: "rgba(255, 152, 0, 0.25)",
                   borderColor: "var(--gypso-orange)",
                   fontSize: "0.68rem",
+                  color: visualMode === "sole" ? "#0f172a" : "white",
                 }}
               >
                 Gola LED 15x8
               </div>
 
-              {/* Informazioni progetto nel Canvas */}
+              {/* Box di stato cantiere */}
               <div
                 style={{
                   position: "absolute",
                   bottom: "12px",
                   left: "14px",
-                  color: "var(--gypso-cyan)",
+                  color: visualMode === "sole" ? "#0f172a" : "var(--gypso-cyan)",
                   fontSize: "0.78rem",
                   fontFamily: "monospace",
-                  background: "rgba(10, 14, 23, 0.75)",
+                  background: visualMode === "sole" ? "rgba(255, 255, 255, 0.9)" : "rgba(10, 14, 23, 0.8)",
                   padding: "6px 12px",
                   borderRadius: "6px",
                   border: "1px solid rgba(0, 229, 255, 0.2)",
                 }}
               >
-                Superficie Netta: 18.32 m² · Montanti C: 9 pz · Guide U: 18 m
+                Sup. Netta: 18.32 m² · Montanti C50: 9 pz · Guide U50: 18 m · Sfrido Tagli: 2.8%
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Main Features Grid */}
+      {/* Core Features Grid */}
       <section id="features" className="gypso-section">
-        <h2 className="gypso-section-title">Caratteristiche Principali</h2>
+        <h2 className="gypso-section-title">Strumenti Ingegnerizzati per il Cantiere</h2>
         <p className="gypso-section-desc">
-          Progettata sul campo per cartongessisti professionisti, posatori, geometri ed imprese di finiture a secco per abbattere i costi, azzerare gli errori di preventivazione ed eliminare gli sprechi di materiale.
+          Dalla misura col distanziometro laser all'ordine materiali su WhatsApp e alla firma d'accettazione del committente.
         </p>
 
         <div className="gypso-features-grid">
-          {/* Feature 1 */}
+          {/* Feature 1: CAD & Fuori Squadra */}
           <div className="gypso-card gypso-feature-card">
             <div className="gypso-feature-icon">
-              <Ruler size={26} />
+              <Compass size={26} />
             </div>
-            <h3 className="gypso-feature-title">Disegno Vettoriale & Ostacoli Dinamici</h3>
+            <h3 className="gypso-feature-title">Rilievo Vettoriale & Stanze Fuori Squadra</h3>
             <p className="gypso-feature-text">
-              Rilievo rapido 2D con coordinate cartesiane e inserimento parametrico di finestre, porte, velette ribassate, nicchie, gole luminose per strip LED, bocchette dell'aria e pilastri (sia circolari che quadrati), con ricalcolo immediato della superficie netta.
+              Risolve stanze fuori squadra inserendo i 4 lati e la diagonale (triangolazione con <strong>Formula di Erone</strong>). Include calcolo dell'area poligonale con la <strong>Formula di Gauss (Shoelace)</strong>, snapping magnetico e tasti rapidi laser (+10 cm, +50 cm, +100 cm).
             </p>
           </div>
 
-          {/* Feature 2: DXF Export */}
+          {/* Feature 2: AutoCAD DXF */}
           <div className="gypso-card gypso-feature-card">
             <div
               className="gypso-feature-icon"
@@ -225,9 +332,9 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
             >
               <Download size={26} />
             </div>
-            <h3 className="gypso-feature-title">Esportazione AutoCAD DXF</h3>
+            <h3 className="gypso-feature-title">Esportazione AutoCAD DXF (.dxf)</h3>
             <p className="gypso-feature-text">
-              Genera file vettoriali standard <code>.dxf</code> compatibili con AutoCAD, progeCAD, DWG FastView o nanoCAD. Strutturato a layer separati per perimetro murario, orditura metallica, lastre e quote di cantiere.
+              Esporta planimetrie vettoriali 2D standard compatibili con AutoCAD, DWG FastView, progeCAD e nanoCAD. Strutturato a layer separati per perimetro murario, orditura metallica, lastre e forometrie con quote.
             </p>
           </div>
 
@@ -243,31 +350,13 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
             >
               <Scissors size={26} />
             </div>
-            <h3 className="gypso-feature-title">Ottimizzazione Taglio Barra 1D (Bin-Packing)</h3>
+            <h3 className="gypso-feature-title">Ottimizzazione Taglio Barre 1D (CSP)</h3>
             <p className="gypso-feature-text">
-              Algoritmo di taglio monodimensionale che distribuisce gli spezzoni di montanti e guide sulle barre commerciali standard (300 cm o 400 cm), fornendo lo schema di taglio sequenziale e riducendo lo scarto di officina al minimo teorico.
+              Risolve il <em>Cutting Stock Problem</em> unidimensionale con euristica First-Fit Decreasing (FFD) su barre commerciali da 300 cm o 400 cm. Fornisce la guida sequenziale di taglio per abbattere lo sfrido sotto al 4%.
             </p>
           </div>
 
-          {/* Feature 4: Preventivi & Firma */}
-          <div className="gypso-card gypso-feature-card">
-            <div
-              className="gypso-feature-icon"
-              style={{
-                color: "var(--gypso-green)",
-                borderColor: "rgba(0, 230, 118, 0.3)",
-                background: "rgba(0, 230, 118, 0.1)",
-              }}
-            >
-              <FileText size={26} />
-            </div>
-            <h3 className="gypso-feature-title">Preventivi PDF & Firma Cliente su Touch</h3>
-            <p className="gypso-feature-text">
-              Genera preventivi completi e computi estimativi in PDF con logo della tua ditta, dati fiscali (P.IVA, SDI, IBAN), distinta costi materiale, manodopera, ricarico marginale e riquadro per l'acquisizione della firma d'accettazione su touchscreen (FES eIDAS).
-            </p>
-          </div>
-
-          {/* Feature 5: Portata Veicolo */}
+          {/* Feature 4: Logistica Furgone */}
           <div className="gypso-card gypso-feature-card">
             <div
               className="gypso-feature-icon"
@@ -279,13 +368,31 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
             >
               <Truck size={26} />
             </div>
-            <h3 className="gypso-feature-title">Stima Carico & Portata Furgone (CdS)</h3>
+            <h3 className="gypso-feature-title">Controllo Carico Furgone & WhatsApp</h3>
             <p className="gypso-feature-text">
-              Calcola in tempo reale il peso complessivo dei materiali ordinati (lastre, profili in acciaio, secchi di stucco, isolanti) e verifica la compatibilità con la portata utile dei veicoli commerciali leggeri (Patente B, soglia 1.200 kg).
+              Calcola il peso totale del carico in Kg e Quintali secondo matrici certificate di densità (lastre standard, idro, fuoco, profili zincati, sacchi stucco da 25 kg). Verifica la conformità al Codice della Strada (Patente B, soglia 1.200 kg) e genera il messaggio d'ordine preformattato per WhatsApp.
             </p>
           </div>
 
-          {/* Feature 6: Sovrapposizioni e Orditura UNI 11424 */}
+          {/* Feature 5: Preventivi PDF & Firma Touch */}
+          <div className="gypso-card gypso-feature-card">
+            <div
+              className="gypso-feature-icon"
+              style={{
+                color: "var(--gypso-green)",
+                borderColor: "rgba(0, 230, 118, 0.3)",
+                background: "rgba(0, 230, 118, 0.1)",
+              }}
+            >
+              <FileText size={26} />
+            </div>
+            <h3 className="gypso-feature-title">Preventivi PDF con Firma Touchscreen</h3>
+            <p className="gypso-feature-text">
+              Computo estimativo completo con intestazione ditta, logo, costi manodopera (a ore o a m²), ricarico d'impresa, aliquote IVA agevolate (4%, 10%, 22%), sconto commerciale, arrotondamento rapido a € 50 e riquadro firma cliente su touchscreen (FES eIDAS).
+            </p>
+          </div>
+
+          {/* Feature 6: Posa UNI 11424 & Stratigrafie */}
           <div className="gypso-card gypso-feature-card">
             <div
               className="gypso-feature-icon"
@@ -297,13 +404,31 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
             >
               <Layers size={26} />
             </div>
-            <h3 className="gypso-feature-title">Stratigrafie Multiple & Livelli di Stuccatura</h3>
+            <h3 className="gypso-feature-title">Posa a Norma UNI 11424 & Finiture Q1-Q4</h3>
             <p className="gypso-feature-text">
-              Supporto per lastre Standard (A), Idrorepellenti (H2), Antifuoco (F), Acustiche ed Alta Resistenza. Gestione lastre singole o a doppio strato con sfalsamento giunti, orditure a passo 40cm o 60cm e livelli di finitura superficie da Q1 a Q4.
+              Sfalsamento automatico dei giunti longitudinale e trasversale anti-fessurazione. Gestione lastre Standard (A), Idro (H2), Fuoco (F), Acustiche, orditure a passo 40/60 cm, controsoffitti autoportanti o inclinati per mansarde, e 4 livelli di stuccatura da Q1 a Q4.
             </p>
           </div>
 
-          {/* Feature 7: Foto Cantiere */}
+          {/* Feature 7: Sistemi Certificati */}
+          <div className="gypso-card gypso-feature-card">
+            <div
+              className="gypso-feature-icon"
+              style={{
+                color: "#f59e0b",
+                borderColor: "rgba(245, 158, 11, 0.3)",
+                background: "rgba(245, 158, 11, 0.1)",
+              }}
+            >
+              <Flame size={26} />
+            </div>
+            <h3 className="gypso-feature-title">Sistemi Certificati REI & Acustica</h3>
+            <p className="gypso-feature-text">
+              Preset tecnici certificati dei principali produttori per pareti tagliafuoco (REI 60, REI 120), divisori fonoisolanti ad alto abbattimento acustico (fino a 55 dB) e contropareti termiche con isolante integrato in lana minerale o EPS.
+            </p>
+          </div>
+
+          {/* Feature 8: Foto Cantiere */}
           <div className="gypso-card gypso-feature-card">
             <div
               className="gypso-feature-icon"
@@ -317,46 +442,28 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
             </div>
             <h3 className="gypso-feature-title">Fascicolo Fotografico di Cantiere</h3>
             <p className="gypso-feature-text">
-              Scatta e allega direttamente al fascicolo di progetto le fotografie delle fasi esecutive: stato di fatto iniziale, posa dell'orditura metallica, impianti passanti e risultato finito per perizie, archivio e SAL.
+              Scatta o allega immagini di cantiere organizzate per stanza e stato dei lavori: rilievo iniziale, orditura metallica, impianti passanti e finitura ultimata con didascalie tecniche, pronte per documentare SAL o perizie.
             </p>
           </div>
 
-          {/* Feature 8: Database Locale Cifrato Hive */}
-          <div className="gypso-card gypso-feature-card">
-            <div
-              className="gypso-feature-icon"
-              style={{
-                color: "var(--gypso-purple)",
-                borderColor: "rgba(156, 39, 176, 0.3)",
-                background: "rgba(156, 39, 176, 0.1)",
-              }}
-            >
-              <HardDrive size={26} />
-            </div>
-            <h3 className="gypso-feature-title">Database Locale Cifrato Hive (100% Offline)</h3>
-            <p className="gypso-feature-text">
-              Funziona al 100% senza connessione internet nei seminterrati e cantieri isolati. Tutti i progetti, i preventivi e i listini sono salvati localmente con cifratura AES-256 ed esportabili in archivio protetto <code>.cart</code>.
-            </p>
-          </div>
-
-          {/* Feature 9: Privacy by Design */}
+          {/* Feature 9: 11 Lingue & Accessibilità */}
           <div className="gypso-card gypso-feature-card">
             <div className="gypso-feature-icon">
-              <Shield size={26} />
+              <Globe size={26} />
             </div>
-            <h3 className="gypso-feature-title">Privacy by Design & Trasparenza GDPR</h3>
+            <h3 className="gypso-feature-title">11 Lingue Native & Standard WCAG</h3>
             <p className="gypso-feature-text">
-              Nessun dato aziendale, cliente o preventivo viene inviato o profilato su server remoti. Piena conformità al Regolamento UE 2016/679 (GDPR) con gestione trasparente del consenso pubblicitario tramite Google UMP SDK.
+              Traduzione nativa in <strong>11 lingue</strong>: Italiano 🇮🇹, English 🇬🇧, Español 🇪🇸, Français 🇫🇷, Deutsch 🇩🇪, Português 🇵🇹, Română 🇷🇴, Polski 🇵🇱, Nederlands 🇳🇱, Українська 🇺🇦 e العربية 🇸🇦 (con supporto completo interfaccia RTL). Include conformità WCAG 2.3.3 con modalità "Riduci animazioni".
             </p>
           </div>
         </div>
       </section>
 
-      {/* Pricing & Plans Section (Free vs Premium PRO) */}
+      {/* Pricing & Transparent Plans Section */}
       <section id="plans" className="gypso-section">
         <h2 className="gypso-section-title">Modello Trasparente: Zero Abbonamenti</h2>
         <p className="gypso-section-desc">
-          GYPSO crede nel rispetto del professionista: niente abbonamenti mensili ricorrenti o canoni nascosti. La versione Free è subito utile, e il passaggio a PRO è un acquisto a vita una tantum (Lifetime).
+          Nessun canone mensile, nessun costo nascosto e nessun vincolo. Inizi gratis e, se desideri il massimo per la tua impresa, sblocchi la versione PRO con un <strong>acquisto a vita una tantum (Lifetime)</strong>.
         </p>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "28px", maxWidth: "940px", margin: "0 auto" }}>
@@ -401,7 +508,7 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
                 </span>
               </div>
               <p style={{ color: "var(--gypso-text-secondary)", fontSize: "0.92rem", lineHeight: "1.6", marginBottom: "24px" }}>
-                Ideale per calcoli rapidi in cantiere, verifica delle superfici e dimensionamento orditure.
+                Tutti i calcoli tecnici a tua disposizione per rilievi, verifica di fattibilità e dimensionamento materiali.
               </p>
 
               <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "28px" }}>
@@ -415,19 +522,23 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "0.92rem" }}>
                   <Check size={18} style={{ color: "var(--gypso-cyan)", flexShrink: 0 }} />
-                  <span>Editor CAD 2D e calcolo ostacoli</span>
+                  <span>Editor CAD 2D, forometrie e fuori squadra</span>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "0.92rem" }}>
                   <Check size={18} style={{ color: "var(--gypso-cyan)", flexShrink: 0 }} />
                   <span>Distinta base materiali e stima peso veicolo</span>
                 </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "0.92rem" }}>
+                  <Check size={18} style={{ color: "var(--gypso-cyan)", flexShrink: 0 }} />
+                  <span>11 lingue native incluse con manuale d'uso</span>
+                </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "0.92rem", color: "var(--gypso-text-secondary)" }}>
                   <Check size={18} style={{ color: "var(--gypso-cyan)", flexShrink: 0 }} />
-                  <span>Esportazione PDF con watermark di prova</span>
+                  <span>Preventivi PDF di prova con watermark</span>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "0.92rem", color: "var(--gypso-text-muted)" }}>
                   <span style={{ fontSize: "14px", lineHeight: "1" }}>ℹ️</span>
-                  <span>Annunci discreti (mai durante CAD o calcolo)</span>
+                  <span>Banner discreti solo nella Home passiva</span>
                 </div>
               </div>
             </div>
@@ -504,7 +615,7 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
                 </span>
               </div>
               <p style={{ color: "var(--gypso-text-secondary)", fontSize: "0.92rem", lineHeight: "1.6", marginBottom: "24px" }}>
-                Lo strumento completo per artigiani e imprese: preventivi commerciali, CAD DXF e cantieri illimitati.
+                Tutto ciò che serve per gestire commesse, contratti e preventivi aziendali con il massimo rigore formale.
               </p>
 
               <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "28px" }}>
@@ -518,7 +629,7 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "0.92rem" }}>
                   <CheckCircle2 size={18} style={{ color: "var(--gypso-green)", flexShrink: 0 }} />
-                  <span><strong>PDF senza watermark</strong> con logo della tua ditta</span>
+                  <span><strong>PDF professionali senza watermark</strong> con logo ditta</span>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "0.92rem" }}>
                   <CheckCircle2 size={18} style={{ color: "var(--gypso-green)", flexShrink: 0 }} />
@@ -526,11 +637,15 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "0.92rem" }}>
                   <CheckCircle2 size={18} style={{ color: "var(--gypso-green)", flexShrink: 0 }} />
-                  <span><strong>Listino prezzi interno</strong> (materiali e posa oraria/m²)</span>
+                  <span><strong>Listino prezzi personalizzato</strong> (materiali e posa oraria/m²)</span>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "0.92rem" }}>
                   <CheckCircle2 size={18} style={{ color: "var(--gypso-green)", flexShrink: 0 }} />
-                  <span><strong>Backup completo ed esportazione</strong> cantieri <code>.cart</code></span>
+                  <span><strong>Backup completo ed esportazione</strong> cantieri <code>.cart</code> e <code>.zip</code></span>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "0.92rem" }}>
+                  <CheckCircle2 size={18} style={{ color: "var(--gypso-green)", flexShrink: 0 }} />
+                  <span><strong>Documentazione fotografica cantiere</strong> illimitata</span>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "0.92rem" }}>
                   <CheckCircle2 size={18} style={{ color: "var(--gypso-green)", flexShrink: 0 }} />
@@ -538,7 +653,7 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "0.92rem" }}>
                   <CheckCircle2 size={18} style={{ color: "var(--gypso-green)", flexShrink: 0 }} />
-                  <span>Acquisto certificato via Google Play / App Store (Ripristina sempre)</span>
+                  <span>Acquisto verificato tramite Google Play / App Store (Ripristinabile a vita)</span>
                 </div>
               </div>
             </div>
@@ -556,51 +671,51 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
         </div>
       </section>
 
-      {/* Technical Architecture & Specs Section */}
+      {/* Technical Architecture Section */}
       <section id="specs" className="gypso-section">
-        <h2 className="gypso-section-title">Architettura & Stack Tecnologico</h2>
+        <h2 className="gypso-section-title">Architettura & Specifiche Tecniche</h2>
         <p className="gypso-section-desc">
-          Costruita con tecnologia all'avanguardia per garantire prestazioni istantanee a 60 fps, stabilità assoluta e conformità agli standard di cantiere.
+          Progettata secondo principi di ingegneria del software enterprise per garantire massima fluidità e affidabilità operativa in cantiere.
         </p>
 
         <div className="gypso-features-grid">
           <div className="gypso-card">
             <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "1rem" }}>
               <Cpu size={24} color="var(--gypso-cyan)" />
-              <h3 style={{ fontFamily: "Outfit", fontSize: "1.2rem", margin: 0 }}>Motore Flutter 3.9+ & Riverpod</h3>
+              <h3 style={{ fontFamily: "Outfit", fontSize: "1.2rem", margin: 0 }}>Flutter 3.35+ & Impeller</h3>
             </div>
             <p style={{ fontSize: "0.92rem", color: "var(--gypso-text-secondary)", lineHeight: "1.6" }}>
-              Compilazione nativa AOT (Ahead-of-Time) per smartphone e tablet Android & iOS con reattività istantanea anche su planimetrie estese.
+              Compilazione nativa AOT (Ahead-of-Time) per smartphone e tablet Android & iOS con rendering a 60 fps e reattività immediata su touch screen.
             </p>
           </div>
 
           <div className="gypso-card">
             <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "1rem" }}>
               <Lock size={24} color="var(--gypso-purple)" />
-              <h3 style={{ fontFamily: "Outfit", fontSize: "1.2rem", margin: 0 }}>Hive NoSQL Cifrato AES-256</h3>
+              <h3 style={{ fontFamily: "Outfit", fontSize: "1.2rem", margin: 0 }}>Storage Locale Cifrato (100% Offline)</h3>
             </div>
             <p style={{ fontSize: "0.92rem", color: "var(--gypso-text-secondary)", lineHeight: "1.6" }}>
-              Storage locale ad altissima velocità. Nessuna latenza di rete, nessun login obbligatorio e massima riservatezza per listini e dati clienti.
+              Nessun dato o preventivo transita su server esterni. Storage locale isolato in sandbox sicura con possibilità di backup esportabile in file compresso <code>.cart</code>.
             </p>
           </div>
 
           <div className="gypso-card">
             <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "1rem" }}>
               <PackageCheck size={24} color="var(--gypso-green)" />
-              <h3 style={{ fontFamily: "Outfit", fontSize: "1.2rem", margin: 0 }}>Store & Package Identity</h3>
+              <h3 style={{ fontFamily: "Outfit", fontSize: "1.2rem", margin: 0 }}>Identità Store & In-App Purchase</h3>
             </div>
             <p style={{ fontSize: "0.92rem", color: "var(--gypso-text-secondary)", lineHeight: "1.6" }}>
-              Package Android ufficiale: <code>com.tosquidev.gypso</code>. Integrazione verificata con RevenueCat per acquisti In-App sicuri e ripristinabili.
+              Package Android ufficiale: <code>com.tosquidev.gypso</code>. Convalida acquisti una tantum gestita tramite RevenueCat SDK (Product ID: <code>gypso_full_v1</code>).
             </p>
           </div>
 
           <div className="gypso-card">
             <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "1rem" }}>
               <Globe size={24} color="var(--gypso-orange)" />
-              <h3 style={{ fontFamily: "Outfit", fontSize: "1.2rem", margin: 0 }}>Guida & 5 Lingue Native</h3>
+              <h3 style={{ fontFamily: "Outfit", fontSize: "1.2rem", margin: 0 }}>11 Lingue con Supporto RTL</h3>
             </div>
             <p style={{ fontSize: "0.92rem", color: "var(--gypso-text-secondary)", lineHeight: "1.6" }}>
-              Manuale operativo integrato nell'app tradotto interamente in Italiano 🇮🇹, English 🇬🇧, Deutsch 🇩🇪, Français 🇫🇷 ed Español 🇪🇸.
+              Supporto completo per 11 mercati linguistici internazionali compreso l'Arabo (con direzione Right-to-Left) e dizionario di cantiere localizzato.
             </p>
           </div>
         </div>
@@ -612,7 +727,7 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
           <div className="gypso-privacy-text">
             <h3>Trasparenza Legale, Privacy & EULA</h3>
             <p>
-              Consulta la nostra Informativa sulla Privacy conforme al Regolamento Generale sulla Protezione dei Dati (GDPR) e i Termini di Servizio (EULA) con il disclaimer di cantiere e i dettagli della licenza PRO.
+              Consulta la nostra Informativa sulla Privacy conforme al Regolamento Generale sulla Protezione dei Dati (GDPR) e i Termini di Servizio (EULA) con il disclaimer tecnico di cantiere e i dettagli della licenza PRO.
             </p>
           </div>
           <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
@@ -663,10 +778,10 @@ export default GypsoIndexPage
 
 export const Head: HeadFC = () => (
   <>
-    <title>GYPSO — Calcolo Professionale Cartongesso, Editor CAD 2D & Computo Metrico</title>
+    <title>GYPSO — Calcolo Professionale Cartongesso, CAD 2D & Computo Metrico</title>
     <meta
       name="description"
-      content="GYPSO è l'applicazione professionale per cartongessisti, artigiani e geometri. Editor CAD 2D, esportazione AutoCAD DXF, calcolo sfrido barre 1D e preventivi PDF con firma cliente su touchscreen."
+      content="GYPSO è l'applicazione professionale per cartongessisti, artigiani e geometri. Editor CAD 2D con rilievo fuori squadra, export AutoCAD DXF, calcolo sfrido barre 1D, stima carico furgone e preventivi PDF con firma cliente."
     />
   </>
 )
