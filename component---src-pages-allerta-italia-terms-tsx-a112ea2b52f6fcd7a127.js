@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunktosqui=self.webpackChunktosqui||[]).push([[817],{3995:function(u,e,t){t.r(e),t.d(e,{Head:function(){return a.Head}});var a=t(9312);e.default=a.default}}]);
+//# sourceMappingURL=component---src-pages-allerta-italia-terms-tsx-a112ea2b52f6fcd7a127.js.map

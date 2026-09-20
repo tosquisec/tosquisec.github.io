@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunktosqui=self.webpackChunktosqui||[]).push([[744],{3550:function(u,e,t){t.r(e),t.d(e,{Head:function(){return a.Head}});var a=t(9346);e.default=a.default}}]);
+//# sourceMappingURL=component---src-pages-allerta-italia-privacy-tsx-11e5909fbe584e378ebb.js.map
