@@ -112,10 +112,6 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
 
       {/* Hero Section */}
       <section className="gypso-hero">
-        <div className="gypso-hero-badge">
-          <Sparkles size={14} /> Release 1.0.0 · App Professionale Cartongesso 2026
-        </div>
-
         <img src="/gypso-icon.png" alt="GYPSO App Icon" className="gypso-hero-logo" />
 
         <h1 className="gypso-hero-title">GYPSO</h1>
