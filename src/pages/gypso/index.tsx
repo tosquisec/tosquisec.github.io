@@ -9,7 +9,6 @@ import {
   FileText,
   Layers,
   Scissors,
-  Cpu,
   Globe,
   Smartphone,
   Sparkles,
@@ -23,8 +22,6 @@ import {
   CheckCircle2,
   FolderArchive,
   Ban,
-  PackageCheck,
-  Lock,
   ArrowRight,
   Sun,
   Moon,
@@ -34,12 +31,75 @@ import {
   MessageSquare,
   Triangle,
   Compass,
+  ChevronLeft,
+  Undo2,
+  Redo2,
+  RotateCw,
+  HelpCircle,
+  Pencil,
+  Hand,
+  DoorOpen,
+  AppWindow,
+  PlusSquare,
+  Square,
+  Circle,
+  Plus,
+  Minus,
+  Maximize2,
+  Grid,
+  MapPin,
+  Crosshair,
 } from "lucide-react"
 
 import "../../styles/gypso.css"
 
 const GypsoIndexPage: React.FC<PageProps> = () => {
   const [visualMode, setVisualMode] = useState<"standard" | "cantiere" | "sole">("standard")
+  const [activeCadTool, setActiveCadTool] = useState<"walls" | "select" | "door" | "window" | "special" | "pillarSquare" | "pillarRound">("door")
+  const [cadZoom, setCadZoom] = useState<number>(1)
+
+  const isSole = visualMode === "sole"
+  const isCantiere = visualMode === "cantiere"
+
+  // Palette matching Flutter CAD Painter & AppVisualMode
+  const canvasBg = isSole ? "#f8fafc" : isCantiere ? "#000000" : "#080c14"
+  const gridMinor = isSole ? "#e2e8f0" : isCantiere ? "#18181b" : "rgba(0, 229, 255, 0.05)"
+  const gridMajor = isSole ? "#cbd5e1" : isCantiere ? "#27272a" : "rgba(0, 229, 255, 0.12)"
+  const axisColor = isSole ? "#0284c7" : isCantiere ? "#f59e0b" : "#00e5ff"
+  const axisTextColor = isSole ? "#64748b" : isCantiere ? "#a1a1aa" : "rgba(148, 163, 184, 0.55)"
+  const wallStroke = isSole ? "#0f172a" : isCantiere ? "#fbbf24" : "#00e5ff"
+  const nodeStroke = isSole ? "#0f172a" : isCantiere ? "#ffffff" : "#ffffff"
+  const nodeFill = isSole ? "#ffffff" : isCantiere ? "#fbbf24" : "#00e5ff"
+  const areaTextColor = isSole ? "#0284c7" : isCantiere ? "#facc15" : "#10b981"
+  const pillBg = isSole ? "#ffffff" : isCantiere ? "#18181b" : "#0f172a"
+  const pillBorder = isSole ? "#cbd5e1" : isCantiere ? "#f59e0b" : "rgba(0, 229, 255, 0.35)"
+  const pillText = isSole ? "#0f172a" : isCantiere ? "#fef08a" : "#e2e8f0"
+  const doorColor = isSole ? "#c2410c" : isCantiere ? "#f97316" : "#f59e0b"
+  const windowColor = isSole ? "#0369a1" : isCantiere ? "#38bdf8" : "#00e5ff"
+  const pillarColor = isSole ? "#6b21a8" : isCantiere ? "#c084fc" : "#a855f7"
+  const nicheColor = isSole ? "#0e7490" : isCantiere ? "#22d3ee" : "#06b6d4"
+  const spotlightColor = isSole ? "#ca8a04" : isCantiere ? "#facc15" : "#eab308"
+
+  const getToolToast = () => {
+    switch (activeCadTool) {
+      case "door":
+        return "Porta 80×210 cm posizionata · Tocca per ruotare battente o regolare quota dallo spigolo"
+      case "window":
+        return "Finestra 120×140 cm con davanzale esterno e montante divisorio"
+      case "walls":
+        return "Tracciamento pareti perimetrali · Vertice ancorato con magnetismo di cantiere"
+      case "select":
+        return "Modalità selezione attiva · Tocca pareti o aperture per modificare parametri geometrici"
+      case "special":
+        return "Elementi speciali posizionati: Nicchia a secco 90×30 cm e faretti LED da incasso"
+      case "pillarSquare":
+        return "Pilastro strutturale quadro 40×40 cm con campitura diagonale a norma"
+      case "pillarRound":
+        return "Pilastro strutturale tondo Ø40 cm con campitura concentrica"
+      default:
+        return "Editor CAD 2D per Cartongesso"
+    }
+  }
 
   return (
     <div className="gypso-page">
@@ -172,129 +232,493 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
           </button>
         </div>
 
-        {/* CAD Canvas Mockup */}
-        <div className="gypso-cad-mockup">
-          <div className="gypso-cad-header">
-            <div className="gypso-cad-dots">
-              <span className="gypso-dot gypso-dot-red" />
-              <span className="gypso-dot gypso-dot-yellow" />
-              <span className="gypso-dot gypso-dot-green" />
-            </div>
-            <div style={{ fontSize: "0.85rem", color: "var(--gypso-text-secondary)", fontFamily: "monospace" }}>
-              GYPSO CAD Canvas 2D — Progetto: Soggiorno_Residenziale.cart (Modo: {visualMode.toUpperCase()})
-            </div>
-            <div style={{ display: "flex", gap: "12px", color: "var(--gypso-cyan)", fontSize: "0.8rem" }}>
-              <span>SNAP: ON</span>
-              <span>ORDITURA: 60cm</span>
-              <span>UNI 11424: OK</span>
-            </div>
-          </div>
-
-          <div
-            className="gypso-cad-body"
-            style={{
-              background:
-                visualMode === "sole"
-                  ? "#f1f5f9"
-                  : visualMode === "cantiere"
-                  ? "#050508"
-                  : "radial-gradient(circle at center, #0f172a 0%, #090d16 100%)",
-            }}
-          >
-            <div
-              className="gypso-cad-room"
-              style={{
-                borderColor: visualMode === "sole" ? "#0284c7" : visualMode === "cantiere" ? "#f59e0b" : "var(--gypso-cyan)",
-              }}
-            >
-              <div
-                className="gypso-cad-label-w"
-                style={{ color: visualMode === "sole" ? "#0f172a" : "var(--gypso-cyan)" }}
-              >
-                LARGHEZZA: 5.00 m (+10 / +50 / +100 cm)
+        {/* Authentic Mobile App CAD Mockup Frame */}
+        <div className="gypso-cad-device-wrapper">
+          <div className={`gypso-cad-phone mode-${visualMode}`}>
+            {/* Phone Status Bar */}
+            <div className="gypso-phone-status-bar">
+              <span>09:41</span>
+              <div className="gypso-phone-notch" />
+              <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+                <span style={{ fontSize: "10px" }}>5G</span>
+                <span>●●●</span>
               </div>
-              <div
-                className="gypso-cad-label-h"
-                style={{ color: visualMode === "sole" ? "#0f172a" : "var(--gypso-cyan)" }}
-              >
-                ALTEZZA: 4.00 m
+            </div>
+
+            {/* App Top Toolbar (Identica a Flutter _buildTopToolbar) */}
+            <div className="gypso-cad-app-header">
+              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <button
+                  type="button"
+                  className="gypso-cad-app-btn"
+                  title="Torna indietro"
+                  aria-label="Torna indietro"
+                >
+                  <ChevronLeft size={18} />
+                </button>
+                <div>
+                  <div style={{ fontSize: "13px", fontWeight: "700", color: isSole ? "#0f172a" : "#ffffff", lineHeight: "1.2" }}>
+                    Planimetria Stanza
+                  </div>
+                  <div style={{ fontSize: "10px", color: isSole ? "#64748b" : "var(--gypso-text-secondary)", lineHeight: "1" }}>
+                    Disegna perimetro ed ostacoli
+                  </div>
+                </div>
               </div>
 
-              {/* Ostacoli e aperture realistiche del motore GYPSO */}
-              <div
-                className="gypso-cad-obstacle"
-                style={{
-                  top: "24px",
-                  left: "24px",
-                  width: "64px",
-                  height: "42px",
-                  borderColor: visualMode === "sole" ? "#0284c7" : "var(--gypso-cyan)",
-                  color: visualMode === "sole" ? "#0f172a" : "white",
-                }}
-              >
-                Finestra 120x140
+              {/* Top Action Buttons: Undo, Redo, Rotate, Mode, Help */}
+              <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                <button type="button" className="gypso-cad-app-btn" title="Annulla" aria-label="Annulla">
+                  <Undo2 size={15} />
+                </button>
+                <button type="button" className="gypso-cad-app-btn" title="Ripeti" aria-label="Ripeti">
+                  <Redo2 size={15} />
+                </button>
+                <button type="button" className="gypso-cad-app-btn" title="Ruota 90°" aria-label="Ruota 90°">
+                  <RotateCw size={15} />
+                </button>
+                <button
+                  type="button"
+                  className="gypso-cad-app-btn"
+                  title={`Modalità: ${visualMode}`}
+                  aria-label="Cambia modalità visiva"
+                  onClick={() => {
+                    if (visualMode === "standard") setVisualMode("cantiere")
+                    else if (visualMode === "cantiere") setVisualMode("sole")
+                    else setVisualMode("standard")
+                  }}
+                  style={{
+                    color: isSole ? "#0284c7" : isCantiere ? "#f59e0b" : "var(--gypso-cyan)",
+                    borderColor: isSole ? "#0284c7" : isCantiere ? "#f59e0b" : "var(--gypso-cyan)",
+                  }}
+                >
+                  {isSole ? <Sun size={15} /> : isCantiere ? <Eye size={15} /> : <Moon size={15} />}
+                </button>
+                <div
+                  style={{
+                    fontSize: "10px",
+                    fontWeight: "700",
+                    padding: "3px 6px",
+                    borderRadius: "6px",
+                    background: isSole ? "rgba(2, 132, 199, 0.1)" : "rgba(0, 229, 255, 0.15)",
+                    color: isSole ? "#0284c7" : "var(--gypso-cyan)",
+                    border: isSole ? "1px solid rgba(2, 132, 199, 0.3)" : "1px solid rgba(0, 229, 255, 0.3)",
+                    letterSpacing: "0.5px",
+                  }}
+                >
+                  DXF
+                </div>
+                <button type="button" className="gypso-cad-app-btn" title="Guida CAD" aria-label="Guida CAD">
+                  <HelpCircle size={15} />
+                </button>
               </div>
-              <div
-                className="gypso-cad-obstacle"
-                style={{
-                  bottom: "0px",
-                  right: "48px",
-                  width: "72px",
-                  height: "18px",
-                  background: "rgba(0, 229, 255, 0.25)",
-                  borderColor: "var(--gypso-cyan)",
-                  color: visualMode === "sole" ? "#0f172a" : "white",
-                }}
-              >
-                Porta 80x210
-              </div>
-              <div
-                className="gypso-cad-obstacle"
-                style={{
-                  top: "80px",
-                  right: "60px",
-                  width: "50px",
-                  height: "50px",
-                  borderRadius: "50%",
-                  background: "rgba(156, 39, 176, 0.35)",
-                  borderColor: "var(--gypso-purple)",
-                  color: visualMode === "sole" ? "#0f172a" : "white",
-                }}
-              >
-                Pilastro Ø40
-              </div>
-              <div
-                className="gypso-cad-obstacle"
-                style={{
-                  top: "140px",
-                  left: "90px",
-                  width: "80px",
-                  height: "22px",
-                  background: "rgba(255, 152, 0, 0.25)",
-                  borderColor: "var(--gypso-orange)",
-                  fontSize: "0.68rem",
-                  color: visualMode === "sole" ? "#0f172a" : "white",
-                }}
-              >
-                Gola LED 15x8
+            </div>
+
+            {/* Viewport Canvas: Left Toolbar, Right Zoom, Vector Canvas, Toast */}
+            <div className="gypso-cad-viewport">
+              {/* Floating Left Toolbar (Identica a Flutter _buildLeftToolbar) */}
+              <div className="gypso-cad-left-bar">
+                <button
+                  type="button"
+                  className={`gypso-cad-tool-btn ${activeCadTool === "walls" ? "active" : ""}`}
+                  title="Disegna Pareti"
+                  onClick={() => setActiveCadTool("walls")}
+                >
+                  <Pencil size={17} />
+                </button>
+                <button
+                  type="button"
+                  className={`gypso-cad-tool-btn ${activeCadTool === "select" ? "active" : ""}`}
+                  title="Seleziona & Sposta"
+                  onClick={() => setActiveCadTool("select")}
+                >
+                  <Hand size={17} />
+                </button>
+                <button
+                  type="button"
+                  className={`gypso-cad-tool-btn ${activeCadTool === "door" ? "active" : ""}`}
+                  title="Inserisci Porta"
+                  onClick={() => setActiveCadTool("door")}
+                >
+                  <DoorOpen size={17} />
+                </button>
+                <button
+                  type="button"
+                  className={`gypso-cad-tool-btn ${activeCadTool === "window" ? "active" : ""}`}
+                  title="Inserisci Finestra"
+                  onClick={() => setActiveCadTool("window")}
+                >
+                  <AppWindow size={17} />
+                </button>
+                <button
+                  type="button"
+                  className={`gypso-cad-tool-btn ${activeCadTool === "special" ? "active" : ""}`}
+                  title="Elementi Speciali (Nicchie, Velette)"
+                  onClick={() => setActiveCadTool("special")}
+                >
+                  <PlusSquare size={17} />
+                </button>
+                <button
+                  type="button"
+                  className={`gypso-cad-tool-btn ${activeCadTool === "pillarSquare" ? "active" : ""}`}
+                  title="Pilastro Quadro"
+                  onClick={() => setActiveCadTool("pillarSquare")}
+                >
+                  <Square size={17} />
+                </button>
+                <button
+                  type="button"
+                  className={`gypso-cad-tool-btn ${activeCadTool === "pillarRound" ? "active" : ""}`}
+                  title="Pilastro Tondo"
+                  onClick={() => setActiveCadTool("pillarRound")}
+                >
+                  <Circle size={17} />
+                </button>
               </div>
 
-              {/* Box di stato cantiere */}
+              {/* Floating Right Zoom Controls (Identica a Flutter Zoom controls) */}
+              <div className="gypso-cad-right-zoom">
+                <button
+                  type="button"
+                  className="gypso-cad-zoom-btn"
+                  title="Zoom In"
+                  onClick={() => setCadZoom(prev => Math.min(prev + 0.1, 1.3))}
+                >
+                  <Plus size={16} />
+                </button>
+                <button
+                  type="button"
+                  className="gypso-cad-zoom-btn"
+                  title="Zoom Out"
+                  onClick={() => setCadZoom(prev => Math.max(prev - 0.1, 0.8))}
+                >
+                  <Minus size={16} />
+                </button>
+                <button
+                  type="button"
+                  className="gypso-cad-zoom-btn"
+                  title="Adatta Schermo"
+                  onClick={() => setCadZoom(1)}
+                >
+                  <Maximize2 size={16} />
+                </button>
+              </div>
+
+              {/* Toast Notification (Identica a Flutter Toast in basso) */}
+              <div className="gypso-cad-toast">
+                <Sparkles size={14} color="#f59e0b" style={{ flexShrink: 0 }} />
+                <span style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                  {getToolToast()}
+                </span>
+              </div>
+
+              {/* Vector SVG Canvas (Disegnato secondo CadCanvasPainter, CadCanvasDecorations, CadCanvasObstacles, CadCanvasSymbols) */}
               <div
                 style={{
-                  position: "absolute",
-                  bottom: "12px",
-                  left: "14px",
-                  color: visualMode === "sole" ? "#0f172a" : "var(--gypso-cyan)",
-                  fontSize: "0.78rem",
-                  fontFamily: "monospace",
-                  background: visualMode === "sole" ? "rgba(255, 255, 255, 0.9)" : "rgba(10, 14, 23, 0.8)",
-                  padding: "6px 12px",
-                  borderRadius: "6px",
-                  border: "1px solid rgba(0, 229, 255, 0.2)",
+                  width: "100%",
+                  height: "100%",
+                  transform: `scale(${cadZoom})`,
+                  transformOrigin: "center center",
+                  transition: "transform 0.2s ease",
                 }}
               >
-                Sup. Netta: 18.32 m² · Montanti C50: 9 pz · Guide U50: 18 m · Sfrido Tagli: 2.8%
+                <svg viewBox="0 0 460 380" style={{ width: "100%", height: "100%", display: "block" }}>
+                  <defs>
+                    <pattern id="cad-grid-minor" width="20" height="20" patternUnits="userSpaceOnUse">
+                      <path d="M 20 0 L 0 0 0 20" fill="none" stroke={gridMinor} strokeWidth="0.8" />
+                    </pattern>
+                    <pattern id="cad-grid-major" width="100" height="100" patternUnits="userSpaceOnUse">
+                      <rect width="100" height="100" fill="url(#cad-grid-minor)" />
+                      <path d="M 100 0 L 0 0 0 100" fill="none" stroke={gridMajor} strokeWidth="1.2" />
+                    </pattern>
+                    <pattern id="pillar-hatch" width="6" height="6" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+                      <line x1="0" y1="0" x2="0" y2="6" stroke={pillarColor} strokeWidth="1.5" />
+                    </pattern>
+                  </defs>
+
+                  {/* Canvas Grid Background */}
+                  <rect width="460" height="380" fill={canvasBg} />
+                  <rect width="460" height="380" fill="url(#cad-grid-major)" />
+
+                  {/* Coordinate Axes */}
+                  <line x1="0" y1="185" x2="460" y2="185" stroke={axisColor} strokeWidth="1" strokeOpacity="0.25" strokeDasharray="4 4" />
+                  <line x1="230" y1="0" x2="230" y2="380" stroke={axisColor} strokeWidth="1" strokeOpacity="0.25" strokeDasharray="4 4" />
+
+                  {/* Axis Metre Labels */}
+                  <text x="35" y="180" fill={axisTextColor} fontSize="9" fontFamily="monospace">-2m</text>
+                  <text x="130" y="180" fill={axisTextColor} fontSize="9" fontFamily="monospace">-1m</text>
+                  <text x="330" y="180" fill={axisTextColor} fontSize="9" fontFamily="monospace">1m</text>
+                  <text x="420" y="180" fill={axisTextColor} fontSize="9" fontFamily="monospace">2m</text>
+                  <text x="235" y="45" fill={axisTextColor} fontSize="9" fontFamily="monospace">-2m</text>
+                  <text x="235" y="115" fill={axisTextColor} fontSize="9" fontFamily="monospace">-1m</text>
+                  <text x="235" y="260" fill={axisTextColor} fontSize="9" fontFamily="monospace">1m</text>
+                  <text x="235" y="335" fill={axisTextColor} fontSize="9" fontFamily="monospace">2m</text>
+
+                  {/* Room Fill Polygon */}
+                  <polygon
+                    points="110,85 350,85 350,275 145,275"
+                    fill={isSole ? "rgba(2, 132, 199, 0.04)" : isCantiere ? "rgba(245, 158, 11, 0.04)" : "rgba(0, 229, 255, 0.05)"}
+                  />
+
+                  {/* Erone Diagonal (Triangolazione Fuori Squadra V1 -> V3) */}
+                  <line
+                    x1="110"
+                    y1="85"
+                    x2="350"
+                    y2="275"
+                    stroke={axisColor}
+                    strokeWidth="1.2"
+                    strokeDasharray="5 4"
+                    strokeOpacity="0.7"
+                  />
+                  {/* Erone Diagonal Badge */}
+                  <g transform="translate(165, 150)">
+                    <rect x="0" y="0" width="130" height="20" rx="6" fill={pillBg} stroke={axisColor} strokeWidth="1" />
+                    <text x="65" y="14" fill={axisColor} fontSize="9" fontWeight="bold" textAnchor="middle">
+                      Diagonale Erone: 6.25 m
+                    </text>
+                  </g>
+
+                  {/* Thick Walls (Pareti a spessore secondo _drawThickWall) */}
+                  {/* Parete Superiore: 110,85 -> 350,85 */}
+                  <line x1="110" y1="85" x2="350" y2="85" stroke={wallStroke} strokeWidth="8" strokeLinecap="round" />
+                  {/* Parete Destra: 350,85 -> 350,275 */}
+                  <line x1="350" y1="85" x2="350" y2="275" stroke={wallStroke} strokeWidth="8" strokeLinecap="round" />
+                  {/* Parete Inferiore: 350,275 -> 145,275 */}
+                  <line x1="350" y1="275" x2="145" y2="275" stroke={wallStroke} strokeWidth="8" strokeLinecap="round" />
+                  {/* Parete Sinistra Fuori Squadra: 145,275 -> 110,85 */}
+                  <line x1="145" y1="275" x2="110" y2="85" stroke={wallStroke} strokeWidth="8" strokeLinecap="round" />
+
+                  {/* Architectural Obstacle 1: Finestra 120x140 cm (secondo _drawWindowSymbol) */}
+                  <g id="cad-window">
+                    {/* Vano finestra */}
+                    <rect x="200" y="80" width="60" height="10" fill={isSole ? "#ffffff" : "#0f172a"} />
+                    {/* Davanzale esterno */}
+                    <rect x="196" y="74" width="68" height="5" fill="none" stroke={windowColor} strokeWidth="1.5" />
+                    {/* Doppio vetro */}
+                    <line x1="200" y1="83" x2="260" y2="83" stroke={windowColor} strokeWidth="1.2" />
+                    <line x1="200" y1="87" x2="260" y2="87" stroke={windowColor} strokeWidth="1.2" />
+                    {/* Montante centrale */}
+                    <line x1="230" y1="80" x2="230" y2="90" stroke={windowColor} strokeWidth="1.5" />
+                    {/* Stipiti laterali */}
+                    <line x1="200" y1="80" x2="200" y2="90" stroke={windowColor} strokeWidth="2" />
+                    <line x1="260" y1="80" x2="260" y2="90" stroke={windowColor} strokeWidth="2" />
+                    {/* Badge Finestra */}
+                    <rect x="195" y="52" width="70" height="18" rx="4" fill={pillBg} stroke={windowColor} strokeWidth="1" />
+                    <text x="230" y="65" fill={windowColor} fontSize="8.5" fontWeight="bold" textAnchor="middle">
+                      Finestra 120×140
+                    </text>
+                  </g>
+
+                  {/* Architectural Obstacle 2: Porta 80x210 cm (secondo _drawDoorSymbol) */}
+                  <g id="cad-door">
+                    {/* Vano porta */}
+                    <line x1="120" y1="145" x2="127" y2="185" stroke={isSole ? "#ffffff" : "#0f172a"} strokeWidth="9" />
+                    {/* Stipiti porta */}
+                    <circle cx="120" cy="145" r="3" fill={doorColor} />
+                    <circle cx="127" cy="185" r="3" fill={doorColor} />
+                    {/* Anta battente aperta a 90° */}
+                    <line x1="127" y1="185" x2="167" y2="185" stroke={doorColor} strokeWidth="2.5" />
+                    {/* Arco di apertura 90° */}
+                    <path d="M 127 145 A 40 40 0 0 1 167 185" fill="none" stroke={doorColor} strokeWidth="1.5" strokeDasharray="3 3" />
+                    <path d="M 127 185 L 127 145 A 40 40 0 0 1 167 185 Z" fill={doorColor} fillOpacity="0.08" />
+                    {/* Pomolo */}
+                    <circle cx="163" cy="183" r="2" fill={doorColor} />
+                    {/* Quota dallo spigolo (108 cm) */}
+                    <line x1="127" y1="190" x2="145" y2="275" stroke={doorColor} strokeWidth="1" strokeDasharray="2 2" strokeOpacity="0.6" />
+                    <g transform="translate(100, 220)">
+                      <rect x="0" y="0" width="46" height="16" rx="4" fill={pillBg} stroke={doorColor} strokeWidth="0.8" />
+                      <text x="23" y="12" fill={doorColor} fontSize="8" fontWeight="bold" textAnchor="middle">108 cm</text>
+                    </g>
+                    {/* Badge Porta */}
+                    <g transform="translate(48, 172)">
+                      <rect x="0" y="0" width="62" height="18" rx="4" fill={pillBg} stroke={doorColor} strokeWidth="1" />
+                      <text x="31" y="13" fill={doorColor} fontSize="8.5" fontWeight="bold" textAnchor="middle">Porta 80×210</text>
+                    </g>
+                  </g>
+
+                  {/* Architectural Obstacle 3: Pilastro 40x40 cm (secondo _drawRectHatching) */}
+                  <g id="cad-pillar">
+                    <rect x="285" y="205" width="26" height="26" fill="url(#pillar-hatch)" stroke={pillarColor} strokeWidth="1.5" />
+                    <g transform="translate(268, 236)">
+                      <rect x="0" y="0" width="60" height="16" rx="4" fill={pillBg} stroke={pillarColor} strokeWidth="0.8" />
+                      <text x="30" y="12" fill={pillarColor} fontSize="8" fontWeight="bold" textAnchor="middle">Pilastro 40×40</text>
+                    </g>
+                  </g>
+
+                  {/* Architectural Obstacle 4: Nicchia 90x30 cm (secondo _drawNicheSymbol) */}
+                  <g id="cad-niche">
+                    {/* Scasso parete */}
+                    <rect x="215" y="271" width="46" height="8" fill={nicheColor} fillOpacity="0.2" stroke={nicheColor} strokeWidth="1.2" strokeDasharray="3 2" />
+                    {/* Rientro 3D prospettico */}
+                    <rect x="220" y="267" width="36" height="4" fill="none" stroke={nicheColor} strokeWidth="0.8" strokeOpacity="0.7" />
+                    <g transform="translate(208, 290)">
+                      <rect x="0" y="0" width="60" height="16" rx="4" fill={pillBg} stroke={nicheColor} strokeWidth="0.8" />
+                      <text x="30" y="12" fill={nicheColor} fontSize="8" fontWeight="bold" textAnchor="middle">Nicchia 90×30</text>
+                    </g>
+                  </g>
+
+                  {/* Spotlights LED (secondo _drawSpotlightSymbol) */}
+                  <g id="cad-spots">
+                    {/* Spot 1 */}
+                    <g transform="translate(180, 130)">
+                      <circle cx="0" cy="0" r="2.5" fill={spotlightColor} />
+                      <circle cx="0" cy="0" r="8" fill="none" stroke={spotlightColor} strokeWidth="0.8" strokeDasharray="1.5 1.5" />
+                      <line x1="-10" y1="0" x2="-5" y2="0" stroke={spotlightColor} strokeWidth="0.8" />
+                      <line x1="5" y1="0" x2="10" y2="0" stroke={spotlightColor} strokeWidth="0.8" />
+                      <line x1="0" y1="-10" x2="0" y2="-5" stroke={spotlightColor} strokeWidth="0.8" />
+                      <line x1="0" y1="5" x2="0" y2="10" stroke={spotlightColor} strokeWidth="0.8" />
+                      <text x="0" y="17" fill={spotlightColor} fontSize="7" fontWeight="bold" textAnchor="middle">Faretto Ø8</text>
+                    </g>
+                    {/* Spot 2 */}
+                    <g transform="translate(290, 130)">
+                      <circle cx="0" cy="0" r="2.5" fill={spotlightColor} />
+                      <circle cx="0" cy="0" r="8" fill="none" stroke={spotlightColor} strokeWidth="0.8" strokeDasharray="1.5 1.5" />
+                      <line x1="-10" y1="0" x2="-5" y2="0" stroke={spotlightColor} strokeWidth="0.8" />
+                      <line x1="5" y1="0" x2="10" y2="0" stroke={spotlightColor} strokeWidth="0.8" />
+                      <line x1="0" y1="-10" x2="0" y2="-5" stroke={spotlightColor} strokeWidth="0.8" />
+                      <line x1="0" y1="5" x2="0" y2="10" stroke={spotlightColor} strokeWidth="0.8" />
+                      <text x="0" y="17" fill={spotlightColor} fontSize="7" fontWeight="bold" textAnchor="middle">Faretto Ø8</text>
+                    </g>
+                  </g>
+
+                  {/* Corner Vertex Nodes (Nodi vertici con anello secondo nodeOutlinePaint) */}
+                  <circle cx="110" cy="85" r="5" fill={nodeFill} stroke={nodeStroke} strokeWidth="2" />
+                  <circle cx="350" cy="85" r="5" fill={nodeFill} stroke={nodeStroke} strokeWidth="2" />
+                  <circle cx="350" cy="275" r="5" fill={nodeFill} stroke={nodeStroke} strokeWidth="2" />
+                  <circle cx="145" cy="275" r="5" fill={nodeFill} stroke={nodeStroke} strokeWidth="2" />
+
+                  {/* Angle Badges (Gradi angoli interni) */}
+                  {/* Angolo V2 (Top-Right): 90° */}
+                  <g transform="translate(325, 95)">
+                    <rect x="0" y="0" width="30" height="15" rx="3" fill={pillBg} stroke={pillBorder} strokeWidth="0.8" />
+                    <text x="15" y="11" fill={pillText} fontSize="8" fontWeight="bold" textAnchor="middle">90.0°</text>
+                  </g>
+                  {/* Angolo V3 (Bottom-Right): 90° */}
+                  <g transform="translate(325, 252)">
+                    <rect x="0" y="0" width="30" height="15" rx="3" fill={pillBg} stroke={pillBorder} strokeWidth="0.8" />
+                    <text x="15" y="11" fill={pillText} fontSize="8" fontWeight="bold" textAnchor="middle">90.0°</text>
+                  </g>
+                  {/* Angolo V4 (Bottom-Left FUORI SQUADRA): 88.5° */}
+                  <g transform="translate(152, 252)">
+                    <rect x="0" y="0" width="38" height="15" rx="3" fill={pillBg} stroke={axisColor} strokeWidth="1" />
+                    <text x="19" y="11" fill={axisColor} fontSize="8" fontWeight="bold" textAnchor="middle">88.5° 📐</text>
+                  </g>
+
+                  {/* Room Center Area Label (secondo _drawRoomLabel) */}
+                  <g transform="translate(230, 205)">
+                    <text x="0" y="0" fill={areaTextColor} fontSize="21" fontWeight="800" textAnchor="middle" style={{ letterSpacing: "-0.5px" }}>
+                      18.65 m²
+                    </text>
+                    <text x="0" y="14" fill={areaTextColor} fillOpacity="0.7" fontSize="9.5" fontWeight="600" textAnchor="middle">
+                      Perimetro: 17.10 m · Sfrido: &lt; 3%
+                    </text>
+                  </g>
+
+                  {/* Precision Crosshair Target (Mirino centrale) */}
+                  <g transform="translate(230, 185)">
+                    <circle cx="0" cy="0" r="10" fill="none" stroke={axisColor} strokeWidth="1.2" strokeDasharray="3 2" />
+                    <line x1="-14" y1="0" x2="14" y2="0" stroke={axisColor} strokeWidth="1.5" />
+                    <line x1="0" y1="-14" x2="0" y2="14" stroke={axisColor} strokeWidth="1.5" />
+                  </g>
+
+                  {/* Dimension Pills (Quote esterne di cantiere) */}
+                  {/* Quota Parete Superiore: 5.00 m */}
+                  <g transform="translate(205, 30)">
+                    <rect x="0" y="0" width="50" height="18" rx="5" fill={pillBg} stroke={pillBorder} strokeWidth="1" />
+                    <text x="25" y="13" fill={pillText} fontSize="9" fontWeight="bold" textAnchor="middle">5.00 m</text>
+                  </g>
+                  {/* Quota Parete Destra: 4.20 m */}
+                  <g transform="translate(365, 172)">
+                    <rect x="0" y="0" width="50" height="18" rx="5" fill={pillBg} stroke={pillBorder} strokeWidth="1" />
+                    <text x="25" y="13" fill={pillText} fontSize="9" fontWeight="bold" textAnchor="middle">4.20 m</text>
+                  </g>
+                  {/* Quota Parete Inferiore: 4.05 m */}
+                  <g transform="translate(225, 320)">
+                    <rect x="0" y="0" width="50" height="18" rx="5" fill={pillBg} stroke={pillBorder} strokeWidth="1" />
+                    <text x="25" y="13" fill={pillText} fontSize="9" fontWeight="bold" textAnchor="middle">4.05 m</text>
+                  </g>
+                  {/* Quota Parete Sinistra Fuori Squadra: 3.85 m */}
+                  <g transform="translate(68, 125)">
+                    <rect x="0" y="0" width="50" height="18" rx="5" fill={pillBg} stroke={pillBorder} strokeWidth="1" />
+                    <text x="25" y="13" fill={pillText} fontSize="9" fontWeight="bold" textAnchor="middle">3.85 m</text>
+                  </g>
+                </svg>
+              </div>
+            </div>
+
+            {/* Bottom Controls Bar (Identica a Flutter _buildBottomBar) */}
+            <div className="gypso-cad-bottom-bar">
+              {/* Row 1: Snap Toggle, Coordinate Input, Monospace Cursor Position */}
+              <div className="gypso-cad-bottom-row-1">
+                <div
+                  className="gypso-cad-pill"
+                  style={{
+                    background: isSole ? "#ffffff" : isCantiere ? "#18181b" : "rgba(245, 158, 11, 0.15)",
+                    border: "1px solid #f59e0b",
+                    color: "#f59e0b",
+                  }}
+                >
+                  <Grid size={13} />
+                  <span>Snap 10cm</span>
+                </div>
+                <div
+                  className="gypso-cad-pill"
+                  style={{
+                    background: isSole ? "#ffffff" : isCantiere ? "#18181b" : "rgba(0, 229, 255, 0.12)",
+                    border: "1px solid #00e5ff",
+                    color: isSole ? "#0284c7" : "#00e5ff",
+                  }}
+                >
+                  <MapPin size={13} />
+                  <span>Coordinate</span>
+                </div>
+                <div
+                  style={{
+                    marginLeft: "auto",
+                    fontFamily: "monospace",
+                    fontSize: "11px",
+                    fontWeight: "600",
+                    color: isSole ? "#475569" : "var(--gypso-text-secondary)",
+                    background: isSole ? "#ffffff" : "#0b0f19",
+                    padding: "4px 8px",
+                    borderRadius: "6px",
+                    border: isSole ? "1px solid #cbd5e1" : "1px solid rgba(255, 255, 255, 0.08)",
+                  }}
+                >
+                  X: 320 cm &nbsp; Y: 210 cm
+                </div>
+              </div>
+
+              {/* Row 2: Live Metrics & Confirm CAD Button */}
+              <div className="gypso-cad-bottom-row-2">
+                <div
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "10px",
+                    fontSize: "12px",
+                    background: isSole ? "#ffffff" : "#0b0f19",
+                    padding: "6px 12px",
+                    borderRadius: "10px",
+                    border: isSole ? "1px solid #cbd5e1" : "1px solid rgba(255, 255, 255, 0.08)",
+                  }}
+                >
+                  <span style={{ color: isSole ? "#0284c7" : isCantiere ? "#facc15" : "#10b981", fontWeight: "700" }}>
+                    📐 18.65 m²
+                  </span>
+                  <span style={{ color: isSole ? "#0284c7" : isCantiere ? "#38bdf8" : "#38bdf8", fontWeight: "700" }}>
+                    📏 17.10 m
+                  </span>
+                  <span style={{ color: isSole ? "#64748b" : "var(--gypso-text-muted)", fontSize: "11px" }}>
+                    • 4 Vertici
+                  </span>
+                </div>
+
+                <button type="button" className="gypso-cad-confirm-btn">
+                  <Check size={14} />
+                  <span>CONFERMA CAD</span>
+                </button>
               </div>
             </div>
           </div>
@@ -651,56 +1075,6 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
                 Scopri Termini & Licenza PRO
               </Link>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Technical Architecture Section */}
-      <section id="specs" className="gypso-section">
-        <h2 className="gypso-section-title">Architettura & Specifiche Tecniche</h2>
-        <p className="gypso-section-desc">
-          Progettata secondo principi di ingegneria del software enterprise per garantire massima fluidità e affidabilità operativa in cantiere.
-        </p>
-
-        <div className="gypso-features-grid">
-          <div className="gypso-card">
-            <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "1rem" }}>
-              <Cpu size={24} color="var(--gypso-cyan)" />
-              <h3 style={{ fontFamily: "Outfit", fontSize: "1.2rem", margin: 0 }}>Flutter 3.35+ & Impeller</h3>
-            </div>
-            <p style={{ fontSize: "0.92rem", color: "var(--gypso-text-secondary)", lineHeight: "1.6" }}>
-              Compilazione nativa AOT (Ahead-of-Time) per smartphone e tablet Android & iOS con rendering a 60 fps e reattività immediata su touch screen.
-            </p>
-          </div>
-
-          <div className="gypso-card">
-            <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "1rem" }}>
-              <Lock size={24} color="var(--gypso-purple)" />
-              <h3 style={{ fontFamily: "Outfit", fontSize: "1.2rem", margin: 0 }}>Storage Locale Cifrato (100% Offline)</h3>
-            </div>
-            <p style={{ fontSize: "0.92rem", color: "var(--gypso-text-secondary)", lineHeight: "1.6" }}>
-              Nessun dato o preventivo transita su server esterni. Storage locale isolato in sandbox sicura con possibilità di backup esportabile in file compresso <code>.cart</code>.
-            </p>
-          </div>
-
-          <div className="gypso-card">
-            <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "1rem" }}>
-              <PackageCheck size={24} color="var(--gypso-green)" />
-              <h3 style={{ fontFamily: "Outfit", fontSize: "1.2rem", margin: 0 }}>Identità Store & In-App Purchase</h3>
-            </div>
-            <p style={{ fontSize: "0.92rem", color: "var(--gypso-text-secondary)", lineHeight: "1.6" }}>
-              Package Android ufficiale: <code>com.tosquidev.gypso</code>. Gestione acquisti in-app integrata tramite RevenueCat SDK (Product ID: <code>gypso_full_v1</code>).
-            </p>
-          </div>
-
-          <div className="gypso-card">
-            <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "1rem" }}>
-              <Globe size={24} color="var(--gypso-orange)" />
-              <h3 style={{ fontFamily: "Outfit", fontSize: "1.2rem", margin: 0 }}>11 Lingue con Supporto RTL</h3>
-            </div>
-            <p style={{ fontSize: "0.92rem", color: "var(--gypso-text-secondary)", lineHeight: "1.6" }}>
-              Supporto completo per 11 mercati linguistici internazionali compreso l'Arabo (con direzione Right-to-Left) e dizionario di cantiere localizzato.
-            </p>
           </div>
         </div>
       </section>
