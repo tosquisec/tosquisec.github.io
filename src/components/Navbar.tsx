@@ -7,7 +7,7 @@ import { Shield, Languages, Menu, X, ArrowLeft } from "lucide-react"
 export type SupportedPrivacyLang = "it" | "en" | "de" | "fr" | "es"
 
 interface NavbarProps {
-  mode?: "home" | "gypso" | "gypso-privacy"
+  mode?: "home" | "gypso" | "gypso-privacy" | "cartongessista" | "cartongessista-privacy"
   privacyLang?: SupportedPrivacyLang
   setPrivacyLang?: (lang: SupportedPrivacyLang) => void
 }
@@ -85,6 +85,23 @@ export const Navbar: React.FC<NavbarProps> = ({
     { href: "/", label: "Portfolio", isExternal: true },
   ]
 
+  // Navigation items for Cartongessista Mode
+  const cartongessistaNavLinks = [
+    { href: "#features", label: "Funzionalità", isExternal: false },
+    { href: "#cad-preview", label: "Editor CAD", isExternal: false },
+    { href: "#specs", label: "Specifiche", isExternal: false },
+    { href: "/cartongessista/privacy", label: "Privacy Policy", isExternal: true },
+    { href: "/cartongessista/terms", label: "Termini di Servizio", isExternal: true },
+  ]
+
+  // Navigation items for Cartongessista Privacy / Legal Mode
+  const cartongessistaPrivacyNavLinks = [
+    { href: "/cartongessista", label: "Cartongessista Home", isExternal: true },
+    { href: "/cartongessista/privacy", label: "Privacy Policy", isExternal: true },
+    { href: "/cartongessista/terms", label: "Termini di Servizio", isExternal: true },
+    { href: "/", label: "Portfolio", isExternal: true },
+  ]
+
   return (
     <header className="site-nav">
       {/* Brand Logo / Name */}
@@ -94,6 +111,11 @@ export const Navbar: React.FC<NavbarProps> = ({
             <Shield size={18} />
           </div>
           <span>Antonio Squillace</span>
+        </Link>
+      ) : mode.startsWith("cartongessista") ? (
+        <Link to="/cartongessista" className="site-nav-brand" onClick={closeMenu}>
+          <img src="/gypso-icon.png" alt="Cartongessista Logo" className="site-nav-logo-img" />
+          <span style={{ fontFamily: "Outfit, sans-serif" }}>Cartongessista</span>
         </Link>
       ) : (
         <Link to="/gypso" className="site-nav-brand" onClick={closeMenu}>
@@ -146,6 +168,26 @@ export const Navbar: React.FC<NavbarProps> = ({
               {link.label}
             </Link>
           ))}
+
+        {mode === "cartongessista" &&
+          cartongessistaNavLinks.map(link =>
+            link.isExternal ? (
+              <Link key={link.href} to={link.href} className="site-nav-link">
+                {link.label}
+              </Link>
+            ) : (
+              <a key={link.href} href={link.href} className="site-nav-link">
+                {link.label}
+              </a>
+            )
+          )}
+
+        {mode === "cartongessista-privacy" &&
+          cartongessistaPrivacyNavLinks.map(link => (
+            <Link key={link.href} to={link.href} className="site-nav-link">
+              {link.label}
+            </Link>
+          ))}
       </nav>
 
       {/* Desktop Right Action */}
@@ -161,14 +203,14 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
         )}
 
-        {mode === "gypso" && (
+        {(mode === "gypso" || mode === "cartongessista") && (
           <Link to="/" className="site-nav-btn">
             <ArrowLeft size={15} />
             <span>Portfolio</span>
           </Link>
         )}
 
-        {mode === "gypso-privacy" && setPrivacyLang && (
+        {(mode === "gypso-privacy" || mode === "cartongessista-privacy") && setPrivacyLang && (
           <div className="site-nav-lang-group">
             {privacyLangsList.map(lang => (
               <button
@@ -261,6 +303,68 @@ export const Navbar: React.FC<NavbarProps> = ({
                 Privacy Policy
               </Link>
               <Link to="/gypso/terms" onClick={closeMenu}>
+                Termini di Servizio
+              </Link>
+              <Link to="/" onClick={closeMenu}>
+                Torna al Portfolio
+              </Link>
+              {setPrivacyLang && (
+                <div style={{ marginTop: "1rem", paddingTop: "1rem", borderTop: "1px solid var(--glass-border)", display: "flex", flexWrap: "wrap", gap: "6px", justifyContent: "center" }}>
+                  {privacyLangsList.map(lang => (
+                    <button
+                      key={lang.code}
+                      onClick={() => {
+                        setPrivacyLang(lang.code)
+                        closeMenu()
+                      }}
+                      className={`site-nav-lang-btn${privacyLang === lang.code ? " active" : ""}`}
+                      style={{ padding: "8px 12px", fontSize: "0.9rem" }}
+                    >
+                      <span>{lang.flag}</span>
+                      <span>{lang.label}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </>
+          )}
+
+          {mode === "cartongessista" && (
+            <>
+              {cartongessistaNavLinks.map(link =>
+                link.isExternal ? (
+                  <Link key={link.href} to={link.href} onClick={closeMenu}>
+                    {link.label}
+                  </Link>
+                ) : (
+                  <a key={link.href} href={link.href} onClick={closeMenu}>
+                    {link.label}
+                  </a>
+                )
+              )}
+              <div style={{ marginTop: "1rem", paddingTop: "1rem", borderTop: "1px solid var(--glass-border)" }}>
+                <Link
+                  to="/"
+                  onClick={closeMenu}
+                  className="btn-outline"
+                  style={{ width: "100%", justifyContent: "center" }}
+                >
+                  <ArrowLeft size={18} />
+                  <span>Torna al Portfolio</span>
+                </Link>
+              </div>
+            </>
+          )}
+
+          {mode === "cartongessista-privacy" && (
+            <>
+              <Link to="/cartongessista" onClick={closeMenu}>
+                Cartongessista Home
+              </Link>
+              <Link to="/cartongessista/privacy" onClick={closeMenu}>
+                Privacy Policy
+              </Link>
+              <Link to="/cartongessista/terms" onClick={closeMenu}>
                 Termini di Servizio
               </Link>
               <Link to="/" onClick={closeMenu}>
