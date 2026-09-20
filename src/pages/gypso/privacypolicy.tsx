@@ -5,7 +5,7 @@ import { Link } from "gatsby"
 import Layout from "../../components/Layout"
 import Navbar from "../../components/Navbar"
 import { LanguageProvider } from "../../context/LanguageContext"
-import { Shield } from "lucide-react"
+import { Shield, ArrowLeft } from "lucide-react"
 
 type SupportedLang = "it" | "en" | "de" | "fr" | "es"
 
@@ -300,6 +300,24 @@ const GypsoPrivacyPolicyPage: React.FC<PageProps> = () => {
       <Navbar mode="gypso-privacy" privacyLang={currentLang} setPrivacyLang={setCurrentLang} />
       <Layout>
         <div style={{ maxWidth: "840px", margin: "0 auto", padding: "40px 16px" }}>
+          {/* Quick Navigation Pills */}
+          <div style={{ display: "flex", gap: "10px", marginBottom: "20px", flexWrap: "wrap", alignItems: "center" }}>
+            <Link
+              to="/gypso"
+              className="gypso-btn-secondary"
+              style={{ padding: "6px 14px", fontSize: "0.85rem", textDecoration: "none" }}
+            >
+              <ArrowLeft size={15} /> GYPSO Home
+            </Link>
+            <Link
+              to="/gypso/terms"
+              className="gypso-btn-secondary"
+              style={{ padding: "6px 14px", fontSize: "0.85rem", textDecoration: "none" }}
+            >
+              Termini di Servizio (EULA)
+            </Link>
+          </div>
+
           {/* Header Card */}
           <div
             className="glass-card"
@@ -374,7 +392,7 @@ const GypsoPrivacyPolicyPage: React.FC<PageProps> = () => {
             ))}
           </div>
 
-          {/* Footer */}
+          {/* Footer & Cross-links */}
           <footer
             style={{
               textAlign: "center",
@@ -383,9 +401,26 @@ const GypsoPrivacyPolicyPage: React.FC<PageProps> = () => {
               marginTop: "40px",
               paddingTop: "20px",
               borderTop: "1px solid var(--glass-border)",
+              display: "flex",
+              flexDirection: "column",
+              gap: "10px",
+              alignItems: "center",
             }}
           >
-            © {new Date().getFullYear()} GYPSO. All rights reserved.
+            <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", justifyContent: "center" }}>
+              <Link to="/gypso" style={{ color: "var(--accent-primary)", textDecoration: "none" }}>
+                GYPSO App
+              </Link>
+              <span>•</span>
+              <Link to="/gypso/terms" style={{ color: "var(--accent-primary)", textDecoration: "none" }}>
+                Termini di Servizio (EULA)
+              </Link>
+              <span>•</span>
+              <Link to="/" style={{ color: "var(--accent-primary)", textDecoration: "none" }}>
+                Portfolio Antonio Squillace
+              </Link>
+            </div>
+            <p style={{ margin: 0 }}>© {new Date().getFullYear()} GYPSO. All rights reserved.</p>
           </footer>
         </div>
       </Layout>

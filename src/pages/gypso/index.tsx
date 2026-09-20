@@ -45,8 +45,11 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
           <a href="#features" className="gypso-btn-primary">
             <Ruler size={18} /> Scopri le Funzionalità
           </a>
-          <Link to="/gypso/privacypolicy" className="gypso-btn-secondary">
+          <Link to="/gypso/privacy" className="gypso-btn-secondary">
             <Shield size={18} /> Informativa Privacy
+          </Link>
+          <Link to="/gypso/terms" className="gypso-btn-secondary">
+            <FileText size={18} /> Termini di Servizio
           </Link>
         </div>
 
@@ -227,26 +230,42 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
         </div>
       </section>
 
-      {/* Privacy Call-to-action Banner */}
+      {/* Privacy & Legal Call-to-action Banner */}
       <section className="gypso-section">
         <div className="gypso-privacy-banner">
           <div className="gypso-privacy-text">
-            <h3>Trasparenza e Privacy</h3>
+            <h3>Trasparenza, Privacy & Condizioni</h3>
             <p>
-              Consulta la nostra Informativa sulla Privacy dettagliata e conforme al GDPR per conoscere la nostra gestione dei dati locali e dei consensi pubblicitari.
+              Consulta la nostra Informativa sulla Privacy conforme al GDPR e i Termini di Servizio (EULA) con disclaimer tecnico e dettagli sulla licenza PRO.
             </p>
           </div>
-          <Link to="/gypso/privacypolicy" className="gypso-btn-primary">
-            <Shield size={18} /> Leggi la Privacy Policy
-          </Link>
+          <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+            <Link to="/gypso/privacy" className="gypso-btn-primary">
+              <Shield size={18} /> Privacy Policy
+            </Link>
+            <Link to="/gypso/terms" className="gypso-btn-secondary">
+              <FileText size={18} /> Termini di Servizio
+            </Link>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
       <footer className="gypso-footer">
-        <p>© {new Date().getFullYear()} GYPSO . Tutti i diritti riservati.</p>
-        <p style={{ marginTop: "6px", fontSize: "0.8rem", color: "var(--gypso-text-muted)" }}>
-        </p>
+        <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", justifyContent: "center", marginBottom: "12px" }}>
+          <Link to="/gypso/privacy" style={{ color: "var(--gypso-cyan)", textDecoration: "none", fontSize: "0.85rem" }}>
+            Informativa Privacy
+          </Link>
+          <span style={{ color: "var(--gypso-text-muted)" }}>•</span>
+          <Link to="/gypso/terms" style={{ color: "var(--gypso-cyan)", textDecoration: "none", fontSize: "0.85rem" }}>
+            Termini di Servizio (EULA)
+          </Link>
+          <span style={{ color: "var(--gypso-text-muted)" }}>•</span>
+          <Link to="/" style={{ color: "var(--gypso-cyan)", textDecoration: "none", fontSize: "0.85rem" }}>
+            Portfolio Antonio Squillace
+          </Link>
+        </div>
+        <p>© {new Date().getFullYear()} GYPSO. Tutti i diritti riservati.</p>
       </footer>
     </div>
   )

@@ -73,12 +73,15 @@ export const Navbar: React.FC<NavbarProps> = ({
     { href: "#features", label: "Funzionalità", isExternal: false },
     { href: "#cad-preview", label: "Editor CAD", isExternal: false },
     { href: "#specs", label: "Specifiche", isExternal: false },
-    { href: "/gypso/privacypolicy", label: "Privacy Policy", isExternal: true },
+    { href: "/gypso/privacy", label: "Privacy Policy", isExternal: true },
+    { href: "/gypso/terms", label: "Termini di Servizio", isExternal: true },
   ]
 
-  // Navigation items for Privacy Mode
+  // Navigation items for Privacy / Legal Mode
   const privacyNavLinks = [
-    { href: "/gypso", label: "Torna a GYPSO", isExternal: true },
+    { href: "/gypso", label: "GYPSO Home", isExternal: true },
+    { href: "/gypso/privacy", label: "Privacy Policy", isExternal: true },
+    { href: "/gypso/terms", label: "Termini di Servizio", isExternal: true },
     { href: "/", label: "Portfolio", isExternal: true },
   ]
 
@@ -252,7 +255,13 @@ export const Navbar: React.FC<NavbarProps> = ({
           {mode === "gypso-privacy" && (
             <>
               <Link to="/gypso" onClick={closeMenu}>
-                Torna a GYPSO
+                GYPSO Home
+              </Link>
+              <Link to="/gypso/privacy" onClick={closeMenu}>
+                Privacy Policy
+              </Link>
+              <Link to="/gypso/terms" onClick={closeMenu}>
+                Termini di Servizio
               </Link>
               <Link to="/" onClick={closeMenu}>
                 Torna al Portfolio
