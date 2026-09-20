@@ -58,9 +58,9 @@ const policyData: Record<SupportedLang, Content> = {
         ],
       },
       {
-        title: "3. Acquisti In-App e Licenza Lifetime PRO",
+        title: "3. Acquisti In-App e Versione PRO",
         paragraphs: [
-          "Gli acquisti In-App e l'abilitazione della licenza a vita Premium PRO (acquisto una tantum non-consumable, senza abbonamenti ricorrenti) sono gestiti tramite il servizio RevenueCat, che interagisce direttamente con Google Play Store ed Apple App Store.",
+          "Gli acquisti In-App e l'attivazione della versione Premium PRO sono gestiti tramite il servizio RevenueCat, che interagisce direttamente con Google Play Store ed Apple App Store.",
           "I dettagli di pagamento e le carte di credito sono elaborati unicamente dagli store ufficiali di Apple e Google secondo i loro standard di sicurezza (PCI-DSS). GYPSO non ha mai accesso ad alcun dato bancario o finanziario.",
         ],
       },
@@ -105,9 +105,9 @@ const policyData: Record<SupportedLang, Content> = {
         ],
       },
       {
-        title: "3. In-App Purchases & Lifetime PRO License",
+        title: "3. In-App Purchases & PRO Version",
         paragraphs: [
-          "In-App Purchases and the Lifetime Premium PRO license (one-time non-consumable purchase, no recurring subscriptions) are processed via RevenueCat, which directly interfaces with Google Play Store and Apple App Store.",
+          "In-App Purchases and the Premium PRO version are processed via RevenueCat, which directly interfaces with Google Play Store and Apple App Store.",
           "Payment credentials and credit card details are processed exclusively by Apple and Google official stores under strict security standards (PCI-DSS). GYPSO never accesses or stores any banking or financial data.",
         ],
       },
@@ -152,9 +152,9 @@ const policyData: Record<SupportedLang, Content> = {
         ],
       },
       {
-        title: "3. In-App-Käufe & Lifetime PRO-Lizenz",
+        title: "3. In-App-Käufe & PRO-Version",
         paragraphs: [
-          "In-App-Käufe und die Freischaltung der lebenslangen Premium PRO-Lizenz (einmaliger, nicht verbrauchbarer Kauf ohne wiederkehrende Abonnements) werden über RevenueCat abgewickelt, das direkt mit dem Google Play Store und Apple App Store kommuniziert.",
+          "In-App-Käufe und die Freischaltung der Premium PRO-Version werden über RevenueCat abgewickelt, das direkt mit dem Google Play Store und Apple App Store kommuniziert.",
           "Zahlungsinformationen und Kreditkartendaten werden ausschließlich von den offiziellen Stores von Apple und Google nach höchsten Sicherheitsstandards (PCI-DSS) verarbeitet. GYPSO hat keinen Zugriff auf Bank- oder Finanzdaten.",
         ],
       },
@@ -199,9 +199,9 @@ const policyData: Record<SupportedLang, Content> = {
         ],
       },
       {
-        title: "3. Achats In-App & Licence PRO à Vie (Lifetime)",
+        title: "3. Achats In-App & Version PRO",
         paragraphs: [
-          "Les achats In-App et l'activation de la licence à vie Premium PRO (achat unique non consommable, sans abonnement récurrent) sont traités via RevenueCat, qui communique directement avec le Google Play Store et l'Apple App Store.",
+          "Les achats In-App et l'activation de la version Premium PRO sont traités via RevenueCat, qui communique directement avec le Google Play Store et l'Apple App Store.",
           "Les données de paiement sont traitées exclusivement par les stores officiels d'Apple et Google conformément aux normes PCI-DSS. GYPSO n'a jamais accès à vos coordonnées bancaires.",
         ],
       },
@@ -246,9 +246,9 @@ const policyData: Record<SupportedLang, Content> = {
         ],
       },
       {
-        title: "3. Compras In-App y Licencia PRO de por Vida (Lifetime)",
+        title: "3. Compras In-App y Versión PRO",
         paragraphs: [
-          "Las compras dentro de la aplicación y la activación de la licencia de por vida Premium PRO (compra única no consumible, sin suscripciones periódicas recurrentes) se gestionan a través de RevenueCat, que interactúa directamente con Google Play Store y Apple App Store.",
+          "Las compras dentro de la aplicación y la activación de la versión Premium PRO se gestionan a través de RevenueCat, que interactúa directamente con Google Play Store y Apple App Store.",
           "Los datos de pago son procesados únicamente por las tiendas oficiales de Apple y Google según los estándares de seguridad (PCI-DSS). GYPSO nunca tiene acceso a datos bancarios o financieros.",
         ],
       },

@@ -67,8 +67,8 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
           <a href="#features" className="gypso-btn-primary">
             <Ruler size={18} /> Scopri le Funzionalità
           </a>
-          <a href="#plans" className="gypso-btn-secondary">
-            <Zap size={18} /> Piani & Prezzi
+          <a href="#pro-features" className="gypso-btn-secondary">
+            <Zap size={18} /> Versione PRO
           </a>
           <Link to="/gypso/privacy" className="gypso-btn-secondary">
             <Shield size={18} /> Informativa Privacy
@@ -459,11 +459,11 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
         </div>
       </section>
 
-      {/* Pricing & Transparent Plans Section */}
-      <section id="plans" className="gypso-section">
-        <h2 className="gypso-section-title">Modello Trasparente: Zero Abbonamenti</h2>
+      {/* Free vs PRO Comparison Section */}
+      <section id="pro-features" className="gypso-section">
+        <h2 className="gypso-section-title">Funzionalità Free & Versione PRO</h2>
         <p className="gypso-section-desc">
-          Nessun canone mensile, nessun costo nascosto e nessun vincolo. Inizi gratis e, se desideri il massimo per la tua impresa, sblocchi la versione PRO con un <strong>acquisto a vita una tantum (Lifetime)</strong>.
+          Scegli la configurazione più adatta alle tue esigenze di cantiere: inizia con la versione gratuita o passa alla versione PRO per sbloccare tutti gli strumenti avanzati.
         </p>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "28px", maxWidth: "940px", margin: "0 auto" }}>
@@ -496,17 +496,9 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
               >
                 Versione Base
               </div>
-              <h3 style={{ fontFamily: "Outfit, sans-serif", fontSize: "1.8rem", margin: "0 0 8px 0" }}>
+              <h3 style={{ fontFamily: "Outfit, sans-serif", fontSize: "1.8rem", margin: "0 0 12px 0" }}>
                 GYPSO Free
               </h3>
-              <div style={{ display: "flex", alignItems: "baseline", gap: "6px", marginBottom: "16px" }}>
-                <span style={{ fontFamily: "Outfit, sans-serif", fontSize: "2.4rem", fontWeight: 700, color: "white" }}>
-                  0 €
-                </span>
-                <span style={{ color: "var(--gypso-text-muted)", fontSize: "0.95rem" }}>
-                  / per sempre
-                </span>
-              </div>
               <p style={{ color: "var(--gypso-text-secondary)", fontSize: "0.92rem", lineHeight: "1.6", marginBottom: "24px" }}>
                 Tutti i calcoli tecnici a tua disposizione per rilievi, verifica di fattibilità e dimensionamento materiali.
               </p>
@@ -583,7 +575,7 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
                 borderRadius: "20px",
               }}
             >
-              Lifetime Una Tantum
+              Versione Completa
             </div>
 
             <div>
@@ -603,17 +595,9 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
               >
                 Consigliato per Professionisti
               </div>
-              <h3 style={{ fontFamily: "Outfit, sans-serif", fontSize: "1.8rem", margin: "0 0 8px 0" }}>
+              <h3 style={{ fontFamily: "Outfit, sans-serif", fontSize: "1.8rem", margin: "0 0 12px 0" }}>
                 GYPSO PRO
               </h3>
-              <div style={{ display: "flex", alignItems: "baseline", gap: "6px", marginBottom: "16px" }}>
-                <span style={{ fontFamily: "Outfit, sans-serif", fontSize: "2.4rem", fontWeight: 700, color: "var(--gypso-cyan)" }}>
-                  Licenza PRO
-                </span>
-                <span style={{ color: "var(--gypso-text-secondary)", fontSize: "0.95rem" }}>
-                  / acquisto a vita
-                </span>
-              </div>
               <p style={{ color: "var(--gypso-text-secondary)", fontSize: "0.92rem", lineHeight: "1.6", marginBottom: "24px" }}>
                 Tutto ciò che serve per gestire commesse, contratti e preventivi aziendali con il massimo rigore formale.
               </p>
@@ -653,7 +637,7 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "0.92rem" }}>
                   <CheckCircle2 size={18} style={{ color: "var(--gypso-green)", flexShrink: 0 }} />
-                  <span>Acquisto verificato tramite Google Play / App Store (Ripristinabile a vita)</span>
+                  <span>Acquisto verificato e ripristinabile tramite Google Play / App Store</span>
                 </div>
               </div>
             </div>
@@ -705,7 +689,7 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
               <h3 style={{ fontFamily: "Outfit", fontSize: "1.2rem", margin: 0 }}>Identità Store & In-App Purchase</h3>
             </div>
             <p style={{ fontSize: "0.92rem", color: "var(--gypso-text-secondary)", lineHeight: "1.6" }}>
-              Package Android ufficiale: <code>com.tosquidev.gypso</code>. Convalida acquisti una tantum gestita tramite RevenueCat SDK (Product ID: <code>gypso_full_v1</code>).
+              Package Android ufficiale: <code>com.tosquidev.gypso</code>. Gestione acquisti in-app integrata tramite RevenueCat SDK (Product ID: <code>gypso_full_v1</code>).
             </p>
           </div>
 
@@ -752,8 +736,8 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
             Editor CAD 2D
           </a>
           <span style={{ color: "var(--gypso-text-muted)" }}>•</span>
-          <a href="#plans" style={{ color: "var(--gypso-cyan)", textDecoration: "none", fontSize: "0.85rem" }}>
-            Piani & Prezzi
+          <a href="#pro-features" style={{ color: "var(--gypso-cyan)", textDecoration: "none", fontSize: "0.85rem" }}>
+            Versione PRO
           </a>
           <span style={{ color: "var(--gypso-text-muted)" }}>•</span>
           <Link to="/gypso/privacy" style={{ color: "var(--gypso-cyan)", textDecoration: "none", fontSize: "0.85rem" }}>

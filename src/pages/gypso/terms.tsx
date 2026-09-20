@@ -83,13 +83,13 @@ const termsData: Record<SupportedLang, Content> = {
         ],
       },
       {
-        title: "6. Modello di Licenza: Versione Free e Acquisto Premium Una Tantum",
+        title: "6. Modello di Licenza: Versione Free e Versione PRO",
         paragraphs: [
-          "GYPSO adotta un modello freemium chiaro e trasparente a tutela del professionista:",
+          "GYPSO adotta un modello chiaro a supporto del professionista:",
         ],
         list: [
           "Versione Free: Include calcoli rapidi e risultati tecnici per un massimo di 3 progetti salvati (il progetto dimostrativo non è conteggiato). I PDF includono un watermark di prova. Richiede connessione internet attiva per annunci pubblicitari (Google Mobile Ads).",
-          "Versione PRO / Premium: Sbloccabile tramite acquisto in-app una tantum (licenza a vita non-consumable, senza abbonamenti periodici ricorrenti). Include progetti illimitati, operatività 100% offline, esportazione PDF senza watermark, firma cliente su touchscreen, esportazione DXF CAD e rimozione definitiva della pubblicità.",
+          "Versione PRO / Premium: Sbloccabile tramite acquisto in-app (licenza PRO). Include progetti illimitati, operatività 100% offline, esportazione PDF senza watermark, firma cliente su touchscreen, esportazione DXF CAD e rimozione definitiva della pubblicità.",
           "Acquisti e Rimborsi: I pagamenti sono elaborati unicamente da Google Play Store o Apple App Store, secondo i loro termini di servizio. La licenza può essere ripristinata in qualsiasi momento tramite il tasto 'Ripristina acquisti'.",
         ],
       },
@@ -147,13 +147,13 @@ const termsData: Record<SupportedLang, Content> = {
         ],
       },
       {
-        title: "6. Licensing Model: Free Tier and One-Time Lifetime PRO Purchase",
+        title: "6. Licensing Model: Free Tier and PRO Version",
         paragraphs: [
-          "GYPSO employs a clear freemium licensing structure:",
+          "GYPSO employs a clear licensing structure:",
         ],
         list: [
           "Free Tier: Full technical calculations for up to 3 saved projects (demo project excluded). Generated PDFs contain a watermark. Requires an active internet connection to serve ads (Google Mobile Ads).",
-          "PRO / Premium Tier: Unlocked via a one-time in-app purchase (lifetime non-consumable license, no recurring subscription). Unlocks unlimited projects, 100% offline operation, unwatermarked PDFs, touchscreen signatures, DXF CAD export, and complete ad removal.",
+          "PRO / Premium Tier: Unlocked via an in-app purchase (PRO license). Unlocks unlimited projects, 100% offline operation, unwatermarked PDFs, touchscreen signatures, DXF CAD export, and complete ad removal.",
           "Billing & Refunds: Payments and refund requests are handled exclusively by Google Play Store or Apple App Store according to their store terms. Licenses can be restored at any time using the 'Restore Purchases' feature.",
         ],
       },
@@ -210,13 +210,13 @@ const termsData: Record<SupportedLang, Content> = {
         ],
       },
       {
-        title: "6. Lizenzmodell: Kostenlose Version und Einmaliger PRO-Kauf",
+        title: "6. Lizenzmodell: Kostenlose Version und PRO-Version",
         paragraphs: [
           "GYPSO bietet ein transparentes Lizenzmodell:",
         ],
         list: [
           "Kostenlose Version: Berechnungen für bis zu 3 gespeicherte Projekte. PDF mit Wasserzeichen. Erfordert Internetverbindung für Werbeeinblendungen.",
-          "PRO / Premium Version: Einmaliger In-App-Kauf (dauerhafte Lifetime-Lizenz, kein Abonnement). Unbegrenzte Projekte, vollständige Offline-Funktion, PDFs ohne Wasserzeichen, Unterschrift auf dem Touchscreen und Werbefreiheit.",
+          "PRO / Premium Version: Freischaltung über In-App-Kauf (PRO-Lizenz). Unbegrenzte Projekte, vollständige Offline-Funktion, PDFs ohne Wasserzeichen, Unterschrift auf dem Touchscreen und Werbefreiheit.",
           "Abrechnung: Zahlungen erfolgen über den Google Play Store oder Apple App Store.",
         ],
       },
@@ -273,13 +273,13 @@ const termsData: Record<SupportedLang, Content> = {
         ],
       },
       {
-        title: "6. Modèle de Licence : Version Gratuite et Achat PRO Unique",
+        title: "6. Modèle de Licence : Version Gratuite et Version PRO",
         paragraphs: [
-          "GYPSO propose un modèle économique transparent :",
+          "GYPSO propose un modèle transparent :",
         ],
         list: [
           "Version Gratuite : Permet jusqu'à 3 projets enregistrés. Devis PDF avec filigrane. Connexion internet requise pour les annonces publicitaires.",
-          "Version PRO / Premium : Déblocage par achat in-app unique (licence perpétuelle à vie, sans abonnement récurrent). Projets illimités, 100% hors-ligne, PDF sans filigrane, signature tactile, export DXF et suppression intégrale des publicités.",
+          "Version PRO / Premium : Déblocage par achat in-app (licence PRO). Projets illimités, 100% hors-ligne, PDF sans filigrane, signature tactile, export DXF et suppression intégrale des publicités.",
           "Paiements : Traités directement par le Google Play Store ou l'Apple App Store.",
         ],
       },
@@ -336,13 +336,13 @@ const termsData: Record<SupportedLang, Content> = {
         ],
       },
       {
-        title: "6. Modelo de Licencia: Versión Gratuita y Compra PRO de Pago Único",
+        title: "6. Modelo de Licencia: Versión Gratuita y Versión PRO",
         paragraphs: [
-          "GYPSO utiliza un modelo freemium transparente:",
+          "GYPSO utiliza un modelo transparente:",
         ],
         list: [
           "Versión Gratuita: Hasta 3 proyectos guardados. PDF con marca de agua. Requiere conexión a internet para anuncios publicitarios.",
-          "Versión PRO / Premium: Pago único integrado (licencia vitalicia sin suscripciones recurrentes). Proyectos ilimitados, funcionamiento 100% sin conexión, PDF sin marca de agua, firma en pantalla, exportación DXF y eliminación total de publicidad.",
+          "Versión PRO / Premium: Desbloqueo mediante compra in-app (licencia PRO). Proyectos ilimitados, funcionamiento 100% sin conexión, PDF sin marca de agua, firma en pantalla, exportación DXF y eliminación total de publicidad.",
           "Facturación: Los pagos son procesados directamente por Google Play Store o Apple App Store.",
         ],
       },
