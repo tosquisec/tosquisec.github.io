@@ -1,0 +1,1 @@
+{"version":3,"file":"component---src-pages-gypso-privacy-tsx-8d1fad9da431e73e80ae.js","mappings":"kKAEA,UAAeA,EAAsB,O","sources":["webpack://tosqui/./src/pages/gypso/privacy.tsx"],"sourcesContent":["import GypsoPrivacyPolicyPage, { Head } from \"./privacypolicy\"\n\nexport default GypsoPrivacyPolicyPage\nexport { Head }\n"],"names":["GypsoPrivacyPolicyPage"],"sourceRoot":""}

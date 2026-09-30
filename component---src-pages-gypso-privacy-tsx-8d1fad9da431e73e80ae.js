@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunktosqui=self.webpackChunktosqui||[]).push([[344],{4796:function(u,e,t){t.r(e),t.d(e,{Head:function(){return a.Head}});var a=t(1790);e.default=a.default}}]);
+//# sourceMappingURL=component---src-pages-gypso-privacy-tsx-8d1fad9da431e73e80ae.js.map
