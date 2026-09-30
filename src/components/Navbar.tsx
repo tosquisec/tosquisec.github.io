@@ -6,10 +6,23 @@ import { Shield, Languages, Menu, X, ArrowLeft } from "lucide-react"
 
 export type SupportedPrivacyLang = "it" | "en" | "de" | "fr" | "es"
 
+/** GYPSO è tradotto in 11 lingue (come l'app): il suo selettore ne espone una
+ *  in più rispetto a quello di Allerta Italia, che resta a 5. */
+export type SupportedGypsoLang =
+  | SupportedPrivacyLang
+  | "pt"
+  | "ro"
+  | "nl"
+  | "pl"
+  | "uk"
+  | "ar"
+
 interface NavbarProps {
   mode?: "home" | "gypso" | "gypso-privacy" | "allertaitalia-privacy"
-  privacyLang?: SupportedPrivacyLang
-  setPrivacyLang?: (lang: SupportedPrivacyLang) => void
+  privacyLang?: SupportedPrivacyLang | SupportedGypsoLang
+  setPrivacyLang?: (lang: any) => void
+  /** Se true, il selettore lingua usa l'elenco completo a 11 lingue di GYPSO. */
+  fullLanguageList?: boolean
 }
 
 const sectionIds = ["experience", "skills", "bugbounty", "education", "contact"]
@@ -22,12 +35,33 @@ const privacyLangsList: { code: SupportedPrivacyLang; flag: string; label: strin
   { code: "es", flag: "🇪🇸", label: "ES" },
 ]
 
+/** Le 11 lingue effettive dell'app GYPSO (`lib/config/l10n_*.dart`). */
+const gypsoLangsList: { code: SupportedGypsoLang; flag: string; label: string }[] = [
+  { code: "it", flag: "🇮🇹", label: "IT" },
+  { code: "en", flag: "🇬🇧", label: "EN" },
+  { code: "de", flag: "🇩🇪", label: "DE" },
+  { code: "fr", flag: "🇫🇷", label: "FR" },
+  { code: "es", flag: "🇪🇸", label: "ES" },
+  { code: "pt", flag: "🇵🇹", label: "PT" },
+  { code: "ro", flag: "🇷🇴", label: "RO" },
+  { code: "nl", flag: "🇳🇱", label: "NL" },
+  { code: "pl", flag: "🇵🇱", label: "PL" },
+  { code: "uk", flag: "🇺🇦", label: "UK" },
+  { code: "ar", flag: "🇸🇦", label: "AR" },
+]
+
 export const Navbar: React.FC<NavbarProps> = ({
   mode = "home",
   privacyLang = "it",
   setPrivacyLang,
+  fullLanguageList = false,
 }) => {
   const { language, setLanguage, t } = useLanguage()
+
+  // Il selettore condiviso serve Allerta Italia (5 lingue). Il portale GYPSO
+  // chiede l'elenco completo: `gypsoLangList` sceglie quello giusto.
+  const gypsoLangList = fullLanguageList ? gypsoLangsList : privacyLangsList
+
 
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState("")
@@ -205,7 +239,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {(mode === "gypso-privacy" || mode === "allertaitalia-privacy") && setPrivacyLang && (
           <div className="site-nav-lang-group">
-            {privacyLangsList.map(lang => (
+            {gypsoLangList.map(lang => (
               <button
                 key={lang.code}
                 onClick={() => setPrivacyLang(lang.code)}
@@ -303,7 +337,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               </Link>
               {setPrivacyLang && (
                 <div style={{ marginTop: "1rem", paddingTop: "1rem", borderTop: "1px solid var(--glass-border)", display: "flex", flexWrap: "wrap", gap: "6px", justifyContent: "center" }}>
-                  {privacyLangsList.map(lang => (
+                  {gypsoLangList.map(lang => (
                     <button
                       key={lang.code}
                       onClick={() => {

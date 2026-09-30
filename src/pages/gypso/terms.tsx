@@ -19,22 +19,13 @@ import {
   MOTION,
   CURVES,
 } from "../../components/gypso/GypsoAnimations"
-
-type SupportedLang = "it" | "en" | "de" | "fr" | "es"
-
-interface LanguageOption {
-  code: SupportedLang
-  flag: string
-  label: string
-}
-
-const languages: LanguageOption[] = [
-  { code: "it", flag: "🇮🇹", label: "Italiano" },
-  { code: "en", flag: "🇬🇧", label: "English" },
-  { code: "de", flag: "🇩🇪", label: "Deutsch" },
-  { code: "fr", flag: "🇫🇷", label: "Français" },
-  { code: "es", flag: "🇪🇸", label: "Español" },
-]
+import {
+  UI_STRINGS,
+  detectLanguage,
+  isRtl,
+  type SupportedLang,
+} from "../../components/gypso/languages"
+import { TERMS_EXTRA } from "../../components/gypso/legalContent"
 
 interface Section {
   title: string
@@ -47,6 +38,36 @@ interface Content {
   title: string
   lastUpdated: string
   sections: Section[]
+}
+
+/** Riepilogo "in breve": etichetta di navigazione, tradotta a mano per 11 lingue. */
+const BRIEF: Record<SupportedLang, string> = {
+  it: "GYPSO è uno strumento di calcolo, non un software strutturale certificato. I quantitativi sono stime orientative; la responsabilità della posa a regola d'arte, del carico sul veicolo e del contenuto dei preventivi resta del professionista che li firma. Nessun dato lascia il dispositivo.",
+  en: "GYPSO is a calculation tool, not certified structural software. Quantities are indicative estimates; responsibility for proper installation, vehicle loading and the contents of estimates rests with the professional who signs them. No data leaves your device.",
+  de: "GYPSO ist ein Berechnungswerkzeug, keine zertifizierte Statik-Software. Die Mengen sind Richtwerte; die Verantwortung für fachgerechte Montage, Fahrzeugbeladung und den Inhalt der Angebote liegt beim unterzeichnenden Fachbetrieb. Keine Daten verlassen das Gerät.",
+  fr: "GYPSO est un outil de calcul, pas un logiciel de calcul structurel certifié. Les quantitatifs sont des estimations indicatives ; la responsabilité de la pose dans les règles de l'art, du chargement du véhicule et du contenu des devis incombe au professionnel qui les signe. Aucune donnée ne quitte l'appareil.",
+  es: "GYPSO es una herramienta de cálculo, no un software estructural certificado. Los quantitativos son estimaciones orientativas; la responsabilidad de la correcta instalación, de la carga del vehículo y del contenido de los presupuestos recae en el profesional que los firma. Ningún dato sale del dispositivo.",
+  pt: "O GYPSO é uma ferramenta de cálculo, não um software estrutural certificado. As quantidades são estimativas indicativas; a responsabilidade pela instalação correta, pelo carregamento do veículo e pelo conteúdo dos orçamentos é do profissional que os assina. Nenhum dado sai do dispositivo.",
+  ro: "GYPSO este un instrument de calcul, nu un software structural certificat. Cantitățile sunt estimări orientative; responsabilitatea pentru montajul corect, încărcarea vehiculului și conținutul devizelor revine profesionistului care le semnează. Niciun dat nu părăsește dispozitivul.",
+  nl: "GYPSO is een rekenhulp, geen gecertificeerde constructiesoftware. De hoeveelheden zijn indicatieve schattingen; de verantwoordelijkheid voor vakkundige montage, voertuigbelading en de inhoud van offertes ligt bij de professional die ze ondertekent. Geen gegevens verlaten het toestel.",
+  pl: "GYPSO to narzędzie obliczeniowe, a nie certyfikowane oprogramowanie konstrukcyjne. Ilości są szacunkowe; odpowiedzialność za prawidłowy montaż, załadunek pojazdu i treść kosztorysów ponosi wykonawca, który je podpisuje. Żadne dane nie opuszczają urządzenia.",
+  uk: "GYPSO — це розрахунковий інструмент, а не сертифіковане конструкторське ПЗ. Кількості є орієнтовними; відповідальність за правильний монтаж, завантаження автомобіля та зміст кошторисів несе майстер, який їх підписує. Жодні дані не залишають пристрій.",
+  ar: "GYPSO أداة حسابية وليس برنامج حسابات إنشائية معتمداً. الكميات تقديرية إرشادية؛ تقع مسؤولية التركيب السليم وحمولة المركبة ومحتوى عروض الأسعار على عاتق المهني الذي يوقّعها. لا تغادر أي بيانات الجهاز.",
+}
+
+/** Chip di testata, tradotti per non lasciare testo italiano nelle altre lingue. */
+const CHIPS: Record<SupportedLang, string[]> = {
+  it: ["Disclaimer di cantiere", "Free & PRO"],
+  en: ["Site disclaimer", "Free & PRO"],
+  de: ["Baustellen-Haftungsausschluss", "Free & PRO"],
+  fr: ["Avertissement chantier", "Free & PRO"],
+  es: ["Descargo de obra", "Free & PRO"],
+  pt: ["Aviso de obra", "Free & PRO"],
+  ro: ["Declinare de șantier", "Free & PRO"],
+  nl: ["Bouwplaats-disclaimer", "Free & PRO"],
+  pl: ["Zastrzeżenie budowlane", "Free & PRO"],
+  uk: ["Застереження щодо будівництва", "Free & PRO"],
+  ar: ["إخلاء مسؤولية موقع العمل", "Free & PRO"],
 }
 
 const termsData: Record<SupportedLang, Content> = {
@@ -367,6 +388,8 @@ const termsData: Record<SupportedLang, Content> = {
       },
     ],
   },
+  /* pt, ro, nl, pl, uk, ar — estratte da lib/config/l10n_*.dart dell'app. */
+  ...TERMS_EXTRA,
 }
 
 const sectionIcons = [
@@ -481,18 +504,7 @@ const GypsoTermsPage: React.FC<PageProps> = () => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const userLang = (navigator.language || (navigator as any).userLanguage || "it").toLowerCase()
-      if (userLang.startsWith("en")) {
-        setCurrentLang("en")
-      } else if (userLang.startsWith("de")) {
-        setCurrentLang("de")
-      } else if (userLang.startsWith("fr")) {
-        setCurrentLang("fr")
-      } else if (userLang.startsWith("es")) {
-        setCurrentLang("es")
-      } else {
-        setCurrentLang("it")
-      }
+      setCurrentLang(detectLanguage(navigator.language || (navigator as any).userLanguage || "it"))
     }
   }, [])
 
@@ -502,25 +514,36 @@ const GypsoTermsPage: React.FC<PageProps> = () => {
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
+  // L'arabo è RTL: il documento intero segue la direzione della lingua.
+  useEffect(() => {
+    if (typeof document === "undefined") return
+    document.documentElement.dir = isRtl(currentLang) ? "rtl" : "ltr"
+    document.documentElement.lang = currentLang
+  }, [currentLang])
+
   const currentContent = termsData[currentLang]
   const tocItems = currentContent.sections.map((s) => ({ id: slugify(s.title), title: s.title }))
 
-  const tocLabel =
-    currentLang === "it" ? "Indice dei contenuti" : currentLang === "de" ? "Inhaltsverzeichnis" : currentLang === "fr" ? "Table des matières" : currentLang === "es" ? "Índice de contenidos" : "Table of contents"
-
-  const homeLabel =
-    currentLang === "it" ? "GYPSO Home" : currentLang === "de" ? "GYPSO Startseite" : currentLang === "fr" ? "Accueil GYPSO" : currentLang === "es" ? "Inicio GYPSO" : "GYPSO Home"
-
-  const privacyLabel =
-    currentLang === "it" ? "Informativa Privacy" : currentLang === "de" ? "Datenschutzerklärung" : currentLang === "fr" ? "Politique de Confidentialité" : currentLang === "es" ? "Política de Privacidad" : "Privacy Policy"
+  const ui = UI_STRINGS[currentLang]
+  const tocLabel = ui.toc
+  const homeLabel = ui.backHome
+  const privacyLabel = ui.privacy
+  const backTopLabel = ui.backTop
+  const chips = CHIPS[currentLang]
+  const rtl = isRtl(currentLang)
 
   return (
     <LanguageProvider>
       <GypsoMotionProvider>
         <GypsoReadingProgress />
-        <Navbar mode="gypso-privacy" privacyLang={currentLang} setPrivacyLang={setCurrentLang} />
+        <Navbar
+          mode="gypso-privacy"
+          privacyLang={currentLang}
+          setPrivacyLang={setCurrentLang}
+          fullLanguageList
+        />
 
-        <div className="gypso-page" style={{ paddingTop: 0 }}>
+        <div className="gypso-page" style={{ paddingTop: 0 }} dir={rtl ? "rtl" : "ltr"}>
           <div className="gypso-bg-mesh" />
           <div className="gypso-orb gypso-orb-1" />
           <div className="gypso-orb gypso-orb-2" />
@@ -538,10 +561,10 @@ const GypsoTermsPage: React.FC<PageProps> = () => {
                       <FileText size={14} /> EULA
                     </span>
                     <span className="gypso-chip" style={{ borderColor: "rgba(245, 158, 11, 0.32)", background: "rgba(245, 158, 11, 0.09)", color: "#fbbf24" }}>
-                      Disclaimer di cantiere
+                      {chips[0]}
                     </span>
                     <span className="gypso-chip" style={{ borderColor: "rgba(0, 230, 118, 0.28)", background: "rgba(0, 230, 118, 0.08)", color: "var(--gypso-green)" }}>
-                      Free & PRO
+                      {chips[1]}
                     </span>
                     <span>{currentContent.lastUpdated}</span>
                   </div>
@@ -551,9 +574,7 @@ const GypsoTermsPage: React.FC<PageProps> = () => {
               {/* Sintesi onesta del contratto, in tre righe */}
               <GypsoReveal delay={0.06}>
                 <div className="gypso-legal-note">
-                  <strong>In breve:</strong> GYPSO è uno strumento di calcolo, non un software strutturale certificato.
-                  I quantitativi sono stime orientative; la responsabilità della posa a regola d'arte, del carico sul
-                  veicolo e del contenuto dei preventivi resta del professionista che li firma. Nessun dato lascia il dispositivo.
+                  <strong>{ui.brief}</strong> {BRIEF[currentLang]}
                 </div>
               </GypsoReveal>
 
@@ -596,7 +617,7 @@ const GypsoTermsPage: React.FC<PageProps> = () => {
                 <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", justifyContent: "center", marginBottom: "12px" }}>
                   <Link to="/gypso" style={{ color: "var(--gypso-cyan)", textDecoration: "none", fontSize: "0.85rem" }}>GYPSO App</Link>
                   <span style={{ color: "var(--gypso-text-muted)" }}>•</span>
-                  <Link to="/gypso/privacy" style={{ color: "var(--gypso-cyan)", textDecoration: "none", fontSize: "0.85rem" }}>Informativa Privacy</Link>
+                  <Link to="/gypso/privacy" style={{ color: "var(--gypso-cyan)", textDecoration: "none", fontSize: "0.85rem" }}>{ui.privacy}</Link>
                   <span style={{ color: "var(--gypso-text-muted)" }}>•</span>
                   <Link to="/" style={{ color: "var(--gypso-cyan)", textDecoration: "none", fontSize: "0.85rem" }}>Portfolio Antonio Squillace</Link>
                 </div>
@@ -611,7 +632,7 @@ const GypsoTermsPage: React.FC<PageProps> = () => {
           type="button"
           className="gypso-back-top"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          aria-label="Torna su"
+          aria-label={backTopLabel}
           initial={{ opacity: 0, scale: 0.8, y: 12 }}
           animate={showTop ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.8, y: 12 }}
           transition={{ duration: MOTION.medium, ease: CURVES.emphasized }}

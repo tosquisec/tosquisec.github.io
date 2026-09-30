@@ -19,22 +19,13 @@ import {
   MOTION,
   CURVES,
 } from "../../components/gypso/GypsoAnimations"
-
-type SupportedLang = "it" | "en" | "de" | "fr" | "es"
-
-interface LanguageOption {
-  code: SupportedLang
-  flag: string
-  label: string
-}
-
-const languages: LanguageOption[] = [
-  { code: "it", flag: "🇮🇹", label: "Italiano" },
-  { code: "en", flag: "🇬🇧", label: "English" },
-  { code: "de", flag: "🇩🇪", label: "Deutsch" },
-  { code: "fr", flag: "🇫🇷", label: "Français" },
-  { code: "es", flag: "🇪🇸", label: "Español" },
-]
+import {
+  UI_STRINGS,
+  detectLanguage,
+  isRtl,
+  type SupportedLang,
+} from "../../components/gypso/languages"
+import { POLICY_EXTRA } from "../../components/gypso/legalContent"
 
 interface Section {
   title: string
@@ -46,6 +37,39 @@ interface Content {
   title: string
   lastUpdated: string
   sections: Section[]
+}
+
+/**
+ * Il riepilogo "in breve" è l'unico testo non presente nell'app: è un'etichetta
+ * di navigazione, quindi va tradotto a mano per tutte e 11 le lingue.
+ */
+const BRIEF: Record<SupportedLang, string> = {
+  it: "nessun progetto, preventivo o dato cliente lascia il tuo dispositivo. GYPSO non possiede un backend: gli unici soggetti terzi coinvolti sono Google Mobile Ads (pubblicità, con consenso UMP nel SEE) e RevenueCat (acquisti in-app tramite gli store).",
+  en: "no project, estimate or client record ever leaves your device. GYPSO has no backend: the only third parties involved are Google Mobile Ads (advertising, with UMP consent in the EEA) and RevenueCat (in-app purchases through the stores).",
+  de: "kein Projekt, Angebot oder Kundendatensatz verlässt jemals Ihr Gerät. GYPSO hat kein Backend: einzige beteiligte Dritte sind Google Mobile Ads (Werbung, mit UMP-Einwilligung im EWR) und RevenueCat (In-App-Käufe über die Stores).",
+  fr: "aucun projet, devis ou donnée client ne quitte votre appareil. GYPSO n'a pas de backend : les seuls tiers impliqués sont Google Mobile Ads (publicité, avec consentement UMP dans l'EEE) et RevenueCat (achats in-app via les stores).",
+  es: "ningún proyecto, presupuesto o dato de cliente abandona su dispositivo. GYPSO no tiene backend: los únicos terceros implicados son Google Mobile Ads (publicidad, con consentimiento UMP en el EEE) y RevenueCat (compras in-app a través de las tiendas).",
+  pt: "nenhum projeto, orçamento ou dado de cliente sai do seu dispositivo. O GYPSO não tem backend: os únicos terceiros envolvidos são o Google Mobile Ads (publicidade, com consentimento UMP no EEE) e o RevenueCat (compras na aplicação através das lojas).",
+  ro: "niciun proiect, deviz sau date de client nu părăsește dispozitivul dumneavoastră. GYPSO nu are backend: singurii terți implicați sunt Google Mobile Ads (publicitate, cu consimțământ UMP în SEE) și RevenueCat (achiziții în aplicație prin magazine).",
+  nl: "geen enkel project, geen enkele offerte of klantgegeven verlaat uw toestel. GYPSO heeft geen backend: de enige betrokken derden zijn Google Mobile Ads (advertenties, met UMP-toestemming in de EER) en RevenueCat (in-app aankopen via de stores).",
+  pl: "żaden projekt, kosztorys ani dane klienta nie opuszczają Twojego urządzenia. GYPSO nie posiada backendu: jedynymi zaangażowanymi podmiotami trzecimi są Google Mobile Ads (reklamy, za zgodą UMP w EOG) oraz RevenueCat (zakupy w aplikacji przez sklepy).",
+  uk: "жоден проєкт, кошторис чи дані клієнта не залишають ваш пристрій. GYPSO не має бекенду: єдині залучені треті сторони — Google Mobile Ads (реклама, за згодою UMP у ЄЕЗ) та RevenueCat (покупки в додатку через магазини).",
+  ar: "لا يغادر أي مشروع أو عرض أسعار أو بيانات عميل جهازك مطلقاً. لا يمتلك GYPSO خوادم خلفية: الأطراف الثالثة الوحيدة المعنية هي Google Mobile Ads (الإعلانات، بموافقة UMP في المنطقة الاقتصادية الأوروبية) وRevenueCat (المشتريات داخل التطبيق عبر المتاجر).",
+}
+
+/** Chip di testata: etichette brevi tradotte per non lasciare testo italiano. */
+const CHIPS: Record<SupportedLang, string[]> = {
+  it: ["Privacy by Design", "100% Locale"],
+  en: ["Privacy by Design", "100% Local"],
+  de: ["Privacy by Design", "100% Lokal"],
+  fr: ["Privacy by Design", "100% Local"],
+  es: ["Privacy by Design", "100% Local"],
+  pt: ["Privacy by Design", "100% Local"],
+  ro: ["Privacy by Design", "100% Local"],
+  nl: ["Privacy by Design", "100% Lokaal"],
+  pl: ["Privacy by Design", "100% Lokalnie"],
+  uk: ["Privacy by Design", "100% Локально"],
+  ar: ["الخصوصية حسب التصميم", "محلي 100%"],
 }
 
 const policyData: Record<SupportedLang, Content> = {
@@ -284,6 +308,8 @@ const policyData: Record<SupportedLang, Content> = {
       },
     ],
   },
+  /* pt, ro, nl, pl, uk, ar — estratte da lib/config/l10n_*.dart dell'app. */
+  ...POLICY_EXTRA,
 }
 
 /* Icona associata a ciascun blocco, per lingua indipendente dall'indice. */
@@ -384,18 +410,7 @@ const GypsoPrivacyPolicyPage: React.FC<PageProps> = () => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const userLang = (navigator.language || (navigator as any).userLanguage || "it").toLowerCase()
-      if (userLang.startsWith("en")) {
-        setCurrentLang("en")
-      } else if (userLang.startsWith("de")) {
-        setCurrentLang("de")
-      } else if (userLang.startsWith("fr")) {
-        setCurrentLang("fr")
-      } else if (userLang.startsWith("es")) {
-        setCurrentLang("es")
-      } else {
-        setCurrentLang("it")
-      }
+      setCurrentLang(detectLanguage(navigator.language || (navigator as any).userLanguage || "it"))
     }
   }, [])
 
@@ -405,33 +420,36 @@ const GypsoPrivacyPolicyPage: React.FC<PageProps> = () => {
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
+  // L'arabo è RTL: l'intero documento deve seguirne la direzione.
+  useEffect(() => {
+    if (typeof document === "undefined") return
+    document.documentElement.dir = isRtl(currentLang) ? "rtl" : "ltr"
+    document.documentElement.lang = currentLang
+  }, [currentLang])
+
   const currentContent = policyData[currentLang]
   const tocItems = currentContent.sections.map((s) => ({ id: slugify(s.title), title: s.title }))
 
-  const tocLabel =
-    currentLang === "it"
-      ? "Indice dei contenuti"
-      : currentLang === "de"
-      ? "Inhaltsverzeichnis"
-      : currentLang === "fr"
-      ? "Table des matières"
-      : currentLang === "es"
-      ? "Índice de contenidos"
-      : "Table of contents"
-
-  const homeLabel =
-    currentLang === "it" ? "GYPSO Home" : currentLang === "de" ? "GYPSO Startseite" : currentLang === "fr" ? "Accueil GYPSO" : currentLang === "es" ? "Inicio GYPSO" : "GYPSO Home"
-
-  const termsLabel =
-    currentLang === "it" ? "Termini di Servizio (EULA)" : currentLang === "de" ? "Nutzungsbedingungen (EULA)" : currentLang === "fr" ? "Conditions d'utilisation (EULA)" : currentLang === "es" ? "Términos de Servicio (EULA)" : "Terms of Service (EULA)"
+  const ui = UI_STRINGS[currentLang]
+  const tocLabel = ui.toc
+  const homeLabel = ui.backHome
+  const termsLabel = ui.terms
+  const backTopLabel = ui.backTop
+  const chips = CHIPS[currentLang]
+  const rtl = isRtl(currentLang)
 
   return (
     <LanguageProvider>
       <GypsoMotionProvider>
         <GypsoReadingProgress />
-        <Navbar mode="gypso-privacy" privacyLang={currentLang} setPrivacyLang={setCurrentLang} />
+        <Navbar
+          mode="gypso-privacy"
+          privacyLang={currentLang}
+          setPrivacyLang={setCurrentLang}
+          fullLanguageList
+        />
 
-        <div className="gypso-page" style={{ paddingTop: 0 }}>
+        <div className="gypso-page" style={{ paddingTop: 0 }} dir={rtl ? "rtl" : "ltr"}>
           <div className="gypso-bg-mesh" />
           <div className="gypso-orb gypso-orb-1" />
           <div className="gypso-orb gypso-orb-2" />
@@ -449,10 +467,10 @@ const GypsoPrivacyPolicyPage: React.FC<PageProps> = () => {
                       <Shield size={14} /> GDPR
                     </span>
                     <span className="gypso-chip" style={{ borderColor: "rgba(0, 230, 118, 0.28)", background: "rgba(0, 230, 118, 0.08)", color: "var(--gypso-green)" }}>
-                      Privacy by Design
+                      {chips[0]}
                     </span>
                     <span className="gypso-chip" style={{ borderColor: "rgba(156, 39, 176, 0.28)", background: "rgba(156, 39, 176, 0.08)", color: "#ce93d8" }}>
-                      100% Locale
+                      {chips[1]}
                     </span>
                     <span>{currentContent.lastUpdated}</span>
                   </div>
@@ -462,8 +480,7 @@ const GypsoPrivacyPolicyPage: React.FC<PageProps> = () => {
               {/* Riepilogo in tre punti: la promessa dell'app, leggibile in 5 secondi */}
               <GypsoReveal delay={0.06}>
                 <div className="gypso-legal-note">
-                  <strong>In breve:</strong> nessun progetto, preventivo o dato cliente lascia il tuo dispositivo.
-                  GYPSO non possiede un backend: gli unici soggetti terzi coinvolti sono Google Mobile Ads (pubblicità, con consenso UMP nel SEE) e RevenueCat (acquisti in-app tramite gli store).
+                  <strong>{ui.brief}</strong> {BRIEF[currentLang]}
                 </div>
               </GypsoReveal>
 
@@ -505,7 +522,7 @@ const GypsoPrivacyPolicyPage: React.FC<PageProps> = () => {
                 <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", justifyContent: "center", marginBottom: "12px" }}>
                   <Link to="/gypso" style={{ color: "var(--gypso-cyan)", textDecoration: "none", fontSize: "0.85rem" }}>GYPSO App</Link>
                   <span style={{ color: "var(--gypso-text-muted)" }}>•</span>
-                  <Link to="/gypso/terms" style={{ color: "var(--gypso-cyan)", textDecoration: "none", fontSize: "0.85rem" }}>Termini di Servizio (EULA)</Link>
+                  <Link to="/gypso/terms" style={{ color: "var(--gypso-cyan)", textDecoration: "none", fontSize: "0.85rem" }}>{termsLabel}</Link>
                   <span style={{ color: "var(--gypso-text-muted)" }}>•</span>
                   <Link to="/" style={{ color: "var(--gypso-cyan)", textDecoration: "none", fontSize: "0.85rem" }}>Portfolio Antonio Squillace</Link>
                 </div>
@@ -520,7 +537,7 @@ const GypsoPrivacyPolicyPage: React.FC<PageProps> = () => {
           type="button"
           className="gypso-back-top"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          aria-label="Torna su"
+          aria-label={backTopLabel}
           initial={{ opacity: 0, scale: 0.8, y: 12 }}
           animate={showTop ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.8, y: 12 }}
           transition={{ duration: MOTION.medium, ease: CURVES.emphasized }}
