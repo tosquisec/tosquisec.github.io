@@ -111,13 +111,38 @@ export const Navbar: React.FC<NavbarProps> = ({
     { href: "/gypso/terms", label: "Termini di Servizio", isExternal: true },
   ]
 
-  // Navigation items for Privacy / Legal Mode
-  const privacyNavLinks = [
-    { href: "/gypso", label: "GYPSO Home", isExternal: true },
-    { href: "/gypso/privacy", label: "Privacy Policy", isExternal: true },
-    { href: "/gypso/terms", label: "Termini di Servizio", isExternal: true },
-    { href: "/", label: "Portfolio", isExternal: true },
-  ]
+  // Navigation items for Privacy / Legal Mode.
+  // Le etichette seguono la lingua scelta nel selettore: in modalità GYPSO le
+  // pagine legali sono tradotte in 11 lingue, quindi anche il menu deve esserlo.
+  const legalNavLabels: Record<string, { home: string; privacy: string; terms: string; portfolio: string }> = {
+    it: { home: "GYPSO Home", privacy: "Informativa Privacy", terms: "Termini di Servizio", portfolio: "Portfolio" },
+    en: { home: "GYPSO Home", privacy: "Privacy Policy", terms: "Terms of Service", portfolio: "Portfolio" },
+    de: { home: "GYPSO Startseite", privacy: "Datenschutzerklärung", terms: "Nutzungsbedingungen", portfolio: "Portfolio" },
+    fr: { home: "Accueil GYPSO", privacy: "Politique de Confidentialité", terms: "Conditions d'utilisation", portfolio: "Portfolio" },
+    es: { home: "Inicio GYPSO", privacy: "Política de Privacidad", terms: "Términos de Servicio", portfolio: "Portfolio" },
+    pt: { home: "Início GYPSO", privacy: "Política de Privacidade", terms: "Termos de Serviço", portfolio: "Portefólio" },
+    ro: { home: "Pagina GYPSO", privacy: "Politica de Confidențialitate", terms: "Termeni de Utilizare", portfolio: "Portofoliu" },
+    nl: { home: "GYPSO Startpagina", privacy: "Privacybeleid", terms: "Servicevoorwaarden", portfolio: "Portfolio" },
+    pl: { home: "Strona GYPSO", privacy: "Polityka prywatności", terms: "Warunki korzystania", portfolio: "Portfolio" },
+    uk: { home: "Головна GYPSO", privacy: "Політика конфіденційності", terms: "Умови користування", portfolio: "Портфоліо" },
+    ar: { home: "الصفحة الرئيسية GYPSO", privacy: "سياسة الخصوصية", terms: "شروط الخدمة", portfolio: "معرض الأعمال" },
+  }
+  const isGypsoLegal = mode === "gypso-privacy" && fullLanguageList
+  const navL = legalNavLabels[String(privacyLang)] ?? legalNavLabels.it
+
+  const privacyNavLinks = isGypsoLegal
+    ? [
+        { href: "/gypso", label: navL.home, isExternal: true },
+        { href: "/gypso/privacy", label: navL.privacy, isExternal: true },
+        { href: "/gypso/terms", label: navL.terms, isExternal: true },
+        { href: "/", label: navL.portfolio, isExternal: true },
+      ]
+    : [
+        { href: "/gypso", label: "GYPSO Home", isExternal: true },
+        { href: "/gypso/privacy", label: "Privacy Policy", isExternal: true },
+        { href: "/gypso/terms", label: "Termini di Servizio", isExternal: true },
+        { href: "/", label: "Portfolio", isExternal: true },
+      ]
 
   // Navigation items for Allerta Italia Privacy / Legal Mode
   const allertaItaliaPrivacyNavLinks = [
@@ -323,18 +348,11 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {mode === "gypso-privacy" && (
             <>
-              <Link to="/gypso" onClick={closeMenu}>
-                GYPSO Home
-              </Link>
-              <Link to="/gypso/privacy" onClick={closeMenu}>
-                Privacy Policy
-              </Link>
-              <Link to="/gypso/terms" onClick={closeMenu}>
-                Termini di Servizio
-              </Link>
-              <Link to="/" onClick={closeMenu}>
-                Torna al Portfolio
-              </Link>
+              {privacyNavLinks.map((link) => (
+                <Link key={link.href} to={link.href} onClick={closeMenu}>
+                  {link.label}
+                </Link>
+              ))}
               {setPrivacyLang && (
                 <div style={{ marginTop: "1rem", paddingTop: "1rem", borderTop: "1px solid var(--glass-border)", display: "flex", flexWrap: "wrap", gap: "6px", justifyContent: "center" }}>
                   {gypsoLangList.map(lang => (

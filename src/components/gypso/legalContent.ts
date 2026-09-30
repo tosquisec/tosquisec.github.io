@@ -345,7 +345,7 @@ export const POLICY_EXTRA: Record<ExtraLang, LegalContent> = {
   },
   ar: {
     title: "سياسة الخصوصية",
-    lastUpdated: "آخر تحديث: سبتمبر 2026 · v1.0.0",
+    lastUpdated: "آخر تحديث: سبتمبر 2026 — الإصدار 1.0.0",
     sections: [
       {
         title: "1. معمارية خالية من السحاب وتخزين محلي",
@@ -731,7 +731,7 @@ export const TERMS_EXTRA: Record<ExtraLang, LegalContent> = {
   },
   ar: {
     title: "GYPSO — شروط الخدمة",
-    lastUpdated: "آخر تحديث: سبتمبر 2026 · v1.0.0",
+    lastUpdated: "آخر تحديث: سبتمبر 2026 — الإصدار 1.0.0",
     sections: [
       {
         title: "1. موضوع البرنامج والغرض منه",

@@ -364,9 +364,21 @@ const PolicyBlock: React.FC<{
   </GypsoStaggerItem>
 )
 
-/** Indice laterale sticky con evidenziazione della sezione attiva. */
+/** Indice laterale sticky con evidenziazione della sezione attiva.
+ *  Su mobile parte richiuso: prima occupava tutta la prima schermata. */
 const TocAside: React.FC<{ items: { id: string; title: string }[]; label: string }> = ({ items, label }) => {
   const [active, setActive] = React.useState(items[0]?.id ?? "")
+  const [open, setOpen] = React.useState(true)
+
+  // Richiude l'indice sotto i 980px (stessa soglia della media query CSS).
+  React.useEffect(() => {
+    if (typeof window === "undefined" || !window.matchMedia) return
+    const mq = window.matchMedia("(max-width: 980px)")
+    const apply = () => setOpen(!mq.matches)
+    apply()
+    mq.addEventListener("change", apply)
+    return () => mq.removeEventListener("change", apply)
+  }, [])
 
   React.useEffect(() => {
     if (typeof IntersectionObserver === "undefined") return
@@ -388,8 +400,12 @@ const TocAside: React.FC<{ items: { id: string; title: string }[]; label: string
 
   return (
     <aside className="gypso-legal-aside">
-      <div className="gypso-legal-aside-card">
-        <h2 className="gypso-legal-aside-title">{label}</h2>
+      <details
+        className="gypso-legal-aside-card"
+        open={open}
+        onToggle={(e) => setOpen((e.currentTarget as HTMLDetailsElement).open)}
+      >
+        <summary className="gypso-legal-aside-title">{label}</summary>
         <ul className="gypso-legal-toc">
           {items.map((item) => (
             <li key={item.id}>
@@ -399,7 +415,7 @@ const TocAside: React.FC<{ items: { id: string; title: string }[]; label: string
             </li>
           ))}
         </ul>
-      </div>
+      </details>
     </aside>
   )
 }
