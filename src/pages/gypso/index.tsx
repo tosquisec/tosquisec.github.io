@@ -143,10 +143,10 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
   const heroStats = [
     { value: 100, suffix: "% Offline", decimals: 0, label: "Zero Cloud · Storage Locale Cifrato" },
     { value: 11, suffix: " Lingue", decimals: 0, label: "IT, EN, ES, FR, DE, PT, RO, PL, NL, UK, AR" },
-    { value: 4, prefix: "Sfrido < ", suffix: "%", decimals: 0, label: "Algoritmo 1D Bin-Packing Taglio Barre" },
-    { value: 1200, suffix: " kg", decimals: 0, label: "Stima Peso Carico CdS (Patente B)" },
-    { value: 55, suffix: " dB", decimals: 0, label: "Divisori Fonoisolanti ad Alto Abbattimento" },
-    { value: 18.65, suffix: " m²", decimals: 2, label: "Area Poligonale · Formula di Gauss (Shoelace)" },
+    { value: 300, suffix: " cm", decimals: 0, label: "Barre Commerciali · Tagli Ottimizzati BFD" },
+    { value: 1200, suffix: " kg", decimals: 0, label: "Soglia Carico Utile Furgone (Patente B)" },
+    { value: 55, suffix: " dB", decimals: 0, label: "Doppia Parete Acustica su Doppia Orditura" },
+    { value: 3, suffix: " Progetti", decimals: 0, label: "Limite Versione Free (PRO illimitati)" },
   ]
 
   const features = [
@@ -183,7 +183,7 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
       title: "Ottimizzazione Taglio Barre 1D (CSP)",
       text: (
         <>
-          Risolve il <em>Cutting Stock Problem</em> unidimensionale con euristica First-Fit Decreasing (FFD) su barre commerciali da 300 cm o 400 cm. Fornisce la guida sequenziale di taglio per abbattere lo sfrido sotto al 4%.
+          Risolve il <em>Cutting Stock Problem</em> unidimensionale con euristica Best-Fit Decreasing (BFD) su barre commerciali da 300 cm. Il piano di taglio mostra come ogni spezzone è stato assegnato alla barra con il minor spazio residuo, riducendo lo sfrido con guida sequenziale.
         </>
       ),
     },
@@ -209,7 +209,7 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
       title: "Preventivi PDF con Firma Touchscreen",
       text: (
         <>
-          Computo estimativo completo con intestazione ditta, logo, costi manodopera (a ore o a m²), ricarico d'impresa, aliquote IVA agevolate (4%, 10%, 22%), sconto commerciale, arrotondamento rapido a € 50 e riquadro firma cliente (FES eIDAS).
+          Computo estimativo completo con intestazione ditta, logo, costi manodopera (a ore o a m²), ricarico d'impresa, aliquota IVA configurabile (default 10%, modificabile in onboarding per le agevolazioni 4% e 22%), sconto commerciale, arrotondamento rapido a € 50 e riquadro firma cliente (FES eIDAS).
         </>
       ),
     },
@@ -287,8 +287,8 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
       tint: "255, 152, 0",
       step: "03",
       title: "Taglio e distinta",
-      text: "First-Fit Decreasing sulle barre da 300/400 cm: la guida sequenziale di taglio porta lo sfrido sotto al 4% e la distinta esce già ordinata per fornitore.",
-      metric: "Sfrido < 4%",
+      text: "Best-Fit Decreasing sulle barre da 300 cm: ogni spezzone va nella barra con il minor spazio residuo, e la distinta esce già ordinata per fornitore.",
+      metric: "Barre 300 cm",
     },
     {
       icon: <Truck size={20} />,
@@ -422,7 +422,6 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
                     <GypsoCountUp
                       to={stat.value}
                       decimals={stat.decimals}
-                      prefix={stat.prefix}
                       suffix={stat.suffix}
                     />
                   </div>
@@ -948,7 +947,7 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
                             <tspan> m²</tspan>
                           </text>
                           <text x="0" y="14" fill={areaTextColor} fillOpacity="0.7" fontSize="9.5" fontWeight="600" textAnchor="middle">
-                            Perimetro: 17.10 m · Sfrido: &lt; 3%
+                            Perimetro: 17.10 m · 4 Vertici
                           </text>
                         </g>
 
@@ -1160,7 +1159,7 @@ const GypsoIndexPage: React.FC<PageProps> = () => {
                       "PDF professionali senza watermark con logo ditta",
                       "Firma cliente su touchscreen per accettazione offerta",
                       "Listino prezzi personalizzato (materiali e posa oraria/m²)",
-                      "Backup completo ed esportazione cantieri .cart e .zip",
+                      "Backup completo ed esportazione cantieri .cart e .carts (ZIP)",
                       "Documentazione fotografica cantiere illimitata",
                       "Rimozione definitiva di tutta la pubblicità",
                       "Acquisto verificato e ripristinabile tramite Google Play / App Store",
