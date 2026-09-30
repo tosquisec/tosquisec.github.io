@@ -404,6 +404,18 @@ export const GypsoSpotlightCard: React.FC<SpotlightCardProps> = ({
    Serve a vendere la profondità del device senza un video: la stessa idea
    della vista 3D orbitabile in `view_3d_tab.dart`, con `fast` e `layout`
    per non far "sbattere" i bordi.
+
+   NOTA di correttezza (due bug reali risolti qui):
+   1. La `perspective` sta sul PADRE (`.gypso-tilt-stage`), non sull'elemento
+      ruotato. Prima era tutto sullo stesso nodo con `transform-style:
+      preserve-3d`: un figlio con `overflow: hidden` (il telefono) dentro un
+      antenato in preserve-3d fa *cullare* da Chrome il contenuto ruotato →
+      elementi dell'editor CAD sparivano durante l'inclinazione.
+   2. Il calcolo del puntatore usa le dimensioni NON trasformate
+      (`offsetWidth`/`offsetHeight`), non `getBoundingClientRect()` del nodo
+      già ruotato: il bounding-box di un elemento inclinato in 3D è più grande
+      e cambia ad ogni frame, creando un anello di retroazione per cui
+      l'origine percepita del cursore scivolava verso l'alto-sinistra.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 interface TiltProps {
@@ -420,14 +432,26 @@ export const GypsoTilt: React.FC<TiltProps> = ({ children, className = "", max =
     if (reduced) return
     const node = ref.current
     if (!node) return
+    // Misure *non* trasformate: il rect di un nodo ruotato in 3D è un
+    // bounding-box gonfiato che cambia mentre l'animazione procede. Usarlo
+    // qui rende il tilt instabile e fa derivare l'origine del cursore.
     const rect = node.getBoundingClientRect()
-    const px = (event.clientX - rect.left) / rect.width - 0.5
-    const py = (event.clientY - rect.top) / rect.height - 0.5
-    node.style.transform = `perspective(1100px) rotateY(${px * max * 2}deg) rotateX(${
-      -py * max * 2
+    const w = node.offsetWidth || rect.width
+    const h = node.offsetHeight || rect.height
+    // Centro geometrico dell'elemento a riposo (il rect è centrato sullo
+    // stesso punto dell'elemento non trasformato: la proiezione è simmetrica).
+    const originX = rect.left + rect.width / 2 - w / 2
+    const originY = rect.top + rect.height / 2 - h / 2
+    const px = (event.clientX - originX) / w - 0.5
+    const py = (event.clientY - originY) / h - 0.5
+    const cl = (v: number) => Math.max(-0.5, Math.min(0.5, v))
+    const cpx = cl(px)
+    const cpy = cl(py)
+    node.style.transform = `perspective(1100px) rotateY(${cpx * max * 2}deg) rotateX(${
+      -cpy * max * 2
     }deg)`
-    node.style.setProperty("--tilt-x", `${px}`)
-    node.style.setProperty("--tilt-y", `${py}`)
+    node.style.setProperty("--tilt-x", `${cpx}`)
+    node.style.setProperty("--tilt-y", `${cpy}`)
   }
 
   const onLeave = () => {
@@ -436,7 +460,12 @@ export const GypsoTilt: React.FC<TiltProps> = ({ children, className = "", max =
   }
 
   return (
-    <div ref={ref} className={`gypso-tilt ${className}`} onMouseMove={onMove} onMouseLeave={onLeave}>
+    <div
+      ref={ref}
+      className={`gypso-tilt ${className}`}
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+    >
       {children}
     </div>
   )

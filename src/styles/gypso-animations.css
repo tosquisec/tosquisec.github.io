@@ -181,17 +181,36 @@
 
 /* ── Mockup: inclinazione al puntatore ──────────────────────────────────── */
 
+/* Il tilt ruota l'elemento. Niente `transform-style: preserve-3d` qui:
+   il figlio `.gypso-cad-phone` ha `overflow: hidden`, e in Chrome un
+   discendente con clipping dentro un antenato in preserve-3d viene
+   *cullato* durante la rotazione (sparivano elementi del CAD). La
+   prospettiva è già applicata inline dal transform, quindi il flattening
+   non toglie profondità: la toglie solo al contenuto clippato.
+
+   Niente `will-change: transform` permanente: promuove il nodo a layer
+   rasterizzato e Chrome riusa quello snapshot durante la rotazione, così
+   il contenuto (toolbar traslucida, testo, SVG) appare slavato/sbiadito
+   finché il transform non si assesta. Il nodo viene comunque promosso
+   dal transform stesso, quindi il `will-change` non serviva. */
 .gypso-tilt {
-  transform-style: preserve-3d;
+  transform-style: flat;
+  backface-visibility: hidden;
   transition: transform 0.26s cubic-bezier(0.2, 0, 0, 1);
-  will-change: transform;
 }
 
-/* Riflesso che scorre sul vetro del telefono. */
+/* Riflesso che scorre sul vetro del telefono.
+   Animato via `transform` (non `background-position`): il compositor può
+   gestirlo senza ridisegnare il layer del telefono ad ogni frame, cosa che
+   dentro il contenitore ruotato in 3D causava il tipico aspetto "slavato"
+   durante il movimento del mouse. */
 .gypso-cad-phone::after {
   content: "";
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 260%;
+  height: 100%;
   border-radius: inherit;
   pointer-events: none;
   z-index: 30;
@@ -203,16 +222,16 @@
     rgba(255, 255, 255, 0.06) 55%,
     transparent 72%
   );
-  background-size: 260% 100%;
+  transform: translate3d(-92%, 0, 0);
   animation: gypso-glass-sheen 7s ease-in-out infinite;
 }
 @keyframes gypso-glass-sheen {
   0%,
   100% {
-    background-position: 130% 0;
+    transform: translate3d(-92%, 0, 0);
   }
   50% {
-    background-position: -30% 0;
+    transform: translate3d(38%, 0, 0);
   }
 }
 
@@ -422,7 +441,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .gypso-cad-phone::after {
-    background-position: 50% 0;
+    animation: none;
+    transform: translate3d(-27%, 0, 0);
   }
   .gypso-cad-erone-draw {
     stroke-dashoffset: 0;

@@ -388,6 +388,10 @@
   flex-direction: column;
   position: relative;
   transition: all 0.3s ease;
+  /* Evita che il clipping dei bordi arrotondati faccia sparire i layer
+     di testo/SVG mentre il contenitore è ruotato in 3D. */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .gypso-cad-phone.mode-sole {
@@ -505,8 +509,11 @@
   display: flex;
   flex-direction: column;
   gap: 7px;
-  background: rgba(15, 23, 42, 0.88);
-  backdrop-filter: blur(12px);
+  /* Il pannello vive dentro un contenitore ruotato in 3D. `backdrop-filter`
+     lì viene proiettato e legge un backdrop non aggiornato durante il tilt,
+     facendo apparire la barra come un blocco piatto/slavato. Il fondo è
+     già quasi opaco, quindi il blur non serve: lo si omette per intero. */
+  background: rgba(15, 23, 42, 0.96);
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 20px;
   padding: 8px 6px;
@@ -515,7 +522,7 @@
 }
 
 .mode-sole .gypso-cad-left-bar {
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.96);
   border-color: #cbd5e1;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
@@ -580,8 +587,10 @@
   justify-content: center;
   cursor: pointer;
   border: 1px solid rgba(255, 255, 255, 0.15);
-  background: rgba(15, 23, 42, 0.85);
-  backdrop-filter: blur(10px);
+  /* Niente backdrop-filter: dentro il contenitore ruotato in 3D il blur
+     viene proiettato e legge un backdrop non aggiornato (aspetto slavato
+     durante il movimento del mouse). Il fondo opaco basta al contrasto. */
+  background: rgba(15, 23, 42, 0.92);
   color: #fff;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
   transition: all 0.2s ease;
@@ -612,8 +621,7 @@
   bottom: 84px;
   left: 14px;
   right: 14px;
-  background: rgba(15, 23, 42, 0.92);
-  backdrop-filter: blur(12px);
+  background: rgba(15, 23, 42, 0.94);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 12px;
   padding: 7px 12px;
@@ -1178,8 +1186,11 @@
    TILT / ZOOM READOUT
    ═══════════════════════════════════════════════════════════════════ */
 
+/* Il tilt non usa preserve-3d: vedi la nota in gypso-animations.css
+   (culling del contenuto clippato durante la rotazione). */
 .gypso-tilt {
-  transform-style: preserve-3d;
+  transform-style: flat;
+  backface-visibility: hidden;
 }
 
 .gypso-zoom-readout {
