@@ -2,10 +2,23 @@ import * as React from "react"
 import { useState, useEffect } from "react"
 import type { HeadFC, PageProps } from "gatsby"
 import { Link } from "gatsby"
+import { motion } from "framer-motion"
 import Layout from "../../components/Layout"
 import Navbar from "../../components/Navbar"
 import { LanguageProvider } from "../../context/LanguageContext"
-import { FileText, Shield, AlertTriangle, ArrowLeft } from "lucide-react"
+import { FileText, Shield, AlertTriangle, ArrowLeft, ArrowUp, Scale, Layers, Truck, PenTool, Ban, BadgeCheck, Mail } from "lucide-react"
+
+import "../../styles/gypso.css"
+import "../../styles/gypso-animations.css"
+import {
+  GypsoMotionProvider,
+  GypsoReveal,
+  GypsoStaggerItem,
+  GypsoSpotlightCard,
+  GypsoReadingProgress,
+  MOTION,
+  CURVES,
+} from "../../components/gypso/GypsoAnimations"
 
 type SupportedLang = "it" | "en" | "de" | "fr" | "es"
 
@@ -356,8 +369,115 @@ const termsData: Record<SupportedLang, Content> = {
   },
 }
 
+const sectionIcons = [
+  <Scale size={17} />,
+  <AlertTriangle size={17} />,
+  <Truck size={17} />,
+  <PenTool size={17} />,
+  <Ban size={17} />,
+  <BadgeCheck size={17} />,
+  <Mail size={17} />,
+]
+
+const slugify = (input: string) =>
+  input
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
+
+const TermsBlock: React.FC<{
+  id: string
+  index: number
+  title: string
+  alert?: string
+  icon: React.ReactNode
+  children: React.ReactNode
+}> = ({ id, index, title, alert, icon, children }) => (
+  <GypsoStaggerItem index={index} step={0.05}>
+    <GypsoSpotlightCard className="gypso-card" tint={alert ? "245, 158, 11" : "0, 229, 255"}>
+      <section id={id} className="gypso-anchor-target" style={{ position: "relative" }}>
+        <span className="gypso-accent-line" aria-hidden="true" />
+        <h2 className="gypso-legal-h2" style={{ paddingLeft: 4 }}>
+          <span className="gypso-legal-index">{String(index + 1).padStart(2, "0")}</span>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 10 }}>
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: 30,
+                height: 30,
+                borderRadius: 9,
+                background: alert ? "rgba(245, 158, 11, 0.12)" : "rgba(0, 229, 255, 0.1)",
+                border: alert ? "1px solid rgba(245, 158, 11, 0.3)" : "1px solid rgba(0, 229, 255, 0.22)",
+                color: alert ? "#fbbf24" : "var(--gypso-cyan)",
+                flexShrink: 0,
+              }}
+            >
+              {icon}
+            </span>
+            {title}
+          </span>
+        </h2>
+
+        {alert && (
+          <div className="gypso-legal-note is-warn" style={{ display: "flex", gap: 10, alignItems: "flex-start", marginLeft: 4, marginRight: 4 }}>
+            <AlertTriangle size={18} style={{ flexShrink: 0, marginTop: 2, color: "#fbbf24" }} />
+            <div>{alert}</div>
+          </div>
+        )}
+
+        <div className="gypso-legal-body" style={{ paddingLeft: 4 }}>
+          {children}
+        </div>
+      </section>
+    </GypsoSpotlightCard>
+  </GypsoStaggerItem>
+)
+
+const TocAside: React.FC<{ items: { id: string; title: string }[]; label: string }> = ({ items, label }) => {
+  const [active, setActive] = React.useState(items[0]?.id ?? "")
+
+  React.useEffect(() => {
+    if (typeof IntersectionObserver === "undefined") return
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
+        if (visible[0]) setActive(visible[0].target.id)
+      },
+      { rootMargin: "-96px 0px -60% 0px", threshold: 0 }
+    )
+    items.forEach((item) => {
+      const el = document.getElementById(item.id)
+      if (el) observer.observe(el)
+    })
+    return () => observer.disconnect()
+  }, [items])
+
+  return (
+    <aside className="gypso-legal-aside">
+      <div className="gypso-legal-aside-card">
+        <h2 className="gypso-legal-aside-title">{label}</h2>
+        <ul className="gypso-legal-toc">
+          {items.map((item) => (
+            <li key={item.id}>
+              <a href={`#${item.id}`} className={active === item.id ? "is-active" : ""}>
+                {item.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </aside>
+  )
+}
+
 const GypsoTermsPage: React.FC<PageProps> = () => {
   const [currentLang, setCurrentLang] = useState<SupportedLang>("it")
+  const [showTop, setShowTop] = useState(false)
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -376,158 +496,130 @@ const GypsoTermsPage: React.FC<PageProps> = () => {
     }
   }, [])
 
+  useEffect(() => {
+    const onScroll = () => setShowTop(window.scrollY > 700)
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
+
   const currentContent = termsData[currentLang]
+  const tocItems = currentContent.sections.map((s) => ({ id: slugify(s.title), title: s.title }))
+
+  const tocLabel =
+    currentLang === "it" ? "Indice dei contenuti" : currentLang === "de" ? "Inhaltsverzeichnis" : currentLang === "fr" ? "Table des matières" : currentLang === "es" ? "Índice de contenidos" : "Table of contents"
+
+  const homeLabel =
+    currentLang === "it" ? "GYPSO Home" : currentLang === "de" ? "GYPSO Startseite" : currentLang === "fr" ? "Accueil GYPSO" : currentLang === "es" ? "Inicio GYPSO" : "GYPSO Home"
+
+  const privacyLabel =
+    currentLang === "it" ? "Informativa Privacy" : currentLang === "de" ? "Datenschutzerklärung" : currentLang === "fr" ? "Politique de Confidentialité" : currentLang === "es" ? "Política de Privacidad" : "Privacy Policy"
 
   return (
     <LanguageProvider>
-      <Navbar mode="gypso-privacy" privacyLang={currentLang} setPrivacyLang={setCurrentLang} />
-      <Layout>
-        <div style={{ maxWidth: "840px", margin: "0 auto", padding: "40px 16px" }}>
-          {/* Quick Navigation Pills */}
-          <div style={{ display: "flex", gap: "10px", marginBottom: "20px", flexWrap: "wrap", alignItems: "center" }}>
-            <Link
-              to="/gypso"
-              className="gypso-btn-secondary"
-              style={{ padding: "6px 14px", fontSize: "0.85rem", textDecoration: "none" }}
-            >
-              <ArrowLeft size={15} /> GYPSO Home
-            </Link>
-            <Link
-              to="/gypso/privacy"
-              className="gypso-btn-secondary"
-              style={{ padding: "6px 14px", fontSize: "0.85rem", textDecoration: "none" }}
-            >
-              <Shield size={15} /> Privacy Policy
-            </Link>
-          </div>
+      <GypsoMotionProvider>
+        <GypsoReadingProgress />
+        <Navbar mode="gypso-privacy" privacyLang={currentLang} setPrivacyLang={setCurrentLang} />
 
-          {/* Header Card */}
-          <div
-            className="glass-card"
-            style={{
-              padding: "28px",
-              marginBottom: "24px",
-              display: "flex",
-              alignItems: "center",
-              gap: "20px",
-            }}
-          >
-            <div
-              style={{
-                background: "rgba(245, 158, 11, 0.15)",
-                color: "var(--accent-amber, #f59e0b)",
-                width: "54px",
-                height: "54px",
-                borderRadius: "50%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexShrink: 0,
-                border: "1px solid rgba(245, 158, 11, 0.3)",
-              }}
-            >
-              <FileText size={28} />
-            </div>
-            <div>
-              <h1 style={{ margin: 0, fontSize: "24px", fontWeight: 700, color: "var(--text-primary)" }}>
-                {currentContent.title}
-              </h1>
-              <p style={{ margin: "6px 0 0 0", color: "var(--text-secondary)", fontSize: "14px" }}>
-                {currentContent.lastUpdated}
-              </p>
-            </div>
-          </div>
+        <div className="gypso-page" style={{ paddingTop: 0 }}>
+          <div className="gypso-bg-mesh" />
+          <div className="gypso-orb gypso-orb-1" />
+          <div className="gypso-orb gypso-orb-2" />
 
-          {/* Terms Sections */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
-            {currentContent.sections.map((section, idx) => (
-              <div key={idx} className="glass-card" style={{ padding: "24px" }}>
-                <h2
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "10px",
-                    fontSize: "18px",
-                    fontWeight: 600,
-                    margin: "0 0 16px 0",
-                    color: "var(--accent-primary, #00e5ff)",
-                  }}
-                >
-                  {section.title}
-                </h2>
+          <div className="gypso-legal-shell">
+            <TocAside items={tocItems} label={tocLabel} />
 
-                {section.alert && (
-                  <div
-                    style={{
-                      background: "rgba(245, 158, 11, 0.12)",
-                      borderLeft: "4px solid #f59e0b",
-                      padding: "12px 16px",
-                      borderRadius: "6px",
-                      marginBottom: "16px",
-                      color: "#fbbf24",
-                      fontSize: "14px",
-                      display: "flex",
-                      alignItems: "flex-start",
-                      gap: "10px",
-                    }}
-                  >
-                    <AlertTriangle size={18} style={{ flexShrink: 0, marginTop: "2px" }} />
-                    <div>{section.alert}</div>
+            <main>
+              {/* Header */}
+              <GypsoReveal>
+                <header className="gypso-legal-head">
+                  <h1>{currentContent.title}</h1>
+                  <div className="gypso-legal-meta">
+                    <span className="gypso-chip">
+                      <FileText size={14} /> EULA
+                    </span>
+                    <span className="gypso-chip" style={{ borderColor: "rgba(245, 158, 11, 0.32)", background: "rgba(245, 158, 11, 0.09)", color: "#fbbf24" }}>
+                      Disclaimer di cantiere
+                    </span>
+                    <span className="gypso-chip" style={{ borderColor: "rgba(0, 230, 118, 0.28)", background: "rgba(0, 230, 118, 0.08)", color: "var(--gypso-green)" }}>
+                      Free & PRO
+                    </span>
+                    <span>{currentContent.lastUpdated}</span>
                   </div>
-                )}
+                </header>
+              </GypsoReveal>
 
-                <div style={{ color: "var(--text-secondary)", fontSize: "14px", lineHeight: "1.6" }}>
+              {/* Sintesi onesta del contratto, in tre righe */}
+              <GypsoReveal delay={0.06}>
+                <div className="gypso-legal-note">
+                  <strong>In breve:</strong> GYPSO è uno strumento di calcolo, non un software strutturale certificato.
+                  I quantitativi sono stime orientative; la responsabilità della posa a regola d'arte, del carico sul
+                  veicolo e del contenuto dei preventivi resta del professionista che li firma. Nessun dato lascia il dispositivo.
+                </div>
+              </GypsoReveal>
+
+              {/* Sezioni */}
+              {currentContent.sections.map((section, idx) => (
+                <TermsBlock
+                  key={`${currentLang}-${idx}`}
+                  id={tocItems[idx].id}
+                  index={idx}
+                  title={section.title}
+                  alert={section.alert}
+                  icon={sectionIcons[idx] ?? <FileText size={17} />}
+                >
                   {section.paragraphs?.map((p, pIdx) => (
-                    <p key={pIdx} style={{ margin: "0 0 12px 0" }}>
-                      {p}
-                    </p>
+                    <p key={pIdx}>{p}</p>
                   ))}
                   {section.list && (
-                    <ul style={{ margin: "8px 0", paddingLeft: "20px" }}>
+                    <ul>
                       {section.list.map((item, lIdx) => (
-                        <li key={lIdx} style={{ marginBottom: "6px" }}>
-                          {item}
-                        </li>
+                        <li key={lIdx}>{item}</li>
                       ))}
                     </ul>
                   )}
-                </div>
-              </div>
-            ))}
-          </div>
+                </TermsBlock>
+              ))}
 
-          {/* Footer & Cross-links */}
-          <footer
-            style={{
-              textAlign: "center",
-              color: "var(--text-muted)",
-              fontSize: "13px",
-              marginTop: "40px",
-              paddingTop: "20px",
-              borderTop: "1px solid var(--glass-border)",
-              display: "flex",
-              flexDirection: "column",
-              gap: "10px",
-              alignItems: "center",
-            }}
-          >
-            <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", justifyContent: "center" }}>
-              <Link to="/gypso" style={{ color: "var(--accent-primary)", textDecoration: "none" }}>
-                GYPSO App
-              </Link>
-              <span>•</span>
-              <Link to="/gypso/privacy" style={{ color: "var(--accent-primary)", textDecoration: "none" }}>
-                Privacy Policy
-              </Link>
-              <span>•</span>
-              <Link to="/" style={{ color: "var(--accent-primary)", textDecoration: "none" }}>
-                Portfolio Antonio Squillace
-              </Link>
-            </div>
-            <p style={{ margin: 0 }}>© {new Date().getFullYear()} GYPSO. All rights reserved.</p>
-          </footer>
+              {/* Cross-links */}
+              <GypsoReveal>
+                <div className="gypso-legal-actions">
+                  <Link to="/gypso" className="gypso-btn-secondary" style={{ textDecoration: "none" }}>
+                    <ArrowLeft size={16} /> {homeLabel}
+                  </Link>
+                  <Link to="/gypso/privacy" className="gypso-btn-primary" style={{ textDecoration: "none" }}>
+                    <Shield size={16} /> {privacyLabel}
+                  </Link>
+                </div>
+              </GypsoReveal>
+
+              <footer className="gypso-footer" style={{ marginTop: "3rem" }}>
+                <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", justifyContent: "center", marginBottom: "12px" }}>
+                  <Link to="/gypso" style={{ color: "var(--gypso-cyan)", textDecoration: "none", fontSize: "0.85rem" }}>GYPSO App</Link>
+                  <span style={{ color: "var(--gypso-text-muted)" }}>•</span>
+                  <Link to="/gypso/privacy" style={{ color: "var(--gypso-cyan)", textDecoration: "none", fontSize: "0.85rem" }}>Informativa Privacy</Link>
+                  <span style={{ color: "var(--gypso-text-muted)" }}>•</span>
+                  <Link to="/" style={{ color: "var(--gypso-cyan)", textDecoration: "none", fontSize: "0.85rem" }}>Portfolio Antonio Squillace</Link>
+                </div>
+                <p>© {new Date().getFullYear()} GYPSO — com.tosquidev.gypso. All rights reserved.</p>
+              </footer>
+            </main>
+          </div>
         </div>
-      </Layout>
+
+        {/* Torna su */}
+        <motion.button
+          type="button"
+          className="gypso-back-top"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          aria-label="Torna su"
+          initial={{ opacity: 0, scale: 0.8, y: 12 }}
+          animate={showTop ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.8, y: 12 }}
+          transition={{ duration: MOTION.medium, ease: CURVES.emphasized }}
+          style={{ pointerEvents: showTop ? "auto" : "none" }}
+        >
+          <ArrowUp size={18} />
+        </motion.button>
+      </GypsoMotionProvider>
     </LanguageProvider>
   )
 }
